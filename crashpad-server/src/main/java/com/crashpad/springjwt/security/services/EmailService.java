@@ -24,8 +24,8 @@ public class EmailService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setFrom("crashpad231@gmail.com");
-            message.setSubject(mailBody.subject());
-            message.setText(mailBody.text());
+            message.setSubject(mailBody.getSubject());
+            message.setText(mailBody.getText());
 
             javaMailSender.send(message);
         } catch (MailException e) {

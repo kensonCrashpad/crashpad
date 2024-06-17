@@ -28,13 +28,14 @@ public class User {
   @Email
   private String email;
 
-
   @NotBlank
   private String password;
 
   @NotBlank
   private String role;
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+  private UserProfile userProfile;
 
   public User(String username, String email, String password, String role) {
     this.username = username;

@@ -43,6 +43,7 @@ public class ForgotPasswordController {
                 .orElseThrow(() -> new UsernameNotFoundException("Please provide a valid email!"));
 
         int otp = otpGenerator();
+
         MailBody mailBody = MailBody.builder()
                 .to(email)
                 .text("This is the OTP for your Forgot Password request: " + otp)
