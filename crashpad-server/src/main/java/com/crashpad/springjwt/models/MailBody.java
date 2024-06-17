@@ -1,7 +1,12 @@
 package com.crashpad.springjwt.models;
 
 import lombok.Builder;
+import lombok.Data;
 
+@Data
 @Builder
-public record MailBody(String to, String subject, String text) {
+public class MailBody {
+    private String to;
+    private String subject;
+    private String text;
 }

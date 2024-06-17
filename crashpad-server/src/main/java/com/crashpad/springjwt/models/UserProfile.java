@@ -43,6 +43,10 @@ public class UserProfile {
     private String description;
     private String paymentType;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
@@ -62,12 +66,10 @@ public class UserProfile {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments;
 
-    public UserProfile() {
-    }
-
-    public UserProfile(String username, String email, String password) {
+    public UserProfile(String username, String email, String password, User user) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.user = user;
     }
 }
