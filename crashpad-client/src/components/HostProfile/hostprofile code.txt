@@ -1,0 +1,92 @@
+<Grid item xs={12} md={4} padding = "20px">
+          {showUserProfile ? (
+            <HostForm profileFormData={profileFormData} onClickEdit={handleShowProfile} />
+          ) : (
+            <form noValidate autoComplete="off" onSubmit={profileSubmitData}>
+              <TextField
+                label="User Name"
+                name="userName"
+                value={profileFormData.userName}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="First Name"
+                name="firstName"
+                value={profileFormData.firstName}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Last Name"
+                name="lastName"
+                value={profileFormData.lastName}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Age"
+                name="age"
+                value={profileFormData.age}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Gender</InputLabel>
+                <Select
+                  name="gender"
+                  value={profileFormData.gender}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Location"
+                name="location"
+                value={profileFormData.location}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Email"
+                name="email"
+                value={profileFormData.email}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="About Me"
+                name="aboutMe"
+                value={profileFormData.aboutMe}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+              />
+              <LoginButton
+                fullWidth
+                variant="contained"
+                style={{ backgroundColor: '#FDA117' }}
+                onClick={profileSubmitData}
+              >
+                Submit
+              </LoginButton>
+            </form>
+          )}
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <iframe
+            src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=YOUR_TIME_ZONE"
+            style={{ border: 0, width: '200%', height: '400px' }}
+            frameBorder="0"
+            scrolling="no"
+          ></iframe>
+        </Grid>
