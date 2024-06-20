@@ -1,4 +1,5 @@
 package com.crashpad.springjwt.controllers;
+import com.crashpad.springjwt.models.UserProfile;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.crashpad.springjwt.payload.response.JwtResponse;
 import com.crashpad.springjwt.payload.response.MessageResponse;
 
 import com.crashpad.springjwt.repository.UserRepository;
+import com.crashpad.springjwt.repository.UserProfileRepository;
 import com.crashpad.springjwt.security.jwt.JwtUtils;
 import com.crashpad.springjwt.security.services.UserDetailsImpl;
 
@@ -30,6 +32,9 @@ public class AuthController {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  UserProfileRepository userProfileRepository;
 
   @Autowired
   PasswordEncoder encoder;
@@ -78,6 +83,15 @@ public class AuthController {
                encoder.encode(signUpRequest.getPassword()), signUpRequest.getRole());
 
     userRepository.save(user);
+
+    //Create user profile
+    UserProfile userProfile = new UserProfile();
+    userProfile.setUser(user);
+    userProfile.setEmail(signUpRequest.getEmail());
+    userProfile.setUsername(signUpRequest.getUsername());
+    // Persist user profile to database
+    userProfileRepository.save(userProfile);
+
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }

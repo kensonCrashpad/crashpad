@@ -29,18 +29,18 @@ interface ShowUserProfileProps {
 const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
   
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-    userName: "Kenson",
-    firstName: "Kenson",
-    lastName: "Pribyl",
-    age: 30,
-    gender: "Male",
-    aboutMe: "I love traveling different places!",
+    userName: userProfile?.username || '',
+    firstName: userProfile?.firstName || '',
+    lastName: userProfile?.lastName || '',
+    age: userProfile?.age || 0,
+    gender: userProfile?.gender || '',
+    aboutMe: userProfile?.description || '',
   });
 
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate("/editprofile");
+    navigate("/editprofile", { state: userProfile });
   };
 
   useEffect(() => {

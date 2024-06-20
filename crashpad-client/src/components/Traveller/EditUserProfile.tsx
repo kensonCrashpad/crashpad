@@ -12,6 +12,9 @@ import Nav from "../NavBar/SideNav";
 import Myprofile from "./Myprofile.png";
 import UserSettings from "../Dashboard/UserSettings";
 import UserService from "../../services/user/user";
+import { useLocation } from 'react-router-dom';
+
+
 
 const LoginButton = styled(Button)({
   marginTop: "1em",
@@ -32,17 +35,37 @@ interface UserFormState {
   id:number;
 }
 
+
+interface UserProfile {
+  userName: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  gender: string;
+  aboutMe: string;
+  id: number;
+}
+
+
+
 const UserProfile: React.FC = () => {
+  const location = useLocation();
+  const userData = location.state; 
+  console.log("USER DATA : ",userData)
+  
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-    userName: "Kenson",
-    firstName: "Kenson",
-    lastName: "Pribyl",
-    age: 30,
-    gender: "Male",
-    aboutMe: "I love traveling different places!",
-    id:2,
+    userName: userData.username,
+    firstName:userData.firstName,
+    lastName: userData.lastName,
+    age: userData.age,
+    gender: userData.gender,
+    aboutMe: userData.description,
+    id:userData.id,
   });
 
+ 
+  
+  
   const [errors, setErrors] = useState<any>();
   const [showUserProfile, setShowUserProfile] = useState(false);
 
@@ -74,18 +97,28 @@ const UserProfile: React.FC = () => {
   };
 
   const profileSubmitData = async (e: any) => {
+
+    const id = localStorage.getItem("id");
+    console.log("ID is", id);
+    //GENERATE UPDATE USER DTO HERe
+    const profileData = {
+      firstName: profileFormData.firstName,
+      lastName:profileFormData.lastName,
+      gender:profileFormData.gender,
+      age:profileFormData.age,
+      description:profileFormData.aboutMe,
+      userId:id,
+    }
+    console.log("ProfleData : ", profileData);
+    
     e.preventDefault();
     setShowUserProfile(false);
-    const userStr = localStorage.getItem("user");
-    if(userStr){
-      let user = JSON.parse(userStr);
-    }
     const isValid = validateForm();
     // const updatedProfileFormData = { ...profileFormData};
     if (isValid) {
-      console.log("Form validation", profileFormData);
+      //console.log("Form validation", profileData);
       try {
-        const response = await UserService.updateUserProfile(profileFormData);
+        const response = await UserService.updateUserProfile(profileData);
         console.log("Profile updated successfully:", response.data);
       } catch (error) {
         console.error("Error updating profile:", error);

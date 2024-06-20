@@ -55,18 +55,18 @@ public class UserController {
         return ResponseEntity.ok(convertToDTO(userProfile));
     }
 
-
+/*
     @PostMapping("/profile/update")
     public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
-        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
+        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getId());
 
         UserProfile userProfile;
         if (userProfileOptional.isPresent()) {
             userProfile = userProfileOptional.get();
             // Update existing user profile
-            userProfile.setUsername(userProfileDTO.getUsername());
-            userProfile.setEmail(userProfileDTO.getEmail());
-            userProfile.setPassword(encoder.encode(userProfileDTO.getPassword()));
+            //userProfile.setUsername(userProfileDTO.getUsername());
+            //userProfile.setEmail(userProfileDTO.getEmail());
+            //userProfile.setPassword(userProfileDTO.getPassword());
             userProfile.setFirstName(userProfileDTO.getFirstName());
             userProfile.setMiddleName(userProfileDTO.getMiddleName());
             userProfile.setLastName(userProfileDTO.getLastName());
@@ -96,6 +96,26 @@ public class UserController {
             // Additional logic to set Address and other relationships can be added here
         }
 
+        UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
+        return ResponseEntity.ok(convertToDTO(updatedUserProfile));
+    }
+*/
+
+    @PostMapping("/profile/update")
+    public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
+        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
+
+        UserProfile userProfile = userProfileOptional.get();
+        // Update existing user profile
+        userProfile.setFirstName(userProfileDTO.getFirstName());
+        //userProfile.setMiddleName(userProfileDTO.getMiddleName());
+        userProfile.setLastName(userProfileDTO.getLastName());
+        // userProfile.setPhone(userProfileDTO.getPhone());
+        userProfile.setGender(userProfileDTO.getGender());
+        userProfile.setAge(userProfileDTO.getAge());
+        userProfile.setDescription(userProfileDTO.getDescription());
+        // userProfile.setPaymentType(userProfileDTO.getPaymentType());
+        // Additional fields like Address can be set here if included in UserProfileDTO and UserProfile entity
         UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
         return ResponseEntity.ok(convertToDTO(updatedUserProfile));
     }

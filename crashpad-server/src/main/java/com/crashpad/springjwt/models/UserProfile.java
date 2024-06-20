@@ -30,7 +30,6 @@ public class UserProfile {
     @Email
     private String email;
 
-    @NotBlank
     @Size(max = 120)
     private String password;
 
