@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Myprofile from "./Myprofile.png";
 import { useNavigate } from "react-router-dom";
+import { UserProfile } from './UserProfile';
 
 const EditButton = styled(Button)({
   backgroundColor: "#FDA117",
@@ -22,7 +23,11 @@ interface UserFormState {
   aboutMe: string;
 }
 
-const ShowUserProfile: React.FC = () => {
+interface ShowUserProfileProps {
+  userProfile: UserProfile | null;
+}
+const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
+  
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
     userName: "Kenson",
     firstName: "Kenson",
@@ -37,6 +42,20 @@ const ShowUserProfile: React.FC = () => {
   const handleEdit = () => {
     navigate("/editprofile");
   };
+
+  useEffect(() => {
+    if (userProfile) {
+      console.log("UserProfile details printed from SHOW USER PROFILE FILE: ", userProfile);
+      setProfileFormData({
+        userName: userProfile.username,
+        firstName: userProfile.firstName,
+        lastName: userProfile.lastName,
+        age: userProfile.age,
+        gender: userProfile.gender,
+        aboutMe: userProfile.description || "I love traveling different places!",
+      });
+    }
+  }, [userProfile]);
 
   return (
     <Grid container spacing={1}>

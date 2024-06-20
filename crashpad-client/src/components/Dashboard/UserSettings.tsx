@@ -134,6 +134,14 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
 
+const userStr = localStorage.getItem("user");
+let username = "";
+if (userStr) {
+    const user = JSON.parse(userStr);
+    username = user.username;
+}
+
+
 const UserSettings = () => {
   // State for menu anchor
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // Explicitly define the type for anchorEl
@@ -200,7 +208,7 @@ const UserSettings = () => {
         </Paper>
         <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
           <Typography variant="subtitle1" sx={{ marginRight: "5px" }}>
-            Hello! Kenson
+            Hello! {username}
           </Typography>
           <IconButton
             onClick={handleMenu}

@@ -66,10 +66,13 @@ public class UserProfile {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Payment> payments;
 
-    public UserProfile(String username, String email, String password, User user) {
+    public UserProfile(String username, String email,  User user) {
         this.username = username;
         this.email = email;
-        this.password = password;
         this.user = user;
+    }
+
+    public UserProfile() {
+
     }
 }
