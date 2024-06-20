@@ -18,6 +18,7 @@ import Trips from "./components/NavBar/Trips";
 import Favorites from "./components/NavBar/Favorites";
 import Messages from "./components/NavBar/Messages";
 import Settings from "./components/NavBar/Settings"; 
+import AddProperty from "./components/HostProfile/AddProperty"; 
 import './App.css';
 
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/travelerprofile" element={<TravelerProfile />} />
           <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/editaccommodation" element={<EditAccommodation/>} />
+          <Route path="/createproperty" element={<AddProperty />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/trips" element={<Trips />} />

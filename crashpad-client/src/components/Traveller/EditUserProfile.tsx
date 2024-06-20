@@ -54,13 +54,13 @@ const UserProfile: React.FC = () => {
   console.log("USER DATA : ",userData)
   
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-    userName: userData.username,
-    firstName:userData.firstName,
-    lastName: userData.lastName,
-    age: userData.age,
-    gender: userData.gender,
-    aboutMe: userData.description,
-    id:userData.id,
+    userName: userData.username || '',
+    firstName:userData.firstName || '',
+    lastName: userData.lastName || '', 
+    age: userData.age || 0,
+    gender: userData.gender || '',
+    aboutMe: userData.description || '',
+    id:userData.id || 0,
   });
 
  

@@ -20,7 +20,7 @@ const hprofile: React.FC = () => {
                   </Grid>
                  
               </Grid>
-            <BasicTabs></BasicTabs>
+            {/* <BasicTabs></BasicTabs> */}
           </Box>
         </>
     );

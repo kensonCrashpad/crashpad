@@ -194,6 +194,7 @@ const UserSettings = () => {
             alignItems: "center",
             borderRadius: "20px",
             backgroundColor: "rgba(0, 0, 0, 0.05)",
+            marginLeft : "15px"
           }}
         >
           <InputBase
