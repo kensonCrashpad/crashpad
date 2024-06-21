@@ -136,7 +136,6 @@ public class UserController {
         userProfileDTO.setId(userProfile.getId());
         userProfileDTO.setUsername(userProfile.getUsername());
         userProfileDTO.setEmail(userProfile.getEmail());
-        userProfileDTO.setPassword(userProfile.getPassword());
         userProfileDTO.setFirstName(userProfile.getFirstName());
         userProfileDTO.setMiddleName(userProfile.getMiddleName());
         userProfileDTO.setLastName(userProfile.getLastName());

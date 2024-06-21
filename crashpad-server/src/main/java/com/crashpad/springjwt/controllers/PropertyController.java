@@ -138,7 +138,7 @@ public class PropertyController {
         PropertyDTO propertyDTO = new PropertyDTO();
         propertyDTO.setPropertyId(property.getPropertyId());
         propertyDTO.setAvailability(property.getAvailability());
-        propertyDTO.setPadNumber(property.getPadNumber());
+       // propertyDTO.setPadNumber(property.getPadNumber());
         propertyDTO.setPropertyType(property.getPropertyType());
         propertyDTO.setUserCreationDate(property.getUserCreationDate());
         propertyDTO.setUserModifyDate(property.getUserModifyDate());
@@ -152,7 +152,7 @@ public class PropertyController {
     private Property convertToEntity(PropertyDTO propertyDTO) {
         Property property = new Property();
         property.setAvailability(propertyDTO.getAvailability());
-        property.setPadNumber(propertyDTO.getPadNumber());
+        //property.setPadNumber(propertyDTO.getPadNumber());
         property.setPropertyType(propertyDTO.getPropertyType());
         property.setUserCreationDate(propertyDTO.getUserCreationDate());
         property.setUserModifyDate(propertyDTO.getUserModifyDate());

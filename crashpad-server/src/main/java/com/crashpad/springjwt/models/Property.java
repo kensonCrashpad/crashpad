@@ -15,13 +15,15 @@ public class Property {
     private Long propertyId;
 
     private String availability;
-    private String padNumber;
-    private String propertyType;
+    //private String padNumber;
+    private String propertyType;//Ask Kenson
     private String userCreationDate;
     private String userModifyDate;
     private String padMaxWidth;
     private String padMaxLength;
     private String description;
+    private Integer capacity;
+
     //private List<String> imageUrls;  // Make sure to import List from java.util
 
 

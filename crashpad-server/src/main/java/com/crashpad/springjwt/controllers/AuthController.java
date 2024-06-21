@@ -89,6 +89,7 @@ public class AuthController {
     userProfile.setUser(user);
     userProfile.setEmail(signUpRequest.getEmail());
     userProfile.setUsername(signUpRequest.getUsername());
+    userProfile.setRole(signUpRequest.getRole());
     // Persist user profile to database
     userProfileRepository.save(userProfile);
 

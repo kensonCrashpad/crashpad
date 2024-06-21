@@ -30,8 +30,6 @@ public class UserProfile {
     @Email
     private String email;
 
-    @Size(max = 120)
-    private String password;
 
     private String firstName;
     private String middleName;
@@ -41,6 +39,7 @@ public class UserProfile {
     private int age;
     private String description;
     private String paymentType;
+    private String role;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
