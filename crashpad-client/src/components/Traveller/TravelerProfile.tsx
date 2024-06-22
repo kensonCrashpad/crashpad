@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UserSettings from "../Dashboard/UserSettings";
 import UserService from "../../services/user/user"
 import {UserProfile} from "./UserProfile";
+import CreateProfile from "../Traveller/CreateProfile";
 
 const Booking: React.FC = () => {
 
@@ -36,12 +37,14 @@ const Booking: React.FC = () => {
       <Nav />
       <Box sx={{ flexGrow: 1, m: 5, marginLeft: "8em" }}>
         <Grid container spacing={1}>
-          <Grid item xs={6}>
+        <CreateProfile/>
+          {/* <Grid item xs={6}>
             <ShowUserProfile userProfile={userProfile} />
           </Grid>
           <Grid item xs={6}>
             <ShowAccomodation />
-          </Grid>
+          </Grid> */}
+          
         </Grid>
         <BasicTabs />
       </Box>

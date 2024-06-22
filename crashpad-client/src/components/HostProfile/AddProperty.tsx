@@ -148,9 +148,6 @@ const AddProperty: React.FC = () => {
       <Nav />
       <FormContainer>
         <StyledPaper elevation={3}>
-          {/* <Typography variant="h4" gutterBottom>
-            Add New Property
-          </Typography> */}
           <form noValidate autoComplete="off" onSubmit={handleSubmit}>
             <SectionTitle variant="h5">Property Information</SectionTitle>
             <Grid container spacing={2}>
