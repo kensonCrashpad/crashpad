@@ -180,14 +180,13 @@
 // }
 
 // export default HUserProfile;
-
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Grid, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ProfileImg from '../../images/ProfileImg.png';
 import { useNavigate } from 'react-router-dom';
-import HostForm from './HostForm'; // Make sure this import is correct
+import UserService from "../../services/user/user";
+import HostForm from "./HostForm";
 
 const LoginButton = styled(Button)({
   marginTop: '1em'
@@ -220,25 +219,75 @@ interface UserFormState {
 
 const HUserProfile: React.FC = () => {
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-    userName: "John",
-    firstName: "John",
-    lastName: "Doe",
-    age: 30,
-    gender: "Male",
-    location: 'New York',
-    email: 'johndoe11@gmail.com',
-    aboutMe: "I love travelling different places!"
+    userName: "",
+    firstName: "",
+    lastName: "",
+    age: 0,
+    gender: "",
+    location: '',
+    email: '',
+    aboutMe: ""
   });
 
   const [errors, setErrors] = useState<any>();
   const [showUserProfile, setShowUserProfile] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const userId = user.id;
+        if (userId) {
+          const response = await UserService.getUserProfile(userId);
+          const userData = response.data;
+          setProfileFormData({
+            userName: userData.username,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            age: userData.age,
+            gender: userData.gender,
+            location: userData.location,
+            email: userData.email,
+            aboutMe: userData.description,
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching profile', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
   const validateForm = () => {
     let newErrors: any = {};
 
-    // ... (validation logic remains the same)
-    
+    if (!profileFormData.userName) {
+      newErrors.userName = "Username is required.";
+    }
+    if (!profileFormData.firstName) {
+      newErrors.firstName = "First Name is required.";
+    }
+    if (!profileFormData.lastName) {
+      newErrors.lastName = "Last Name is required.";
+    }
+    if (!profileFormData.age) {
+      newErrors.age = "Age is required.";
+    }
+    if (!profileFormData.gender) {
+      newErrors.gender = "Gender is required.";
+    }
+    if (!profileFormData.location) {
+      newErrors.location = "Location is required.";
+    }
+    if (!profileFormData.email) {
+      newErrors.email = "Email is required.";
+    }
+    if (!profileFormData.aboutMe) {
+      newErrors.aboutMe = "About me is required.";
+    }
+
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -265,7 +314,7 @@ const HUserProfile: React.FC = () => {
 
   const navigate = useNavigate();
   const handleShowProfile = () => {
-    navigate('/property1info');
+    navigate('/host/edit', { state: profileFormData });
   };
 
   const handleAddProperty = () => {
@@ -384,4 +433,3 @@ const HUserProfile: React.FC = () => {
 }
 
 export default HUserProfile;
-

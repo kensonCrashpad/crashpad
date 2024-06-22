@@ -7,11 +7,11 @@ class User {
     
     getUserProfile(userId : number) {
         return axios.post(API_URL + 'profile/get', { userId }, { headers: authHeader() });
-      }
+    }
 
-  updateUserProfile(profileFormData: Record<string, any>) {
-    return axios.post(API_URL + 'profile/update', profileFormData, { headers: authHeader() });
-  }
+    updateUserProfile(profileFormData: Record<string, any>) {
+        return axios.post(API_URL + 'profile/update', profileFormData, { headers: authHeader() });
+    }
 
   // Add more user-related methods as needed
 }
