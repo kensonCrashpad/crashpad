@@ -1,86 +1,3 @@
-// import React, { useState } from "react";
-// import { Button } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-// import Grid from "@mui/material/Grid";
-// import Myprofile from "./Myprofile.png";
-// import { useNavigate } from "react-router-dom";
-
-// const EditButton = styled(Button)({
-//   backgroundColor: "#FDA117",
-//   padding: "10px 20px",
-//   height: "30px",
-//   minWidth: "fit-content",
-//   marginTop: "1em",
-// });
-
-// interface UserFormState {
-//   userName: string;
-//   firstName: string;
-//   lastName: string;
-//   age: number;
-//   gender: string;
-//   aboutMe: string;
-// }
-
-// const ShowUserProfile: React.FC = () => {
-//   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-//     userName: "Kenson",
-//     firstName: "Kenson",
-//     lastName: "Pribyl",
-//     age: 30,
-//     gender: "Male",
-//     aboutMe: "I love traveling different places!",
-//   });
-
-//   const navigate = useNavigate();
-
-//   const handleEdit = () => {
-//     navigate("/editprofile");
-//   };
-
-//   return (
-//     <Grid container spacing={1}>
-//       <Grid item xs={12}>
-//         <h3>Traveller Details</h3>
-//       </Grid>
-//       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-//         <img
-//           src={Myprofile}
-//           style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-//           alt="Profile"
-//         />
-//       </Grid>
-//       <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-//         <p>
-//           <span style={{ fontSize: "16px", fontWeight: "bold" }}>User Name: </span>
-//           {profileFormData.userName}
-//         </p>
-//         <p>
-//           <span style={{ fontSize: "16px", fontWeight: "bold" }}>Name: </span>
-//           {profileFormData.firstName} {profileFormData.lastName}
-//         </p>
-//         <p>
-//           <span style={{ fontSize: "16px", fontWeight: "bold" }}>Gender: </span>
-//           {profileFormData.gender}
-//         </p>
-//         <p>
-//           <span style={{ fontSize: "16px", fontWeight: "bold" }}>Age: </span>
-//           {profileFormData.age} years
-//         </p>
-//         <p>
-//           <span style={{ fontSize: "16px", fontWeight: "bold" }}>About: </span>
-//           {profileFormData.aboutMe}
-//         </p>
-//         <EditButton variant="contained" onClick={handleEdit}>
-//           Edit
-//         </EditButton>
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default ShowUserProfile;
-
 import React, { useState, useEffect } from "react";
 import { Button, Grid, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -102,21 +19,23 @@ interface UserFormState {
   lastName: string;
   age: number;
   gender: string;
+  phone: number;
   aboutMe: string;
 }
 
 interface ShowUserProfileProps {
   userProfile: UserProfile | null;
 }
+
 const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
-  
   const [profileFormData, setProfileFormData] = useState<UserFormState>({
     userName: userProfile?.username || '',
     firstName: userProfile?.firstName || '',
     lastName: userProfile?.lastName || '',
     age: userProfile?.age || 0,
     gender: userProfile?.gender || '',
-    aboutMe: userProfile?.description || '',
+    phone: Number(userProfile?.phone) || 0, // Convert to number here
+    aboutMe: userProfile?.description || "",
   });
 
   const navigate = useNavigate();
@@ -134,6 +53,7 @@ const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
         lastName: userProfile.lastName,
         age: userProfile.age,
         gender: userProfile.gender,
+        phone: Number(userProfile.phone) || 0, 
         aboutMe: userProfile.description || "I love traveling different places!",
       });
     }
@@ -155,6 +75,7 @@ const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
           <Typography variant="body1"><strong>Name:</strong> {profileFormData.firstName} {profileFormData.lastName}</Typography>
           <Typography variant="body1"><strong>Gender:</strong> {profileFormData.gender}</Typography>
           <Typography variant="body1"><strong>Age:</strong> {profileFormData.age} years</Typography>
+          <Typography variant="body1"><strong>Phone:</strong> {profileFormData.phone}</Typography>
           <Typography variant="body1"><strong>About:</strong> {profileFormData.aboutMe}</Typography>
           <EditButton variant="contained" onClick={handleEdit}>Edit</EditButton>
         </Grid>
@@ -164,3 +85,4 @@ const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
 };
 
 export default ShowUserProfile;
+
