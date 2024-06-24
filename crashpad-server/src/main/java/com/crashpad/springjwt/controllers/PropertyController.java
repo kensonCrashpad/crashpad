@@ -2,14 +2,15 @@ package com.crashpad.springjwt.controllers;
 
 import com.crashpad.springjwt.dto.PropertyDTO;
 import com.crashpad.springjwt.dto.PropertyImageDTO;
-import com.crashpad.springjwt.dto.PropertyPriceDTO;
 import com.crashpad.springjwt.models.Property;
 import com.crashpad.springjwt.models.PropertyImage;
-import com.crashpad.springjwt.models.PropertyPrice;
 import com.crashpad.springjwt.models.User;
+import com.crashpad.springjwt.models.Booking;
+import com.crashpad.springjwt.models.PropertyAmenity;
+import com.crashpad.springjwt.models.PropertyImage;
+import com.crashpad.springjwt.models.Favorites;
 import com.crashpad.springjwt.security.services.FileStorageService;
 import com.crashpad.springjwt.security.services.PropertyImageService;
-import com.crashpad.springjwt.security.services.PropertyPriceService;
 import com.crashpad.springjwt.security.services.PropertyService;
 import com.crashpad.springjwt.security.services.UserService;
 
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/properties")
+@RequestMapping("/api/property")
 public class PropertyController {
 
     @Autowired
@@ -33,9 +34,6 @@ public class PropertyController {
 
     @Autowired
     private PropertyImageService propertyImageService;
-
-    @Autowired
-    private PropertyPriceService propertyPriceService;
 
     @Autowired
     private UserService userService;
@@ -58,10 +56,6 @@ public class PropertyController {
         Property property = convertToEntity(propertyDTO);
         property.setUser(user);
 
-        // Save property price
-        PropertyPrice propertyPrice = convertToEntity(propertyDTO.getPropertyPrice());
-        propertyPrice.setProperty(property);
-        property.setPropertyPrice(propertyPrice);
 
         Property savedProperty = propertyService.saveProperty(property);
 
@@ -81,6 +75,7 @@ public class PropertyController {
 
         return ResponseEntity.ok(savedPropertyDTO);
     }
+
 
     @PostMapping("/{propertyId}/add-images")
     public ResponseEntity<PropertyDTO> addPropertyImages(
@@ -134,6 +129,7 @@ public class PropertyController {
         return ResponseEntity.noContent().build();
     }
 
+    
     private PropertyDTO convertToDTO(Property property) {
         PropertyDTO propertyDTO = new PropertyDTO();
         propertyDTO.setPropertyId(property.getPropertyId());
@@ -145,13 +141,13 @@ public class PropertyController {
         propertyDTO.setPadMaxWidth(property.getPadMaxWidth());
         propertyDTO.setPadMaxLength(property.getPadMaxLength());
         propertyDTO.setDescription(property.getDescription());
-        propertyDTO.setPropertyPrice(convertToDTO(property.getPropertyPrice()));
         return propertyDTO;
     }
 
     private Property convertToEntity(PropertyDTO propertyDTO) {
         Property property = new Property();
         property.setAvailability(propertyDTO.getAvailability());
+        property.setCapacity(propertyDTO.getCapacity());
         //property.setPadNumber(propertyDTO.getPadNumber());
         property.setPropertyType(propertyDTO.getPropertyType());
         property.setUserCreationDate(propertyDTO.getUserCreationDate());
@@ -159,6 +155,15 @@ public class PropertyController {
         property.setPadMaxWidth(propertyDTO.getPadMaxWidth());
         property.setPadMaxLength(propertyDTO.getPadMaxLength());
         property.setDescription(propertyDTO.getDescription());
+
+        //Set Address Parameters
+        property.setStreet(propertyDTO.getStreet());
+        property.setCity(propertyDTO.getCity());
+        property.setState(propertyDTO.getState());
+        property.setZip(propertyDTO.getZip());
+
+
+
         return property;
     }
 
@@ -170,20 +175,5 @@ public class PropertyController {
         return propertyImageDTO;
     }
 
-    private PropertyPriceDTO convertToDTO(PropertyPrice propertyPrice) {
-        PropertyPriceDTO propertyPriceDTO = new PropertyPriceDTO();
-        propertyPriceDTO.setPriceId(propertyPrice.getPriceId());
-        propertyPriceDTO.setWeekdayPrice(propertyPrice.getWeekdayPrice());
-        propertyPriceDTO.setWeekendPrice(propertyPrice.getWeekendPrice());
-        propertyPriceDTO.setHolidayPrice(propertyPrice.getHolidayPrice());
-        return propertyPriceDTO;
-    }
 
-    private PropertyPrice convertToEntity(PropertyPriceDTO propertyPriceDTO) {
-        PropertyPrice propertyPrice = new PropertyPrice();
-        propertyPrice.setWeekdayPrice(propertyPriceDTO.getWeekdayPrice());
-        propertyPrice.setWeekendPrice(propertyPriceDTO.getWeekendPrice());
-        propertyPrice.setHolidayPrice(propertyPriceDTO.getHolidayPrice());
-        return propertyPrice;
-    }
 }

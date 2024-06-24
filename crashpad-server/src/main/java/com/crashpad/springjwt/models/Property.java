@@ -15,7 +15,6 @@ public class Property {
     private Long propertyId;
 
     private String availability;
-    //private String padNumber;
     private String propertyType;//Ask Kenson
     private String userCreationDate;
     private String userModifyDate;
@@ -24,19 +23,30 @@ public class Property {
     private String description;
     private Integer capacity;
 
+    //AddressFields
+    private String street;
+    private String city;
+    private String state;
+    private String zip;
+
     //private List<String> imageUrls;  // Make sure to import List from java.util
 
+    //Pricing Fields
+    private String discountedPrice;
+    private String originalPrice;
+    private String qualifier;
 
-    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL)
-    private PropertyPrice propertyPrice;
+    //Property Name
+    private String title;
+    private String name;
+
+    //Property Co-ordinate
+    private Double latitude;
+    private Double longitude;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
 
     @OneToMany(mappedBy = "property")
     private Set<Booking> bookings;
@@ -50,6 +60,4 @@ public class Property {
     @OneToMany(mappedBy = "property")
     private Set<PropertyAmenity> propertyAmenities;
 
-
-    
 }
