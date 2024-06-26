@@ -379,6 +379,7 @@ const AddProperty: React.FC = () => {
                 variant="contained"
                 component="label"
                 startIcon={<ImageIcon />}
+                sx={{ mb: 3 }}
               >
                 Upload Images
                 <input
