@@ -55,52 +55,6 @@ public class UserController {
         return ResponseEntity.ok(convertToDTO(userProfile));
     }
 
-/*
-    @PostMapping("/profile/update")
-    public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
-        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getId());
-
-        UserProfile userProfile;
-        if (userProfileOptional.isPresent()) {
-            userProfile = userProfileOptional.get();
-            // Update existing user profile
-            //userProfile.setUsername(userProfileDTO.getUsername());
-            //userProfile.setEmail(userProfileDTO.getEmail());
-            //userProfile.setPassword(userProfileDTO.getPassword());
-            userProfile.setFirstName(userProfileDTO.getFirstName());
-            userProfile.setMiddleName(userProfileDTO.getMiddleName());
-            userProfile.setLastName(userProfileDTO.getLastName());
-            userProfile.setPhone(userProfileDTO.getPhone());
-            userProfile.setGender(userProfileDTO.getGender());
-            userProfile.setAge(userProfileDTO.getAge());
-            userProfile.setDescription(userProfileDTO.getDescription());
-            userProfile.setPaymentType(userProfileDTO.getPaymentType());
-            // Additional logic to set Address and other relationships can be added here
-        } else {
-            // Create new user profile
-            User userOptional = userService.findUserByIdfromTable(userProfileDTO.getId());
-
-            userProfile = new UserProfile(userOptional.getUsername(), userOptional.getEmail(), userOptional);
-            //userProfile.setUserId(userProfileDTO.getUserId()); // Assuming UserProfile has a setUserId method
-            //userProfile.setUsername(userProfileDTO.getUsername());
-            //userProfile.setEmail(userProfileDTO.getEmail());
-            userProfile.setPassword(userOptional.getPassword());
-            userProfile.setFirstName(userProfileDTO.getFirstName());
-            //userProfile.setMiddleName(userProfileDTO.getMiddleName());
-            userProfile.setLastName(userProfileDTO.getLastName());
-            userProfile.setPhone(userProfileDTO.getPhone());
-            userProfile.setGender(userProfileDTO.getGender());
-            userProfile.setAge(userProfileDTO.getAge());
-            userProfile.setDescription(userProfileDTO.getDescription());
-            userProfile.setPaymentType(userProfileDTO.getPaymentType());
-            // Additional logic to set Address and other relationships can be added here
-        }
-
-        UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
-        return ResponseEntity.ok(convertToDTO(updatedUserProfile));
-    }
-*/
-
     @PostMapping("/profile/update")
     public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
         Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
@@ -145,9 +99,7 @@ public class UserController {
         userProfileDTO.setDescription(userProfile.getDescription());
         userProfileDTO.setPaymentType(userProfile.getPaymentType());
         userProfileDTO.setUserId(userProfile.getUser().getId());
-        if (userProfile.getAddress() != null) {
-            userProfileDTO.setAddressId(userProfile.getAddress().getAddressId());
-        }
+
         // Map other relationships if necessary
         return userProfileDTO;
     }

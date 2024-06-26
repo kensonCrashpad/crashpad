@@ -30,7 +30,6 @@ public class UserProfile {
     @Email
     private String email;
 
-
     private String firstName;
     private String middleName;
     private String lastName;
@@ -44,10 +43,6 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
 
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Booking> bookings = new HashSet<>();
