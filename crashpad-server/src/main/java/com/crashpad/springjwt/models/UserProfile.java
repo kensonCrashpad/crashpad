@@ -40,6 +40,8 @@ public class UserProfile {
     private String paymentType;
     private String role;
 
+    private String profileImage;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

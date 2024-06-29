@@ -3,6 +3,8 @@ package com.crashpad.springjwt.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -16,8 +18,8 @@ public class Property {
 
     private String availability;
     private String propertyType;//Ask Kenson
-    private String userCreationDate;
-    private String userModifyDate;
+    private LocalDateTime userCreationDate;
+    private LocalDateTime userModifyDate;
     private String padMaxWidth;
     private String padMaxLength;
     private String description;
@@ -58,6 +60,6 @@ public class Property {
     private Set<Favorites> favorites;
 
     @OneToMany(mappedBy = "property")
-    private Set<PropertyAmenity> propertyAmenities;
+    private Set<Amenity> propertyAmenities;
 
 }

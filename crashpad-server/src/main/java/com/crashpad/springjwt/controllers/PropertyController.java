@@ -1,24 +1,19 @@
 package com.crashpad.springjwt.controllers;
 
+import com.crashpad.springjwt.dto.ApiResponse;
 import com.crashpad.springjwt.dto.PropertyDTO;
 import com.crashpad.springjwt.dto.PropertyImageDTO;
-import com.crashpad.springjwt.models.Property;
+import com.crashpad.springjwt.dto.PropertyResponseDTO;
+import com.crashpad.springjwt.models.*;
 import com.crashpad.springjwt.models.PropertyImage;
-import com.crashpad.springjwt.models.User;
-import com.crashpad.springjwt.models.Booking;
-import com.crashpad.springjwt.models.PropertyAmenity;
-import com.crashpad.springjwt.models.PropertyImage;
-import com.crashpad.springjwt.models.Favorites;
-import com.crashpad.springjwt.security.services.FileStorageService;
-import com.crashpad.springjwt.security.services.PropertyImageService;
-import com.crashpad.springjwt.security.services.PropertyService;
-import com.crashpad.springjwt.security.services.UserService;
+import com.crashpad.springjwt.security.services.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,11 +36,15 @@ public class PropertyController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private AmenityService amenityService;
+
+
     @PostMapping("/{userId}/add")
     public ResponseEntity<PropertyDTO> addProperty(
             @PathVariable Long userId,
             @RequestPart("property") PropertyDTO propertyDTO,
-            @RequestPart("propertyImages") List<MultipartFile> propertyImages) {
+            @RequestPart("propertyImages") List<MultipartFile> propertyImages, @RequestPart("amenities") List<String> amenities) {
 
         Optional<User> userOptional = userService.findUserById(userId);
         if (!userOptional.isPresent()) {
@@ -68,12 +67,62 @@ public class PropertyController {
             savedImages.add(propertyImageService.savePropertyImage(propertyImage));
         }
 
+        // Save amenities
+        for (String amenityName : amenities) {
+            Amenity amenity = new Amenity();
+            amenity.setAmenityName(amenityName);
+            amenity.setProperty(savedProperty);
+            amenityService.saveAmenity(amenity);
+        }
+
+
         PropertyDTO savedPropertyDTO = convertToDTO(savedProperty);
-        savedPropertyDTO.setImageUrls(savedImages.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList()));
+//        savedPropertyDTO.setImageUrls(savedImages.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList()));
 
         return ResponseEntity.ok(savedPropertyDTO);
+    }
+
+    @GetMapping("/{userId}/properties")
+    public ApiResponse<PropertyResponseDTO> getUserProperties(@PathVariable Long userId) {
+        List<Property> properties = propertyService.findPropertiesByUserId(userId);
+        List<PropertyResponseDTO> propertyResponseDTOs = properties.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>("success", "Properties fetched successfully", propertyResponseDTOs);
+    }
+
+    private PropertyResponseDTO convertToResponseDTO(Property property) {
+        PropertyResponseDTO propertyResponseDTO = new PropertyResponseDTO();
+        propertyResponseDTO.setPropertyId(property.getPropertyId());
+        propertyResponseDTO.setPropertyType(property.getPropertyType());
+        propertyResponseDTO.setTitle(property.getTitle());
+        propertyResponseDTO.setName(property.getName());
+        propertyResponseDTO.setStreet(property.getStreet());
+        propertyResponseDTO.setCity(property.getCity());
+        propertyResponseDTO.setState(property.getState());
+        propertyResponseDTO.setZip(property.getZip());
+        propertyResponseDTO.setCapacity(property.getCapacity());
+        propertyResponseDTO.setPadMaxLength(property.getPadMaxLength());
+        propertyResponseDTO.setPadMaxWidth(property.getPadMaxWidth());
+        propertyResponseDTO.setDescription(property.getDescription());
+        propertyResponseDTO.setAvailability(property.getAvailability());
+        propertyResponseDTO.setOriginalPrice(property.getOriginalPrice());
+        propertyResponseDTO.setDiscountedPrice(property.getDiscountedPrice());
+        propertyResponseDTO.setUserCreationDate(property.getUserCreationDate().toString());
+        propertyResponseDTO.setUserModifyDate(property.getUserModifyDate().toString());
+
+        List<Amenity> amenities = amenityService.findAmenitiesByPropertyId(property.getPropertyId());
+        List<String> amenityNames = amenities.stream().map(Amenity::getAmenityName).collect(Collectors.toList());
+        propertyResponseDTO.setAmenities(amenityNames);
+
+        List<PropertyImage> images = propertyImageService.findPropertyImagesByPropertyId(property.getPropertyId());
+        List<String> imageUrls = images.stream().map(PropertyImage::getImageUrl).collect(Collectors.toList());
+        propertyResponseDTO.setImageUrls(imageUrls);
+
+        return propertyResponseDTO;
     }
 
 
@@ -98,9 +147,9 @@ public class PropertyController {
         }
 
         PropertyDTO propertyDTO = convertToDTO(property);
-        propertyDTO.setImageUrls(savedImages.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList()));
+//        propertyDTO.setImageUrls(savedImages.stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList()));
 
         return ResponseEntity.ok(propertyDTO);
     }
@@ -129,20 +178,35 @@ public class PropertyController {
         return ResponseEntity.noContent().build();
     }
 
-    
+
     private PropertyDTO convertToDTO(Property property) {
         PropertyDTO propertyDTO = new PropertyDTO();
         propertyDTO.setPropertyId(property.getPropertyId());
         propertyDTO.setAvailability(property.getAvailability());
-       // propertyDTO.setPadNumber(property.getPadNumber());
+        propertyDTO.setCapacity(property.getCapacity());
         propertyDTO.setPropertyType(property.getPropertyType());
         propertyDTO.setUserCreationDate(property.getUserCreationDate());
         propertyDTO.setUserModifyDate(property.getUserModifyDate());
         propertyDTO.setPadMaxWidth(property.getPadMaxWidth());
         propertyDTO.setPadMaxLength(property.getPadMaxLength());
         propertyDTO.setDescription(property.getDescription());
+
+        //Set Address Parameters
+        propertyDTO.setStreet(property.getStreet());
+        propertyDTO.setCity(property.getCity());
+        propertyDTO.setState(property.getState());
+        propertyDTO.setZip(property.getZip());
+
+        //Set Price parameters
+        propertyDTO.setOriginalPrice(property.getOriginalPrice());
+        propertyDTO.setDiscountedPrice(property.getDiscountedPrice());
+
+        propertyDTO.setTitle(property.getTitle());
+        propertyDTO.setName(property.getName());
+
         return propertyDTO;
     }
+
 
     private Property convertToEntity(PropertyDTO propertyDTO) {
         Property property = new Property();
@@ -150,8 +214,9 @@ public class PropertyController {
         property.setCapacity(propertyDTO.getCapacity());
         //property.setPadNumber(propertyDTO.getPadNumber());
         property.setPropertyType(propertyDTO.getPropertyType());
-        property.setUserCreationDate(propertyDTO.getUserCreationDate());
-        property.setUserModifyDate(propertyDTO.getUserModifyDate());
+
+        property.setUserCreationDate(LocalDateTime.now()); // Set the current date and time
+        property.setUserModifyDate(LocalDateTime.now()); // Set the current date and time for modification date
         property.setPadMaxWidth(propertyDTO.getPadMaxWidth());
         property.setPadMaxLength(propertyDTO.getPadMaxLength());
         property.setDescription(propertyDTO.getDescription());
@@ -162,6 +227,12 @@ public class PropertyController {
         property.setState(propertyDTO.getState());
         property.setZip(propertyDTO.getZip());
 
+        //Set Price parameters
+        property.setOriginalPrice(propertyDTO.getOriginalPrice());
+        property.setDiscountedPrice(propertyDTO.getDiscountedPrice());
+
+        property.setTitle(propertyDTO.getTitle());
+        property.setName(propertyDTO.getName());
 
 
         return property;

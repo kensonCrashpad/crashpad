@@ -187,6 +187,7 @@ import ProfileImg from '../../images/ProfileImg.png';
 import { useNavigate } from 'react-router-dom';
 import UserService from "../../services/user/user";
 import HostForm from "./HostForm";
+import PropertyService from "../../services/property/propertyService";
 
 const LoginButton = styled(Button)({
   marginTop: '1em'
@@ -252,6 +253,11 @@ const HUserProfile: React.FC = () => {
             aboutMe: userData.description,
           });
         }
+
+         // Fetch user properties after fetching the profile
+         const userProperties = await PropertyService.getUserProperties(userId);
+         console.log("User Properties:", userProperties);
+        
       } catch (error) {
         console.error('Error fetching profile', error);
       }

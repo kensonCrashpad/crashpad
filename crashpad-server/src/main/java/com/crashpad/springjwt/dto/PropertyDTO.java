@@ -1,5 +1,6 @@
 package com.crashpad.springjwt.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
@@ -10,8 +11,8 @@ public class PropertyDTO {
     private Long propertyId;
     private String availability;
     private String propertyType;
-    private String userCreationDate;
-    private String userModifyDate;
+    private LocalDateTime userCreationDate;
+    private LocalDateTime userModifyDate;
     private String padMaxWidth;
     private String padMaxLength;
     private String description;
@@ -32,7 +33,7 @@ public class PropertyDTO {
     private List<Long> propertyImageIds;
     private List<Long> favoriteIds;
     private List<Long> propertyAmenityIds;
-    private List<PropertyImageDTO> imageUrls;
+//    private List<PropertyImageDTO> imageUrls;
 
 
 }

@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.crashpad.springjwt.models.Property;
 
+import java.util.List;
+
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
+    List<Property> findByUserId(Long userId);
 }

@@ -30,4 +30,8 @@ public class AmenityService {
     public void deleteAmenity(Long id) {
         amenityRepository.deleteById(id);
     }
+
+    public List<Amenity> findAmenitiesByPropertyId(Long propertyId) {
+        return amenityRepository.findByProperty_PropertyId(propertyId);
+    }
 }

@@ -19,7 +19,7 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import ShowerIcon from '@mui/icons-material/Shower';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import ImageIcon from '@mui/icons-material/Image';
-import PropertyService from '../../services/property/propertyService'; 
+import PropertyService from '../../services/property/propertyService';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -407,6 +407,7 @@ const AddProperty: React.FC = () => {
                 {errors.imageUrls}
               </Typography>
             </div>
+
             <SubmitButton
               fullWidth
               variant="contained"
