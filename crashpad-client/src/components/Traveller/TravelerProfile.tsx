@@ -38,12 +38,12 @@ const Booking: React.FC = () => {
       <Box sx={{ flexGrow: 1, m: 5, marginLeft: "8em" }}>
         <Grid container spacing={1}>
         <CreateProfile/>
-          {/* <Grid item xs={6}>
+          <Grid item xs={6}>
             <ShowUserProfile userProfile={userProfile} />
           </Grid>
           <Grid item xs={6}>
             <ShowAccomodation />
-          </Grid> */}
+          </Grid>
           
         </Grid>
         <BasicTabs />

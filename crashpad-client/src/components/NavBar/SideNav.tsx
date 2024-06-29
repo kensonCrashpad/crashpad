@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   Divider,
   Tooltip,
-  useTheme,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -16,36 +15,41 @@ import EventIcon from "@mui/icons-material/Event";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { styled, Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import logoImage from "../../images/CPlogo.png";
 
-const activeColor = "#FFA726";
-const defaultColor = "#808080";
+const activeColor = '#FFA726';
+const defaultColor = '#808080';
+
+interface StyledListItemProps {
+  active: boolean;
+  component?: React.ElementType;
+  to?: string;
+}
 
 const StyledListItem = styled(ListItem, {
-  shouldForwardProp: (prop) => prop !== "active",
-})<{ active?: boolean }>(({ active, theme }) => ({
+  shouldForwardProp: (prop) => prop !== 'active'
+})<StyledListItemProps>(({ theme, active }) => ({
   justifyContent: "center",
-  ...(active && {
-    backgroundColor: theme.palette.action.selected,
-    "& .MuiListItemIcon-root": {
-      color: activeColor,
-      transform: "scale(1.2)",
-    },
-  }),
-  "&:hover": {
-    "& .MuiListItemIcon-root": {
-      color: activeColor,
-      transform: "scale(1.2)",
+  backgroundColor: active ? theme.palette.action.selected : "inherit",
+  '&:hover': {
+    '& .MuiListItemIcon-root': {
+      color: activeColor, 
+      transform: 'scale(1.2)', 
     },
   },
 }));
 
-const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+interface StyledListItemIconProps {
+  active: boolean;
+}
+
+const StyledListItemIcon = styled(ListItemIcon)<StyledListItemIconProps>(({ active }) => ({
   minWidth: "initial",
   padding: "10px",
-  color: defaultColor,
+  color: active ? activeColor : defaultColor,
+  transform: active ? 'scale(1.2)' : 'scale(1)',
   transition: "color 0.3s, transform 0.3s",
 }));
 
@@ -58,9 +62,8 @@ const DrawerHeader = styled("div")({
 
 const SideNav: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const theme = useTheme();
 
+  const navigate = useNavigate();
   const handleLogout = () => {
     navigate("/login");
     console.log("User logged out");
@@ -88,23 +91,24 @@ const SideNav: React.FC = () => {
       <List>
         {links.map((link) => (
           <Tooltip title={link.label} key={link.to} placement="right">
-            <Link to={link.to}>
-              <StyledListItem
-                role="button" // Set the role to "button"
-                active={location.pathname === link.to}
-              >
-                <StyledListItemIcon />
+            <StyledListItem
+              component={Link}
+              to={link.to}
+              active={location.pathname === link.to}
+            >
+              <StyledListItemIcon active={location.pathname === link.to}>
                 {link.icon}
-              </StyledListItem>
-            </Link>
+              </StyledListItemIcon>
+            </StyledListItem>
           </Tooltip>
         ))}
         <Divider />
         <Tooltip title="Logout" placement="right">
-          <ListItem button onClick={handleLogout}>
-            <StyledListItemIcon />
-            <LogoutIcon />
-          </ListItem>
+          <StyledListItem onClick={handleLogout} active={false}>
+            <StyledListItemIcon active={false}>
+              <LogoutIcon />
+            </StyledListItemIcon>
+          </StyledListItem>
         </Tooltip>
       </List>
     </Drawer>
