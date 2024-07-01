@@ -162,7 +162,8 @@ const AddProperty: React.FC = () => {
     if (isValid) {
       console.log('Form validation passed', propertyFormData);
       // Assuming you have userId available from context or props
-      const userId = 1; // Replace with actual userId
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const userId = user.id;
       try {
         await PropertyService.savePropertyDetails(userId, propertyFormData);
       } catch (error) {
