@@ -43,7 +43,9 @@ class User {
           throw error;
         });
     }
-    
+    getUserAccommodation(userId: number) {
+      return axios.post(API_URL + 'accommodation/get', { userId }, { headers: authHeader() });
+  }
     
   // Add more user-related methods as needed
 }

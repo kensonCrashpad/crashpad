@@ -204,7 +204,7 @@ const EditButton = styled(Button)({
   marginTop: "1em",
 });
 
-interface AccommodationInterface {
+export interface AccommodationInterface {
   type: string;
   length: number;
   width: number;

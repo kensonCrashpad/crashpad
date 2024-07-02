@@ -10,10 +10,12 @@ import UserSettings from "../Dashboard/UserSettings";
 import UserService from "../../services/user/user"
 import {UserProfile} from "./UserProfile";
 import CreateProfile from "../Traveller/CreateProfile";
+import { AccommodationInterface } from "./ShowAccomodation";
 
 const Booking: React.FC = () => {
 
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userAccomodation, setUserAccomodation] = useState<AccommodationInterface | null>(null);
   
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -42,7 +44,7 @@ const Booking: React.FC = () => {
             <ShowUserProfile userProfile={userProfile} />
           </Grid>
           <Grid item xs={6}>
-            <ShowAccomodation />
+            <ShowAccomodation userAccomodation={userAccomodation}/>
           </Grid>
           
         </Grid>
