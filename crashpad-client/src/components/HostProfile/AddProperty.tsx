@@ -11,6 +11,7 @@ import {
   styled,
   IconButton,
   Paper,
+  Box,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Nav from '../NavBar/SideNav';
@@ -19,11 +20,14 @@ import WifiIcon from '@mui/icons-material/Wifi';
 import ShowerIcon from '@mui/icons-material/Shower';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import ImageIcon from '@mui/icons-material/Image';
+import CloseIcon from '@mui/icons-material/Close';
 import PropertyService from '../../services/property/propertyService';
+import { useNavigate } from 'react-router-dom';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   margin: theme.spacing(3, 0),
+  position: 'relative',
 }));
 
 const FormContainer = styled('div')(({ theme }) => ({
@@ -51,6 +55,11 @@ const SubmitButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
+const CancelButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  marginLeft: theme.spacing(2),
+}));
+
 interface PropertyFormState {
   propertyType: string;
   title: string;
@@ -71,6 +80,8 @@ interface PropertyFormState {
 }
 
 const AddProperty: React.FC = () => {
+  const navigate = useNavigate();
+
   const [propertyFormData, setPropertyFormData] = useState<PropertyFormState>({
     propertyType: '',
     title: '',
@@ -166,6 +177,7 @@ const AddProperty: React.FC = () => {
       const userId = user.id;
       try {
         await PropertyService.savePropertyDetails(userId, propertyFormData);
+        navigate('/hostprofile'); // Navigate to profile page after successful form submission
       } catch (error) {
         console.error('Failed to save property', error);
       }
@@ -174,12 +186,23 @@ const AddProperty: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/hostprofile'); // Navigate back to profile page
+  };
+
   return (
     <>
       <UserSettings />
       <Nav />
       <FormContainer>
         <StyledPaper elevation={3}>
+          <IconButton
+            aria-label="close"
+            onClick={handleCancel}
+            style={{ position: 'absolute', top: 10, right: 10 }}
+          >
+            <CloseIcon />
+          </IconButton>
           <form noValidate autoComplete="off" onSubmit={handleSubmit}>
             <SectionTitle variant="h5">Property Information</SectionTitle>
             <Grid container spacing={2}>
@@ -410,15 +433,28 @@ const AddProperty: React.FC = () => {
               </Typography>
             </div>
 
-            <SubmitButton
-              fullWidth
-              variant="contained"
-              color="primary"
-              type="submit"
-              size="large"
-            >
-              Add Property
-            </SubmitButton>
+            <Grid container justifyContent="center" spacing={2}>
+              <Grid item>
+                <SubmitButton
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  size="large"
+                >
+                  Add Property
+                </SubmitButton>
+              </Grid>
+              <Grid item>
+                <CancelButton
+                  variant="outlined"
+                  color="secondary"
+                  size="large"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </CancelButton>
+              </Grid>
+            </Grid>
           </form>
         </StyledPaper>
       </FormContainer>

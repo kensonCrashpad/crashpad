@@ -27,7 +27,7 @@ interface HostFormState {
   lastName: string;
   age: number;
   gender: string;
-  location: string;
+ // location: string;
   email: string;
   aboutMe: string;
   id: number;
@@ -44,7 +44,7 @@ const EditHostProfile: React.FC = () => {
     lastName: userData.lastName || "",
     age: userData.age || 0,
     gender: userData.gender || "Male",
-    location: userData.location || "",
+  //  location: userData.location || "",
     email: userData.email || "",
     aboutMe: userData.aboutMe || "",
     id: userData.id || 0,
@@ -71,9 +71,9 @@ const EditHostProfile: React.FC = () => {
     if (!profileFormData.gender) {
       newErrors.gender = "Gender is required.";
     }
-    if (!profileFormData.location) {
-      newErrors.location = "Location is required.";
-    }
+    // if (!profileFormData.location) {
+    //   newErrors.location = "Location is required.";
+    // }
     if (!profileFormData.email) {
       newErrors.email = "Email is required.";
     }
@@ -195,7 +195,7 @@ const EditHostProfile: React.FC = () => {
                 </Select>
               </FormControl>
             </SideBySide>
-            <TextField
+            {/* <TextField
               fullWidth
               margin="normal"
               id="location"
@@ -205,7 +205,7 @@ const EditHostProfile: React.FC = () => {
               value={profileFormData.location}
               onChange={handleChange}
               helperText={errors ? errors.location : ""}
-            />
+            /> */}
             <TextField
               fullWidth
               margin="normal"
