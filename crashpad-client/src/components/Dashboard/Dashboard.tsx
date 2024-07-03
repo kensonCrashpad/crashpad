@@ -305,6 +305,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
   };
+  
 
   return (
     // <Card sx={{ maxWidth: 345, position: "relative", cursor: "pointer",padding:"10px",margin:"2px" }} onClick={handleNavigateToProperty}>

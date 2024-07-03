@@ -18,9 +18,12 @@ import com.crashpad.springjwt.security.jwt.AuthEntryPointJwt;
 import com.crashpad.springjwt.security.jwt.AuthTokenFilter;
 import com.crashpad.springjwt.security.services.UserDetailsServiceImpl;
 
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 @EnableMethodSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer{
 
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -41,6 +44,11 @@ public class WebSecurityConfig {
     return authProvider;
   }
 
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/images/**")
+            .addResourceLocations("file:/Users/u1449207/Documents/Crashpad/KensonCrashpad/crashpad/crashpad-server/propertyImage/");
+  }
+
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
     return authConfig.getAuthenticationManager();
@@ -51,6 +59,8 @@ public class WebSecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
+
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -59,7 +69,9 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers("/api/auth/**", "/api/test/**", "/reset/password/**", "/api/users/**", "/api/property/**").permitAll()
                             .anyRequest().authenticated()
-            );
+
+            )
+            .httpBasic();;
 
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

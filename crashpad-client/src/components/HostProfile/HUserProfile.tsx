@@ -295,8 +295,8 @@ const LoginButton = styled(Button)({
 const ButtonContainer = styled('div')({
   display: 'flex',
   justifyContent: 'left',
-  marginTop: '1em',
-  gap: '10px' // Add gap between buttons
+  marginTop: '2em',
+  gap: '80px' // Add gap between buttons
 });
 
 const EditButton = styled(Button)({
@@ -315,7 +315,7 @@ const AddPropertyButton = styled(Button)({
   '&:hover': {
     backgroundColor: '#E59400'
   },
-  width: '100px',
+  width: '150px',
   height: '50px'
 });
 
@@ -354,7 +354,7 @@ const CalendarIframe = styled('iframe')({
 });
 
 const PropertyGrid = styled(Grid)({
-  marginTop: '0em',
+  marginTop: '1em',
   paddingLeft: '2em',
   paddingRight: '2em'
 });
@@ -433,6 +433,7 @@ const HUserProfile: React.FC = () => {
 
           const propertiesResponse = await PropertyService.getUserProperties(userId);
           setUserProperties(propertiesResponse);
+          console.log("Get propertiesResponse properties - ", propertiesResponse)
           setDisplayedProperties(propertiesResponse.slice(0, propertiesPerPage));
         }
       } catch (error) {
@@ -633,7 +634,7 @@ const HUserProfile: React.FC = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`http://localhost:8080${property.imageUrls[0]}`} // Adjust the path to your image directory
+                    image={`http://localhost:8080${property.imageUrls[0]}`}
                     alt={property.title}
                   />
                 )}

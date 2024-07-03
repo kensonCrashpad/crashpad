@@ -58,6 +58,7 @@ public class PropertyController {
 
         Property savedProperty = propertyService.saveProperty(property);
 
+        //save property images
         List<PropertyImage> savedImages = new ArrayList<>();
         for (MultipartFile image : propertyImages) {
             String imageUrl = fileStorageService.store(image);
@@ -118,9 +119,16 @@ public class PropertyController {
         List<String> amenityNames = amenities.stream().map(Amenity::getAmenityName).collect(Collectors.toList());
         propertyResponseDTO.setAmenities(amenityNames);
 
+
+
         List<PropertyImage> images = propertyImageService.findPropertyImagesByPropertyId(property.getPropertyId());
-        List<String> imageUrls = images.stream().map(PropertyImage::getImageUrl).collect(Collectors.toList());
+        List<String> imageUrls = images.stream()
+                .map(PropertyImage::getImageUrl)
+                .collect(Collectors.toList());
         propertyResponseDTO.setImageUrls(imageUrls);
+
+//        List<String> imageUrls = images.stream().map(PropertyImage::getImageUrl).collect(Collectors.toList());
+//        propertyResponseDTO.setImageUrls(imageUrls);
 
         return propertyResponseDTO;
     }
