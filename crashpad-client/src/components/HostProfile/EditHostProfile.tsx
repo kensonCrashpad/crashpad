@@ -142,6 +142,7 @@ const EditHostProfile: React.FC = () => {
               variant="outlined"
               onChange={handleChange}
               helperText={errors ? errors.userName : ""}
+              disabled={true}
             />
             <SideBySide>
               <TextField
@@ -216,6 +217,7 @@ const EditHostProfile: React.FC = () => {
               value={profileFormData.email}
               onChange={handleChange}
               helperText={errors ? errors.email : ""}
+              disabled={true}
             />
             <TextField
               fullWidth

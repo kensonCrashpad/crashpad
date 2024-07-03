@@ -93,8 +93,19 @@ public class AuthController {
     // Persist user profile to database
     userProfileRepository.save(userProfile);
 
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getPassword()));
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
+
+
+    return ResponseEntity.ok(new JwtResponse(jwt,
+            user.getId(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getRole()));
+    //return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
 
 }

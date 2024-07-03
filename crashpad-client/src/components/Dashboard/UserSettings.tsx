@@ -116,7 +116,7 @@
 
 // export default UserSettings;
 
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import {
   AppBar,
   Toolbar,
@@ -146,6 +146,19 @@ const UserSettings = () => {
   // State for menu anchor
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // Explicitly define the type for anchorEl
   const open = Boolean(anchorEl);
+
+
+  // State for the user role
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setRole(user.role);
+    }
+  }, []);
+
 
   // State for the search input
   const [search, setSearch] = useState("");
@@ -226,10 +239,17 @@ const UserSettings = () => {
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            <MenuItem onClick={handleOpenHostProfile}>Host Profile</MenuItem>
+             {role === "HOST" ? (
+              <MenuItem onClick={handleOpenHostProfile}>Host Profile</MenuItem>
+            ) : (
+              <MenuItem onClick={handleOpenTravelerProfile}>
+                Traveler Profile
+              </MenuItem>
+            )}
+            {/* <MenuItem onClick={handleOpenHostProfile}>Host Profile</MenuItem>
             <MenuItem onClick={handleOpenTravelerProfile}>
               Traveler Profile
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem onClick={handleOpenLogOut}>Logout</MenuItem>
           </Menu>
           <IconButton size="large" sx={{ marginRight: "20px" }}>

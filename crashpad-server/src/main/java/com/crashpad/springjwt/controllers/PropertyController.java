@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -147,6 +148,12 @@ public class PropertyController {
         Property property = propertyOptional.get();
         List<PropertyImage> savedImages = new ArrayList<>();
         for (MultipartFile image : propertyImages) {
+
+            String originalFilename = image.getOriginalFilename();
+            String uniqueFilename = UUID.randomUUID().toString() + "-" + originalFilename;
+            String relativePath = "/propertyImages/" + uniqueFilename;
+
+
             String imageUrl = fileStorageService.store(image);
             PropertyImage propertyImage = new PropertyImage();
             propertyImage.setImageUrl(imageUrl);

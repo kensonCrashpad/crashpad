@@ -634,7 +634,7 @@ const HUserProfile: React.FC = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`http://localhost:8080${property.imageUrls[0]}`}
+                    image={`${property.imageUrls[0]}`}
                     alt={property.title}
                   />
                 )}
