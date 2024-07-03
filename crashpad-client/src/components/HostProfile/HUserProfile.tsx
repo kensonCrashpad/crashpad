@@ -433,6 +433,7 @@ const HUserProfile: React.FC = () => {
 
           const propertiesResponse = await PropertyService.getUserProperties(userId);
           setUserProperties(propertiesResponse);
+          console.log("Get propertiesResponse properties - ", propertiesResponse)
           setDisplayedProperties(propertiesResponse.slice(0, propertiesPerPage));
         }
       } catch (error) {
@@ -633,7 +634,7 @@ const HUserProfile: React.FC = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`http://localhost:8080${property.imageUrls[0]}`} // Adjust the path to your image directory
+                    image={`http://localhost:8080${property.imageUrls[0]}`}
                     alt={property.title}
                   />
                 )}

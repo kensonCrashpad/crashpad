@@ -72,6 +72,7 @@ class PropertyService {
 
   async getUserProperties(userId: number): Promise<PropertyResponseDTO[]> {
     const response = await axios.get(API_URL + `${userId}/properties`);
+    console.log("Get User properties - ", response)
     return response.data.data;
   }
 //  async savePropertyDetails(userId: number, propertyFormData: PropertyFormState): Promise<void> {
