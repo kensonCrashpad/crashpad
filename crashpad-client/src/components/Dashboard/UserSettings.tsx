@@ -216,7 +216,7 @@ const UserSettings = () => {
             size="large"
             sx={{ marginRight: "10px" }}
           >
-            <Avatar alt="Kenson" src="/path-to-your-image.jpg" />
+            <Avatar alt={username} src="/path-to-your-image.jpg" />
             <ArrowDropDownIcon />
           </IconButton>
           <Menu
