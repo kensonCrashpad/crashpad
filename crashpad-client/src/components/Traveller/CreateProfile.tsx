@@ -3,7 +3,6 @@ import { TextField, Button, Typography, Grid, FormControl, InputLabel, MenuItem,
 import { styled } from "@mui/material/styles";
 import { useNavigate } from 'react-router-dom';
 import Nav from "../NavBar/SideNav";
-import UserService from "../../services/user/user";
 
 const LoginButton = styled(Button)({
   marginTop: "1em",
@@ -46,7 +45,7 @@ const CreateProfile: React.FC = () => {
     make: '',
     model: '',
     vehicleDescription: '',
-    rvImages: null as File | null,
+    rvImage: null as File | null,
   });
 
   const [errors, setErrors] = useState<any>({});
@@ -75,68 +74,52 @@ const CreateProfile: React.FC = () => {
     }
 
     // RV form validation
-    if (!rvFormData.type) {
-      newErrors.type = "RV type is required.";
-    }
-    if (!rvFormData.length) {
-      newErrors.length = "RV length is required.";
-    }
-    if (!rvFormData.width) {
-      newErrors.width = "RV width is required.";
-    }
-    if (!rvFormData.height) {
-      newErrors.height = "RV height is required.";
-    }
-    if (!rvFormData.year) {
-      newErrors.year = "RV year is required.";
-    }
-    if (!rvFormData.make) {
-      newErrors.make = "RV make is required.";
-    }
-    if (!rvFormData.model) {
-      newErrors.model = "RV model is required.";
-    }
-    if (!rvFormData.vehicleDescription) {
-      newErrors.vehicleDescription = "Vehicle description is required.";
-    }
+    // if (!rvFormData.type) {
+    //   newErrors.type = "RV type is required.";
+    // }
+    // if (!rvFormData.length) {
+    //   newErrors.length = "RV length is required.";
+    // }
+    // if (!rvFormData.width) {
+    //   newErrors.width = "RV width is required.";
+    // }
+    // if (!rvFormData.height) {
+    //   newErrors.height = "RV height is required.";
+    // }
+    // if (!rvFormData.year) {
+    //   newErrors.year = "RV year is required.";
+    // }
+    // if (!rvFormData.make) {
+    //   newErrors.make = "RV make is required.";
+    // }
+    // if (!rvFormData.model) {
+    //   newErrors.model = "RV model is required.";
+    // }
+    // if (!rvFormData.vehicleDescription) {
+    //   newErrors.vehicleDescription = "Vehicle description is required.";
+    // }
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleProfileSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleProfileSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValid = validateForm();
 
     if (isValid) {
-      try {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const userId = user.id;
-
-        const travelerFormDataWithImage = {
-          ...travelerFormData,
-          travelerImage: travelerFormData.travelerImage, // Ensure you have the image in the form data
-        };
-
-        const rvFormDataWithImages = {
-          ...rvFormData,
-          rvImages: rvFormData.rvImages, // Ensure you have the images in the form data
-        };
-
-        const response = await UserService.saveTravelerAndRvDetails(userId, travelerFormDataWithImage, rvFormDataWithImages);
-
-        console.log("Profile created successfully:", response);
-        navigate('/dashboard', { state: response });
-      } catch (error) {
-        console.error("Error saving profile details:", error);
-      }
+      const updatedProfileData = {
+        ...travelerFormData,
+        ...rvFormData,
+      };
+      console.log("Profile created successfully:", updatedProfileData);
+      navigate('/showProfile', { state: updatedProfileData });
     } else {
       console.log("Form validation failed");
     }
-};
-
+  };
 
   const handleTravelerChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -161,7 +144,7 @@ const CreateProfile: React.FC = () => {
 
   const handleRVImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setRvFormData({ ...rvFormData, rvImages: e.target.files[0] });
+      setRvFormData({ ...rvFormData, rvImage: e.target.files[0] });
     }
   };
 
