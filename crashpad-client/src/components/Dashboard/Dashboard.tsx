@@ -205,7 +205,7 @@
 // export default Dashboard;
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Card,
@@ -228,6 +228,7 @@ import UserSettings from "./UserSettings";
 
 // Assuming properties is imported correctly and matches Property interface
 import properties from "./properties"; // Adjust the path as necessary
+import PropertyService from "../../services/property/propertyService";
 
 // Define the Property interface
 interface Property {
@@ -240,6 +241,30 @@ interface Property {
   dateRange: string;
   price: string;
 }
+
+//Property Response DTO
+interface PropertyResponseDTO{
+  propertyId: number;
+  propertyType: string;
+  title: string;
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  capacity: number;
+  padMaxLength: string;
+  padMaxWidth: string;
+  description: string;
+  availability: string;
+  originalPrice: string;
+  discountedPrice: string;
+  amenities: string[];
+  imageUrls: string[];
+  userCreationDate: string;
+  userModifyDate: string;
+}
+
 
 // DetailedModal component
 interface DetailedModalProps {
@@ -477,7 +502,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 const PropertyGrid: React.FC = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [property, setProperties] = useState<PropertyResponseDTO[]>([]);
 
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await PropertyService.fetchProperties();
+        setProperties(propertiesData);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      }
+    };
+ 
+    fetchProperties();
+  }, []);
   const handleCardClick = (property: Property) => {
     setSelectedProperty(property);
     setModalOpen(true);

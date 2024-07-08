@@ -40,6 +40,15 @@ public class PropertyController {
     @Autowired
     private AmenityService amenityService;
 
+    @GetMapping("/all-properties")
+    public ApiResponse<PropertyResponseDTO> getAllProperties() {
+        List<Property> properties = propertyService.findAllProperties();
+        List<PropertyResponseDTO> propertyResponseDTOs = properties.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
+
+        return new ApiResponse<>("success", "All properties fetched successfully", propertyResponseDTOs);
+    }
 
     @PostMapping("/{userId}/add")
     public ResponseEntity<PropertyDTO> addProperty(
@@ -63,6 +72,7 @@ public class PropertyController {
         List<PropertyImage> savedImages = new ArrayList<>();
         for (MultipartFile image : propertyImages) {
             String imageUrl = fileStorageService.store(image);
+            imageUrl = "https://images3.alphacoders.com/190/thumb-1920-190787.jpg";
             PropertyImage propertyImage = new PropertyImage();
             propertyImage.setImageUrl(imageUrl);
             propertyImage.setProperty(savedProperty);
@@ -85,6 +95,7 @@ public class PropertyController {
 
         return ResponseEntity.ok(savedPropertyDTO);
     }
+
 
     @GetMapping("/{userId}/properties")
     public ApiResponse<PropertyResponseDTO> getUserProperties(@PathVariable Long userId) {

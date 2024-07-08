@@ -78,6 +78,14 @@ class PropertyService {
     return response.data.data;
   }
 
+  async fetchProperties(): Promise<PropertyResponseDTO[]> {
+    const response = await axios.get(API_URL + `all-properties`, {
+        headers: authHeader()
+      });
+    console.log("fetch all propertiess - ", response)
+    return response.data.data;
+  }
+
 //  async savePropertyDetails(userId: number, propertyFormData: PropertyFormState): Promise<void> {
 //     const formData = new FormData();
 //     formData.append('property', new Blob([JSON.stringify(propertyFormData)], { type: 'application/json' }));

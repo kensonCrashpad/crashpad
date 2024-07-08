@@ -92,6 +92,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Grid, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Myprofile from "./Myprofile.png";
+import Myprofile1 from "./Myprofile.jpg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UserProfile } from './UserProfile';
 
@@ -157,11 +158,20 @@ const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
       <Typography variant="h4" gutterBottom>Traveller</Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <img
+          {profileFormData.gender == "Male" ? (<img
             src={Myprofile}
             style={{ width: "100%", borderRadius: "20px", height: "230px" }}
             alt="Profile"
-          />
+          />) :(<img
+            src={Myprofile1}
+            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
+            alt="Profile"
+          />)}
+          {/* <img
+            src={Myprofile1}
+            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
+            alt="Profile"
+          /> */}
         </Grid>
         <Grid item xs={12} sm={6} style= {{paddingRight: 100, paddingTop : 25}}>
           <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Username:</strong> {profileFormData.userName}</Typography>

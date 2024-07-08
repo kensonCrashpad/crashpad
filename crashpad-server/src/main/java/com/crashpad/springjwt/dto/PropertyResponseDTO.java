@@ -25,7 +25,9 @@ public class PropertyResponseDTO {
     private List<String> imageUrls;
     private String userCreationDate;
     private String userModifyDate;
-
+//    private Double latitude;
+//    private Double longitude;
+//
     // Getters and Setters
     // You can use Lombok annotations here if preferred
 }
