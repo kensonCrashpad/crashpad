@@ -1,6 +1,5 @@
 package com.crashpad.springjwt.models;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,13 +11,10 @@ public class VehicleImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleImageId;
 
-    private String caption;
     private String imageUrl;
+    private String caption;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
-
-
-    
 }

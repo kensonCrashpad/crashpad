@@ -27,6 +27,10 @@ public class PropertyImageService {
         return propertyImageRepository.save(propertyImage);
     }
 
+    public List<PropertyImage> findPropertyImagesByPropertyId(Long propertyId) {
+        return propertyImageRepository.findByProperty_PropertyId(propertyId);
+    }
+
     public void deletePropertyImage(Long id) {
         propertyImageRepository.deleteById(id);
     }

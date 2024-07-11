@@ -14,8 +14,10 @@ class Authentication {
       .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("id", JSON.stringify(response.data.id));
+          
         }
-
+        console.log(response.data);
         return response.data;
       });
   }
@@ -30,6 +32,14 @@ class Authentication {
       email,
       password,
       role
+    }).then(response => {
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("id", JSON.stringify(response.data.id));
+        
+      }
+      console.log(response.data);
+      // return response.data;
     });
   }
 

@@ -27,5 +27,12 @@ public class UserProfileService {
 
     public boolean existsByEmail(String email) {
         return userProfileRepository.existsByEmail(email);
+
+
     }
+
+    public Optional<UserProfile> findUserProfileByUserId(Long userId) {
+        return userProfileRepository.findByUserId(userId);
+    }
+
 }

@@ -10,7 +10,7 @@ const SignUp: React.FC = () => {
   const handleRegister = (username: string, email: string, password: string, role: string) => {
     AuthService.register(username, email, password, role).then(
       (response) => {
-        setMessage(response.data.message);
+        //setMessage(response.data.message);
         navigate("/dashboard");
       },
       (error) => {

@@ -15,7 +15,8 @@ public class Amenity {
 
     private String amenityName;
 
-    @OneToMany(mappedBy = "amenity")
-    private Set<PropertyAmenity> propertyAmenities;
+    @ManyToOne
+    @JoinColumn(name = "property_id")
+    private Property property;
 
 }

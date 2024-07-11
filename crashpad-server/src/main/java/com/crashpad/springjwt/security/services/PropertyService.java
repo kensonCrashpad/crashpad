@@ -30,4 +30,8 @@ public class PropertyService {
     public void deleteProperty(Long id) {
         propertyRepository.deleteById(id);
     }
+
+    public List<Property> findPropertiesByUserId(Long userId) {
+        return propertyRepository.findByUserId(userId);
+    }
 }

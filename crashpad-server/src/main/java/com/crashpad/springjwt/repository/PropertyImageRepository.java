@@ -5,7 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.crashpad.springjwt.models.PropertyImage;
 
+import java.util.List;
+
 @Repository
 public interface PropertyImageRepository extends JpaRepository<PropertyImage, Long> {
-	
+
+    List<PropertyImage> findByProperty_PropertyId(Long propertyId);
+
 }

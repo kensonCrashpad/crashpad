@@ -26,7 +26,8 @@ public class Vehicle {
     @JoinColumn(name = "user_id")
     private UserProfile userProfile;
 
-	@OneToMany(mappedBy = "vehicle")
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<VehicleImage> vehicleImages;
 
 }
+
