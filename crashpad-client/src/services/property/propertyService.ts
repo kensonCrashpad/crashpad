@@ -86,61 +86,6 @@ class PropertyService {
     return response.data.data;
   }
 
-//  async savePropertyDetails(userId: number, propertyFormData: PropertyFormState): Promise<void> {
-//     const formData = new FormData();
-//     formData.append('property', new Blob([JSON.stringify(propertyFormData)], { type: 'application/json' }));
-//     propertyFormData.imageUrls.forEach((image: string, index: number) => {
-//       formData.append('propertyImages', image);
-//     });
-
-//     try {
-//       const response = await axios.post(API_URL + `${userId}/add`, formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data',
-//           ...authHeader()
-//         },
-//       });
-//       console.log('Property saved successfully', response.data);
-//       return response.data;
-//     } catch (error) {
-//       console.error('Error saving property', error);
-//       throw error;
-//     }
-//   }
-
-//   async savePropertyDetails(userId: number, propertyFormData: PropertyFormState): Promise<void> {
-//     const formData = new FormData();
-//     formData.append('property', new Blob([JSON.stringify(propertyFormData)], { type: 'application/json' }));
-//     propertyFormData.imageUrls.forEach((image: File) => {
-//       formData.append('propertyImages', image);
-//     });
-
-//     try {
-//       const response = await axios.post(API_URL + `${userId}/add`, formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data',
-//           ...authHeader()
-//         },
-//       });
-//       console.log('Property saved successfully', response.data);
-//       return response.data;
-//     } catch (error) {
-//       console.error('Error saving property', error);
-//       throw error;
-//     }
-//   }
-
-
-//   async getUserProperties(userId: number) {
-//     try {
-//       const response = await axios.get(API_URL + `${userId}/properties`, { headers: authHeader() });
-//       return response.data;
-//     } catch (error) {
-//       console.error('Error fetching user properties', error);
-//       throw error;
-//     }
-//   }
-
 }
 
 export default new PropertyService();
