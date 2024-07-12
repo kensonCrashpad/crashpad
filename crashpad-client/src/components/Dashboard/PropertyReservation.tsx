@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { TextField, Button, Typography } from "@mui/material";
 import HiddenEscape from "../../images/rvpark1.jpg";
@@ -18,6 +18,9 @@ import { Link } from "react-router-dom";
 import SideNav from "../NavBar/SideNav";
 import ReservationCard from "./ReservationCard";
 import UserSettings from "./UserSettings";
+import PropertyService from "../../services/property/propertyService";
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 const SideBySide = styled("div")({
   display: "flex",
@@ -47,6 +50,30 @@ const PropertyReseravtion: React.FC = () => {
 
   const [errors, setErrors] = useState<any>();
   const [ShowProperty, setShowProperty] = useState(true);
+
+  const location = useLocation();
+  const propertyData = location.state;
+
+  useEffect(() => {
+    console.log("Inside useEffect, propertyData:", propertyData);
+
+    // const fetchPropertiesDetails = async () => {
+    //   if (propertyData && propertyData.id) {
+    //     try {
+    //       console.log("Fetching property details for ID:", propertyData.id);
+    //       const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
+    //         propertyData.id
+    //       );
+    //       console.log("Property Details are", propertiesData);
+    //     } catch (error) {
+    //       console.error("Error fetching properties", error);
+    //     }
+    //   }
+    // };
+
+    // fetchPropertiesDetails();
+  }, [propertyData]);
+
 
   const validateForm = () => {
     let newErrors: any = {};

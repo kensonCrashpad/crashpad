@@ -122,6 +122,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
+import PropertyService from "../../services/property/propertyService";
 
 const TravellerHeaderSetting = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // Define anchorEl type explicitly
@@ -140,6 +141,17 @@ const TravellerHeaderSetting = () => {
     setSearch(event.target.value);
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const results = await PropertyService.searchProperties(search);
+      console.log("Searched List of Properties : ", results)
+      console.log('Properties found:', results);
+    } catch (error) {
+      console.error('Error searching properties:', error);
+    }
+  };
+
   return (
     <AppBar position="static" color="default" elevation={0}>
       <Toolbar
@@ -150,6 +162,7 @@ const TravellerHeaderSetting = () => {
       >
         <Paper
           component="form"
+          onSubmit={handleSubmit}
           sx={{
             p: "2px 4px",
             display: "flex",
@@ -160,7 +173,7 @@ const TravellerHeaderSetting = () => {
         >
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            placeholder="Start your search"
+            placeholder="Start your Search"
             value={search}
             onChange={handleSearch}
           />
