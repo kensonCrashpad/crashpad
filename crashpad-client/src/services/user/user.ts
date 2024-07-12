@@ -46,6 +46,16 @@ class User {
     getUserAccommodation(userId: number) {
       return axios.post(API_URL + 'accommodation/get', { userId }, { headers: authHeader() });
   }
+
+
+  uploadProfileImage(userId: string | null, formData: FormData) {
+    return axios.post(`${API_URL}${userId}/uploadProfileImage`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            ...authHeader()
+        }
+    });
+  }
     
   // Add more user-related methods as needed
 }
