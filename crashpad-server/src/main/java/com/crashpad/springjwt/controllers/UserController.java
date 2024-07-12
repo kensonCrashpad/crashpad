@@ -178,7 +178,7 @@ public class UserController {
         userProfile.setGender(userProfileDTO.getGender());
         userProfile.setAge(userProfileDTO.getAge());
         userProfile.setDescription(userProfileDTO.getDescription());
-        userProfile.setProfileImage(userProfileDTO.getProfileImage());
+       // userProfile.setProfileImage(userProfileDTO.getProfileImage());
         // userProfile.setPaymentType(userProfileDTO.getPaymentType());
         UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
 

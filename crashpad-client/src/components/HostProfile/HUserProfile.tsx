@@ -368,6 +368,7 @@ interface UserFormState {
   location: string;
   email: string;
   aboutMe: string;
+  profileImage: string;
 }
 
 interface Property {
@@ -401,7 +402,8 @@ const HUserProfile: React.FC = () => {
     gender: "",
     location: '',
     email: '',
-    aboutMe: ""
+    aboutMe: "",
+    profileImage: ""
   });
 
   const [errors, setErrors] = useState<any>();
@@ -429,6 +431,7 @@ const HUserProfile: React.FC = () => {
             location: userData.location,
             email: userData.email,
             aboutMe: userData.description,
+            profileImage: userData.profileImage,
           });
 
           const propertiesResponse = await PropertyService.getUserProperties(userId);
@@ -517,7 +520,7 @@ const HUserProfile: React.FC = () => {
       <UserProfileContainer>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs={12} md={4} lg={3}>
-            <ProfileImage src={ProfileImg} alt="Profile" />
+            <ProfileImage src={profileFormData.profileImage} alt="Profile" />
           </Grid>
           <Grid item xs={12} md={4} lg={6} style={{ textAlign: 'left' }}>
             {showUserProfile ? (
