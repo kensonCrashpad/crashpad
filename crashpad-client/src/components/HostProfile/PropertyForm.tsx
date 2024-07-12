@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import { Box, Typography, Grid, Card } from "@mui/material";
 import GradeIcon from '@mui/icons-material/Grade';
@@ -153,13 +150,7 @@ const ShowProperty: React.FC<childProps> = ({
             <Typography variant="body2" color="textSecondary">View Reviews</Typography>
           </Box>
         </Typography>
-        </CustomCard><br />
-        {/* <hr /> */}
-        <Typography variant="body1" fontWeight="800" style={{marginTop:"20px"}}>
-          Reviews
-        </Typography>
-        <hr />
-
+        </CustomCard>
       </Grid>
     </>
   );
