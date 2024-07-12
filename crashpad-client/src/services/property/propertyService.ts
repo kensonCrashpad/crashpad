@@ -45,6 +45,42 @@ interface PropertyResponseDTO {
   }
   
 
+  interface HostDetailsDTO {
+    userId: number;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    gender: string;
+    age: number;
+    description: string;
+  }
+  
+  interface PropertyDetailsResponseDTO {
+    propertyId: number;
+    propertyType: string;
+    title: string;
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    capacity: number;
+    padMaxLength: string;
+    padMaxWidth: string;
+    description: string;
+    availability: string;
+    originalPrice: string;
+    discountedPrice: string;
+    amenities: string[];
+    imageUrls: string[];
+    userCreationDate: string; // Alternatively, use Date if you want to handle date objects
+    userModifyDate: string; // Alternatively, use Date if you want to handle date objects
+    hostDetails: HostDetailsDTO;
+  }
+  
+
 class PropertyService {
 
   async savePropertyDetails(userId: number, propertyFormData: PropertyFormState): Promise<void> {
@@ -84,6 +120,28 @@ class PropertyService {
       });
     console.log("fetch all propertiess - ", response)
     return response.data.data;
+  }
+
+  async fetchPropertyDetailsAndHostDetails(propertyId: number): Promise<PropertyDetailsResponseDTO[]> {
+    const response = await axios.get(API_URL + `${propertyId}/details`, {
+        headers: authHeader()
+      });
+    console.log("fetchPropertyDetailsAndHostDetails - ", response)
+    return response.data.data;
+  }
+
+  async searchProperties(query: string): Promise<PropertyResponseDTO[]> {
+    
+    try {
+      const response = await axios.get(`${API_URL}search`, {
+        params: { query },
+      });
+      console.log("Search Response: ", response);
+      return response.data;
+    } catch (error) {
+      console.error('Error searching properties:', error);
+      throw error;
+    }
   }
 
 }

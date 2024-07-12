@@ -2,10 +2,11 @@ package com.crashpad.springjwt.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class PropertyResponseDTO {
+public class PropertyDetailsResponseDTO {
     private Long propertyId;
     private String propertyType;
     private String title;
@@ -23,11 +24,9 @@ public class PropertyResponseDTO {
     private String discountedPrice;
     private List<String> amenities;
     private List<String> imageUrls;
-    private String userCreationDate;
-    private String userModifyDate;
-    private Double latitude;
-    private Double longitude;
+    private LocalDateTime userCreationDate;
+    private LocalDateTime userModifyDate;
 
-    // Getters and Setters
-    // You can use Lombok annotations here if preferred
+    private HostDetailsDTO hostDetails;
 }
+

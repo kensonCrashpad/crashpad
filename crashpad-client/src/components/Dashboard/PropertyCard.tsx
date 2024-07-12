@@ -4,6 +4,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
+import PropertyService from "../../services/property/propertyService";
 
 // Define the Property interface
 interface Property {
@@ -26,13 +27,31 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const handleNavigateToProperty = () => {
-    navigate("/propertyreservation", { state: { property } });
+
+  const handleNavigateToProperty = async () => {
+    try {
+      console.log("Fetching property details for ID:", property.id);
+      const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
+        property.id
+      );
+      console.log("Property Details are", propertiesData);
+      navigate("/propertyreservation", { state: { propertiesData } });
+    } catch (error) {
+      console.error("Error fetching properties", error);
+    }
+    
   };
+
+  // const handleNavigateToProperty = () => {
+  //   navigate("/propertyreservation", { state: { property } });
+  // };
 
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
   };
+
+  
+  
 
   return (
     <Card
