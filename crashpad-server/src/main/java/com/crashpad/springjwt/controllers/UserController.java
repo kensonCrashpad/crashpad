@@ -44,6 +44,30 @@ public class UserController {
     private VehicleImageService vehicleImageService;
 
 
+    @Autowired
+    private S3FileUploadService s3FileUploadService;
+
+
+    @PostMapping("/{userId}/uploadProfileImage")
+    public ResponseEntity<String> uploadProfileImage(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file) {
+
+        Optional<User> userOptional = userService.findUserById(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String fileUrl = s3FileUploadService.uploadFile(file);
+        UserProfile userProfile = userOptional.get().getUserProfile();
+        userProfile.setProfileImage(fileUrl);
+        userProfileService.saveUserProfile(userProfile);
+
+        return ResponseEntity.ok(fileUrl);
+    }
+
+
+
     @PostMapping("/{userId}/saveTravelerAndRvDetails")
     public ResponseEntity<?> saveTravelerAndRvDetails(
             @PathVariable Long userId,
@@ -147,7 +171,6 @@ public class UserController {
         Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
 
         UserProfile userProfile = userProfileOptional.get();
-        // Update existing user profile
         userProfile.setFirstName(userProfileDTO.getFirstName());
         //userProfile.setMiddleName(userProfileDTO.getMiddleName());
         userProfile.setLastName(userProfileDTO.getLastName());
@@ -155,11 +178,15 @@ public class UserController {
         userProfile.setGender(userProfileDTO.getGender());
         userProfile.setAge(userProfileDTO.getAge());
         userProfile.setDescription(userProfileDTO.getDescription());
+        userProfile.setProfileImage(userProfileDTO.getProfileImage());
         // userProfile.setPaymentType(userProfileDTO.getPaymentType());
-        // Additional fields like Address can be set here if included in UserProfileDTO and UserProfile entity
         UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
+
         return ResponseEntity.ok(convertToDTO(updatedUserProfile));
     }
+
+
+
 
 
     private UserDTO convertToDTO(User user) {
@@ -185,6 +212,7 @@ public class UserController {
         userProfileDTO.setAge(userProfile.getAge());
         userProfileDTO.setDescription(userProfile.getDescription());
         userProfileDTO.setPaymentType(userProfile.getPaymentType());
+        userProfileDTO.setProfileImage(userProfile.getProfileImage());
         userProfileDTO.setUserId(userProfile.getUser().getId());
 
         // Map other relationships if necessary

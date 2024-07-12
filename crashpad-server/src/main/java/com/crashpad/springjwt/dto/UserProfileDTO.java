@@ -18,6 +18,7 @@ public class UserProfileDTO {
     private String description;
     private String paymentType;
     private Long addressId;
+    private String profileImage;
     private Set<Long> bookingIds;
     private Set<Long> reviewIds;
     private Set<Long> vehicleIds;
