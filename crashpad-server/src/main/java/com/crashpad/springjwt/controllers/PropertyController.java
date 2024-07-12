@@ -1,9 +1,6 @@
 package com.crashpad.springjwt.controllers;
 
-import com.crashpad.springjwt.dto.ApiResponse;
-import com.crashpad.springjwt.dto.PropertyDTO;
-import com.crashpad.springjwt.dto.PropertyImageDTO;
-import com.crashpad.springjwt.dto.PropertyResponseDTO;
+import com.crashpad.springjwt.dto.*;
 import com.crashpad.springjwt.models.*;
 import com.crashpad.springjwt.models.PropertyImage;
 import com.crashpad.springjwt.security.services.*;
@@ -107,6 +104,16 @@ public class PropertyController {
         return new ApiResponse<>("success", "Properties fetched successfully", propertyResponseDTOs);
     }
 
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PropertyResponseDTO>> searchProperties(@RequestParam String query) {
+        List<PropertyResponseDTO> properties = propertyService.searchProperties(query);
+        if (properties.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(properties);
+    }
+
     private PropertyResponseDTO convertToResponseDTO(Property property) {
         PropertyResponseDTO propertyResponseDTO = new PropertyResponseDTO();
         propertyResponseDTO.setPropertyId(property.getPropertyId());
@@ -126,6 +133,8 @@ public class PropertyController {
         propertyResponseDTO.setDiscountedPrice(property.getDiscountedPrice());
         propertyResponseDTO.setUserCreationDate(property.getUserCreationDate().toString());
         propertyResponseDTO.setUserModifyDate(property.getUserModifyDate().toString());
+        propertyResponseDTO.setLongitude(propertyResponseDTO.getLongitude());
+        propertyResponseDTO.setLatitude(propertyResponseDTO.getLatitude());
 
         List<Amenity> amenities = amenityService.findAmenitiesByPropertyId(property.getPropertyId());
         List<String> amenityNames = amenities.stream().map(Amenity::getAmenityName).collect(Collectors.toList());
@@ -202,6 +211,19 @@ public class PropertyController {
 
         propertyImageService.deletePropertyImage(imageId);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/{propertyId}/details")
+    public ResponseEntity<PropertyDetailsResponseDTO> getPropertyDetails(
+            @PathVariable Long propertyId) {
+
+        PropertyDetailsResponseDTO propertyDetails = propertyService.getPropertyDetailsById(propertyId);
+        if (propertyDetails == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(propertyDetails);
     }
 
 

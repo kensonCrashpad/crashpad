@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Nav from "../NavBar/SideNav";
-import Myprofile from "./Myprofile.png";
 import UserSettings from "../Dashboard/UserSettings";
 import UserService from "../../services/user/user";
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -27,9 +26,9 @@ interface HostFormState {
   lastName: string;
   age: number;
   gender: string;
- // location: string;
   email: string;
   aboutMe: string;
+  profileImage: string;
   id: number;
 }
 
@@ -37,21 +36,34 @@ const EditHostProfile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userData = location.state;
-  console.log("User Data: ", userData);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [profileFormData, setProfileFormData] = useState<HostFormState>({
     userName: userData.userName || "",
     firstName: userData.firstName || "",
     lastName: userData.lastName || "",
     age: userData.age || 0,
     gender: userData.gender || "Male",
-  //  location: userData.location || "",
     email: userData.email || "",
     aboutMe: userData.aboutMe || "",
+    profileImage: userData.profileImage || "",
     id: userData.id || 0,
   });
 
   const [errors, setErrors] = useState<any>();
   const [showUserProfile, setShowUserProfile] = useState(false);
+
+  useEffect(() => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreview(null);
+    }
+  }, [file]);
 
   const validateForm = () => {
     let newErrors: any = {};
@@ -71,9 +83,6 @@ const EditHostProfile: React.FC = () => {
     if (!profileFormData.gender) {
       newErrors.gender = "Gender is required.";
     }
-    // if (!profileFormData.location) {
-    //   newErrors.location = "Location is required.";
-    // }
     if (!profileFormData.email) {
       newErrors.email = "Email is required.";
     }
@@ -85,32 +94,40 @@ const EditHostProfile: React.FC = () => {
 
     return Object.keys(newErrors).length === 0;
   };
-
+  // useEffect(() => {
+  //   console.log("Preview URL:", preview);
+  //   console.log("Profile Image URL from state:", profileFormData.profileImage);
+  // }, [preview, profileFormData.profileImage]);
+  
   const profileSubmitData = async (e: any) => {
     e.preventDefault();
     setShowUserProfile(false);
     const isValid = validateForm();
     const id = localStorage.getItem("id");
-    console.log("ID is", id);
+
     const profileData = {
       firstName: profileFormData.firstName,
-      lastName:profileFormData.lastName,
-      gender:profileFormData.gender,
-      age:profileFormData.age,
-      description:profileFormData.aboutMe,
-      userId:id,
+      lastName: profileFormData.lastName,
+      gender: profileFormData.gender,
+      age: profileFormData.age,
+      description: profileFormData.aboutMe,
+      userId: id,
     }
+
     if (isValid) {
       try {
         const response = await UserService.updateUserProfile(profileData);
-        console.log("Profile updated successfully:", response.data);
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          await UserService.uploadProfileImage(id, formData);
+        }
         navigate('/host/profile');
       } catch (error) {
         console.error("Error updating profile:", error);
       }
     } else {
       setShowUserProfile(true);
-      console.log("Form validation failed");
     }
   };
 
@@ -119,16 +136,45 @@ const EditHostProfile: React.FC = () => {
     setProfileFormData({ ...profileFormData, [name]: value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
   return (
     <>
       <UserSettings />
       <Nav />
       <Grid container spacing={2} marginTop={"1em"} marginLeft={"7em"}>
         <Grid item xs={4}>
-          <img
-            src={Myprofile}
+          {preview ? (
+            <img
+              src={preview}
+              alt="Profile Preview"
+              style={{ width: "100%", borderRadius: "20px", height: "350px" }}
+            />
+          ) : (
+            profileFormData.profileImage ? (
+              <img
+                src={profileFormData.profileImage}
+                alt="Profile"
+                style={{ width: "100%", borderRadius: "20px", height: "350px" }}
+              />
+            ) : (
+            //   <img
+            //   src={profileFormData.profileImage}
+            //   alt="Profile"
+            //   style={{ width: "100%", borderRadius: "20px", height: "350px" }}
+            // />
+            <img
+            src={`${profileFormData.profileImage}?${new Date().getTime()}`}
+            alt="Profile"
             style={{ width: "100%", borderRadius: "20px", height: "350px" }}
-          />
+            />
+            )
+          )}
+          
         </Grid>
         <Grid item sx={{ mr: 2, ml: 2 }}>
           <form noValidate autoComplete="off" onSubmit={profileSubmitData}>
@@ -196,17 +242,6 @@ const EditHostProfile: React.FC = () => {
                 </Select>
               </FormControl>
             </SideBySide>
-            {/* <TextField
-              fullWidth
-              margin="normal"
-              id="location"
-              label="Location"
-              variant="outlined"
-              name="location"
-              value={profileFormData.location}
-              onChange={handleChange}
-              helperText={errors ? errors.location : ""}
-            /> */}
             <TextField
               fullWidth
               margin="normal"
@@ -234,6 +269,7 @@ const EditHostProfile: React.FC = () => {
               maxRows={4}
               helperText={errors ? errors.aboutMe : ""}
             />
+            <input type="file" onChange={handleFileChange} />
             <LoginButton
               fullWidth
               variant="contained"

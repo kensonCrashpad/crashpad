@@ -133,6 +133,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
+import PropertyService from "../../services/property/propertyService";
 
 const userStr = localStorage.getItem("user");
 let username = "";
@@ -186,9 +187,21 @@ const UserSettings = () => {
     navigate("/");
   };
 
+  const handleSearchProperties = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const results = await PropertyService.searchProperties(search);
+      console.log("Searched List of Properties : ", results)
+      console.log('Properties found:', results);
+    } catch (error) {
+      console.error('Error searching properties:', error);
+    }
+  };
+
   // Handle search input changes
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+    // console.log("Search : ", event.target.value);
   };
 
   return (
@@ -201,6 +214,7 @@ const UserSettings = () => {
       >
         <Paper
           component="form"
+          onSubmit={handleSearchProperties}
           sx={{
             p: "2px 4px",
             display: "flex",
@@ -212,7 +226,7 @@ const UserSettings = () => {
         >
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            placeholder="Start your search"
+            placeholder="Start your Search"
             value={search}
             onChange={handleSearch}
           />
