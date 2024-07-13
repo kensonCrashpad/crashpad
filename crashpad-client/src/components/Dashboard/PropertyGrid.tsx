@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Button } from "@mui/material";
+import { Grid, Box, Button, Pagination } from "@mui/material";
 import PropertyCard from "./PropertyCard";
 import DetailedModal from "./DetailedModal";
 import PropertyService from "../../services/property/propertyService";
@@ -39,25 +39,32 @@ interface PropertyResponseDTO {
 
 interface PropertyGridProps {
   selectedAmenities: string[];
+  properties: PropertyResponseDTO[];
 }
 
-const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities }) => {
+const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities, properties }) => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
+  const [allProperties, setAllProperties] = useState<PropertyResponseDTO[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const propertiesPerPage = 8;
 
   useEffect(() => {
-    const fetchProperties = async () => {
+    const fetchAllProperties = async () => {
       try {
         const propertiesData = await PropertyService.fetchProperties();
-        setProperties(propertiesData);
+        setAllProperties(propertiesData);
       } catch (error) {
         console.error("Error fetching properties", error);
       }
     };
 
-    fetchProperties();
-  }, []);
+    if (properties.length === 0) {
+      fetchAllProperties();
+    } else {
+      setAllProperties(properties);
+    }
+  }, [properties]);
 
   const handleCardClick = (property: Property) => {
     setSelectedProperty(property);
@@ -66,6 +73,10 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities }) => {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+  };
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
   };
 
   const mapToProperty = (dto: PropertyResponseDTO): Property => ({
@@ -79,14 +90,18 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities }) => {
     price: dto.discountedPrice || dto.originalPrice,
   });
 
-  const filteredProperties = properties.filter((property) =>
+  const filteredProperties = allProperties.filter((property) =>
     selectedAmenities.every((amenity) => property.amenities.includes(amenity))
   );
 
+  const indexOfLastProperty = currentPage * propertiesPerPage;
+  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+  const currentProperties = filteredProperties.slice(indexOfFirstProperty, indexOfLastProperty);
+
   return (
     <>
-      <Grid container spacing={2} sx={{ paddingTop: "16px", paddingLeft: "100px" }}>
-        {filteredProperties.map((dto) => {
+      <Grid container spacing={2} sx={{ paddingTop: "16px", paddingLeft: "111px" }}>
+        {currentProperties.map((dto) => {
           const property = mapToProperty(dto);
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} key={property.id}>
@@ -102,16 +117,25 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities }) => {
           mt: 4,
         }}
       >
-        <Button
-          variant="contained"
+        <Pagination
+          count={Math.ceil(filteredProperties.length / propertiesPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
           sx={{
-            backgroundColor: "orange",
-            "&:hover": { backgroundColor: "darkorange" },
+            "&.Mui-selected": {
+              backgroundColor: "#e7874c",
+              color: "white",
+              "&. MuiPaginationItem-root": {
+                backgroundColor: "#e7874c",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#e7874c",
+                },
+              },
+            },
           }}
-          onClick={() => console.log("Load more properties...")}
-        >
-          Show More
-        </Button>
+        />
       </Box>
       {selectedProperty && (
         <DetailedModal property={selectedProperty} open={modalOpen} onClose={handleCloseModal} />
