@@ -5,8 +5,7 @@ import img from "./Myprofile.png"
 import styled from "@emotion/styled";
 
 
-const amenities = ["Wi-Fi","Electric Hookups","Water Hookups","Sewage Dump Station","Trash Disposal","Restrooms and Showers","Picnic Tables","Propane Refill Station","Pet-Friendly Areas", "Fire pit", "Laundry facilities","Campfire", "BBQ Available for use"];
-
+const amenities = ["Wi-Fi","Electric Hookups","Water Hookups","Restrooms and Showers","Picnic Tables","Propane Refill Station","Pet-Friendly Areas", "Laundry facilities","Campfire", "BBQ Available for use"];
 const AmenitiesList = () => {
   return (
     <Box>
@@ -90,6 +89,8 @@ const ShowProperty: React.FC<childProps> = ({
   const profileSubmitData = () => {
     onClickEdit();
   };
+
+
 
   return (
     <>
