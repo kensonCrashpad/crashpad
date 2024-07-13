@@ -1,5 +1,7 @@
 package com.crashpad.springjwt.security.services;
 
+import com.crashpad.springjwt.models.Property;
+import com.crashpad.springjwt.models.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,18 @@ public class FavoritesService {
 
     public Favorites saveFavorite(Favorites favorite) {
         return favoritesRepository.save(favorite);
+    }
+
+    public Optional<Favorites> findFavoriteByUserProfileAndProperty(UserProfile userProfile, Property property) {
+        return favoritesRepository.findByUserProfileAndProperty(userProfile, property);
+    }
+
+    public void removeFavorite(Favorites favorite) {
+        favoritesRepository.delete(favorite);
+    }
+
+    public List<Favorites> findByUserProfile(UserProfile userProfile) {
+        return favoritesRepository.findByUserProfile(userProfile);
     }
 
     public void deleteFavorite(Long id) {

@@ -3,6 +3,8 @@ import authHeader from "../user/auth-header";
 
 const API_URL = "http://localhost:8080/api/property/";
 
+const Favorite_URL  =  "http://localhost:8080/api/favorites/";
+
 interface PropertyFormState {
     propertyType: string;
     title: string;
@@ -143,6 +145,51 @@ class PropertyService {
       throw error;
     }
   }
+
+  async addFavorite(userId: number, propertyId: number) : Promise<void> {
+    
+    try {
+      const response = await axios.post(`${Favorite_URL}add`, null, {
+        params: {
+          userId,
+          propertyId,
+        },
+      });
+      console.log("Favorite Response: ", response);
+      return response.data;
+    } catch (error) {
+      console.error('Error Marking property as favorite:', error);
+      throw error;
+    }
+    
+  };
+
+  async removeFavorite(userId: number, propertyId: number) : Promise<void> {
+    
+    try {
+      const response = await axios.post(`${Favorite_URL}remove`, null, {
+        params: {
+          userId,
+          propertyId,
+        },
+      });
+      console.log("Favorite Response: ", response);
+      return response.data;
+    } catch (error) {
+      console.error('Error Marking property as favorite:', error);
+      throw error;
+    }
+    
+  };
+
+  async getUserFavorites(userId: number): Promise<PropertyResponseDTO[]> {
+    const response = await axios.get(Favorite_URL + `user/${userId}`, {
+        headers: authHeader()
+      });
+    console.log("Get User FAVORITE properties - ", response)
+    return response.data.data;
+  }
+
 
 }
 

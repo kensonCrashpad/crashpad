@@ -46,10 +46,52 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   //   navigate("/propertyreservation", { state: { property } });
   // };
 
-  const toggleFavorite = () => {
+  // const toggleFavorite = () => {
+  //   setIsFavorite((prev) => !prev);
+  //   if(isFavorite == true){
+  //     handleAddFavorite
+  //   }
+  // };
+
+
+  const toggleFavorite = async () => {
     setIsFavorite((prev) => !prev);
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user.id;
+
+    if (!isFavorite) {
+      try {
+        const response = await PropertyService.addFavorite(userId, property.id);
+        console.log(response); // Handle success response
+        alert("Property marked as favorite successfully!");
+      } catch (error) {
+        console.error("Error adding favorite", error);
+        alert("Failed to mark property as favorite.");
+      }
+    } else {
+      try {
+        const response = await PropertyService.removeFavorite(userId, property.id);
+        console.log(response); // Handle success response
+        alert("Property removed from favorites successfully!");
+      } catch (error) {
+        console.error("Error removing favorite", error);
+        alert("Failed to remove property from favorites.");
+      }
+    }
   };
 
+  // const handleAddFavorite = async () => {
+  //   try {
+  //     const user = JSON.parse(localStorage.getItem("user") || "{}");
+  //     const userId = user.id;
+  //     const response = await PropertyService.addFavorite(userId, property.id);
+  //     console.log(response); // Handle success response
+  //     alert("Property marked as favorite successfully!");
+  //   } catch (error) {
+  //     console.error('Error adding favorite', error);
+  //     alert("Failed to mark property as favorite.");
+  //   }
+  // };
   
   
 
