@@ -33,6 +33,28 @@ interface UserFormState {
   hourlyrate: number;
 }
 
+interface PropertyResponseDTO {
+  propertyId: number;
+  propertyType: string;
+  title: string;
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  capacity: number;
+  padMaxLength: string;
+  padMaxWidth: string;
+  description: string;
+  availability: string;
+  originalPrice: string;
+  discountedPrice: string;
+  amenities: string[];
+  imageUrls: string[];
+  userCreationDate: string;
+  userModifyDate: string;
+}
+
 const PropertyReseravtion: React.FC = () => {
   const [propertyFormData, setPropertyFormData] = useState<UserFormState>({
     location: "Teton Frontier Park",
@@ -49,26 +71,22 @@ const PropertyReseravtion: React.FC = () => {
 
   const location = useLocation();
   const propertyData = location.state;
+  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
 
   useEffect(() => {
-    console.log("Inside useEffect, propertyData:", propertyData);
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(1);
+        console.log("Property Details are", propertiesData);
+        setProperties(propertiesData);
+        // console.log("Property Details are", propertiesData);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      }
+    };
 
-    // const fetchPropertiesDetails = async () => {
-    //   if (propertyData && propertyData.id) {
-    //     try {
-    //       console.log("Fetching property details for ID:", propertyData.id);
-    //       const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
-    //         propertyData.id
-    //       );
-    //       console.log("Property Details are", propertiesData);
-    //     } catch (error) {
-    //       console.error("Error fetching properties", error);
-    //     }
-    //   }
-    // };
-
-    // fetchPropertiesDetails();
-  }, [propertyData]);
+    fetchProperties();
+  }, []);
 
 
   const validateForm = () => {
