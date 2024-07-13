@@ -137,7 +137,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         maxWidth: 345,
         position: "relative",
         cursor: "pointer",
-        padding: "10px",
         margin: "0px",
         borderRadius: "15px"
       }}
