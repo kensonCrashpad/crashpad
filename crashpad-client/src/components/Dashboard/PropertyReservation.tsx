@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, Grid, Box, Card, CardMedia } from "@mui/material";
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import HiddenEscape from "../../images/rvpark1.jpg";
 import Lot5 from "../../images/Lot6.jpg";
 import Lot6 from "../../images/pimg.jpg";
 import Lot7 from "../../images/pi.jpg";
 import Lot8 from "../../images/pimage.jpg";
 import Lot9 from "../../images/pif.jpg";
-import Grid from "@mui/material/Grid";
 import PropertyForm from "../HostProfile/PropertyForm";
-// import Calendar from "../HostProfile/Calendar";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { Link } from "react-router-dom";
 import SideNav from "../NavBar/SideNav";
 import ReservationCard from "./ReservationCard";
@@ -37,6 +33,28 @@ interface UserFormState {
   hourlyrate: number;
 }
 
+interface PropertyResponseDTO {
+  propertyId: number;
+  propertyType: string;
+  title: string;
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  capacity: number;
+  padMaxLength: string;
+  padMaxWidth: string;
+  description: string;
+  availability: string;
+  originalPrice: string;
+  discountedPrice: string;
+  amenities: string[];
+  imageUrls: string[];
+  userCreationDate: string;
+  userModifyDate: string;
+}
+
 const PropertyReseravtion: React.FC = () => {
   const [propertyFormData, setPropertyFormData] = useState<UserFormState>({
     location: "Teton Frontier Park",
@@ -53,26 +71,22 @@ const PropertyReseravtion: React.FC = () => {
 
   const location = useLocation();
   const propertyData = location.state;
+  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
 
   useEffect(() => {
-    console.log("Inside useEffect, propertyData:", propertyData);
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(1);
+        console.log("Property Details are", propertiesData);
+        setProperties(propertiesData);
+        // console.log("Property Details are", propertiesData);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      }
+    };
 
-    // const fetchPropertiesDetails = async () => {
-    //   if (propertyData && propertyData.id) {
-    //     try {
-    //       console.log("Fetching property details for ID:", propertyData.id);
-    //       const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
-    //         propertyData.id
-    //       );
-    //       console.log("Property Details are", propertiesData);
-    //     } catch (error) {
-    //       console.error("Error fetching properties", error);
-    //     }
-    //   }
-    // };
-
-    // fetchPropertiesDetails();
-  }, [propertyData]);
+    fetchProperties();
+  }, []);
 
 
   const validateForm = () => {
@@ -94,7 +108,7 @@ const PropertyReseravtion: React.FC = () => {
       newErrors.gender = "Zip Code is required.";
     }
     if (!propertyFormData.about) {
-      newErrors.location = "Decription is required.";
+      newErrors.location = "Description is required.";
     }
 
     setErrors(newErrors);
@@ -115,6 +129,7 @@ const PropertyReseravtion: React.FC = () => {
       console.log("Form validation failed");
     }
   };
+  
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     console.log(name, value);
@@ -144,149 +159,109 @@ const PropertyReseravtion: React.FC = () => {
       <SideNav />
       <Box sx={{ flexGrow: 1, m: 4, paddingLeft: "6em" }}>
         <Grid container spacing={2}>
-          <Grid xs={3}>
-            <img
-              src={HiddenEscape}
-              style={{ width: "120%", borderRadius: "20px", height: "400px" }}
-            />
+        <Grid item xs={7} m={"auto"}>
+            <Carousel showThumbs={false} showArrows={true} infiniteLoop={true} dynamicHeight={false}>
+              <div>
+                <img src={HiddenEscape} alt="Hidden Escape" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto'}} />
+              </div>
+              <div>
+                <img src={Lot5} alt="Lot 5" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto' }} />
+              </div>
+              <div>
+                <img src={Lot6} alt="Lot 6" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto' }} />
+              </div>
+              <div>
+                <img src={Lot7} alt="Lot 7" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto' }} />
+              </div>
+              <div>
+                <img src={Lot8} alt="Lot 8" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto' }} />
+              </div>
+              <div>
+                <img src={Lot9} alt="Lot 9" style={{ height: '450px', objectFit: 'cover', borderRadius: '20px', display: 'block', margin: '0 auto' }} />
+              </div>
+            </Carousel>
           </Grid>
-          {ShowProperty ? (
-            <Box sx={{ flexGrow: 1, m: 4, paddingLeft: "6em" }}>
-              <PropertyForm
-                profileFormData={propertyFormData}
-                onClickEdit={handleShowProperty}
-              />
-            </Box>
-          ) : (
-            <Grid sx={{ mr: 2, ml: 2 }}>
-              <form noValidate autoComplete="off" onSubmit={propertySubmitData}>
-                <TextField
-                  fullWidth
-                  name="location"
-                  value={propertyFormData.location}
-                  margin="normal"
-                  id="location"
-                  label="Location"
-                  variant="outlined"
-                  onChange={handleChange}
-                  helperText={errors ? errors.location : ""}
+          <Grid item xs={5} marginTop={"30px"}>
+            <ReservationCard />
+          </Grid>
+          <Grid item xs={12}>
+          <Grid item xs={12}>
+            {ShowProperty ? (
+              <Box sx={{ flexGrow: 1, ml: 2 }}>
+                <PropertyForm
+                  profileFormData={propertyFormData}
+                  onClickEdit={handleShowProperty}
                 />
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  id="address"
-                  label="Address"
-                  variant="outlined"
-                  name="address"
-                  value={propertyFormData.address}
-                  onChange={handleChange}
-                  helperText={errors ? errors.address : ""}
-                />
-                <SideBySide>
+              </Box>
+            ) : (
+              <Box sx={{ flexGrow: 1, m: 4, paddingLeft: "6em" }}>
+                <form noValidate autoComplete="off" onSubmit={propertySubmitData}>
                   <TextField
                     fullWidth
+                    name="location"
+                    value={propertyFormData.location}
                     margin="normal"
-                    id="city"
-                    label="City"
+                    id="location"
+                    label="Location"
                     variant="outlined"
-                    name="city"
-                    value={propertyFormData.city}
                     onChange={handleChange}
-                    helperText={errors ? errors.city : ""}
+                    helperText={errors ? errors.location : ""}
                   />
                   <TextField
                     fullWidth
                     margin="normal"
-                    id="state"
-                    label="State"
+                    id="address"
+                    label="Address"
                     variant="outlined"
-                    name="state"
-                    value={propertyFormData.state}
+                    name="address"
+                    value={propertyFormData.address}
                     onChange={handleChange}
-                    helperText={errors ? errors.state : ""}
+                    helperText={errors ? errors.address : ""}
                   />
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="zip"
-                    label="Zip Code"
-                    variant="outlined"
-                    name="zip"
-                    value={propertyFormData.zip}
-                    onChange={handleChange}
-                    helperText={errors ? errors.zip : ""}
-                  />
-                </SideBySide>
-              </form>
-            </Grid>
-          )}
-          <ReservationCard />
+                  <SideBySide>
+                    <TextField
+                      fullWidth
+                      margin="normal"
+                      id="city"
+                      label="City"
+                      variant="outlined"
+                      name="city"
+                      value={propertyFormData.city}
+                      onChange={handleChange}
+                      helperText={errors ? errors.city : ""}
+                    />
+                    <TextField
+                      fullWidth
+                      margin="normal"
+                      id="state"
+                      label="State"
+                      variant="outlined"
+                      name="state"
+                      value={propertyFormData.state}
+                      onChange={handleChange}
+                      helperText={errors ? errors.state : ""}
+                    />
+                    <TextField
+                      fullWidth
+                      margin="normal"
+                      id="zip"
+                      label="Zip Code"
+                      variant="outlined"
+                      name="zip"
+                      value={propertyFormData.zip}
+                      onChange={handleChange}
+                      helperText={errors ? errors.zip : ""}
+                    />
+                  </SideBySide>
+                </form>
+              </Box>
+            )}
+          </Grid>
+          </Grid>
+          
+         
         </Grid>
       </Box>
-
-      <div
-        style={{
-          display: "flex",
-          gap: "40px",
-          paddingLeft: "110px",
-        }}
-      >
-        <Link to="../Crash">
-          {" "}
-          {/* Link to the desired component */}
-          <Card sx={{ maxWidth: 500, maxHeight: 500 }}>
-            <CardMedia
-              sx={{ height: 220, width: 250 }}
-              image={Lot5}
-              title="green iguana"
-            />
-          </Card>
-        </Link>
-        <Link to="../property2">
-          {" "}
-          {/* Link to the desired component */}
-          <Card sx={{ maxWidth: 500, maxHeight: 500 }}>
-            <CardMedia
-              sx={{ height: 220, width: 250 }}
-              image={Lot6}
-              title="green iguana"
-            />
-          </Card>
-        </Link>
-        <Link to="../property2">
-          {" "}
-          {/* Link to the desired component */}
-          <Card sx={{ maxWidth: 500, maxHeight: 500 }}>
-            <CardMedia
-              sx={{ height: 220, width: 250 }}
-              image={Lot7}
-              title="green iguana"
-            />
-          </Card>
-        </Link>
-        <Link to="../property2">
-          {" "}
-          {/* Link to the desired component */}
-          <Card sx={{ maxWidth: 500, maxHeight: 500 }}>
-            <CardMedia
-              sx={{ height: 220, width: 250 }}
-              image={Lot8}
-              title="green iguana"
-            />
-          </Card>
-        </Link>
-        <Link to="../property2">
-          {" "}
-          {/* Link to the desired component */}
-          <Card sx={{ maxWidth: 500, maxHeight: 500 }}>
-            <CardMedia
-              sx={{ height: 220, width: 250 }}
-              image={Lot9}
-              title="green iguana"
-            />
-          </Card>
-        </Link>
-      </div>
     </>
   );
 };

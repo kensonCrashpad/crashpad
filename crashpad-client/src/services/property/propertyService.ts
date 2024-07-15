@@ -129,7 +129,7 @@ class PropertyService {
         headers: authHeader()
       });
     console.log("fetchPropertyDetailsAndHostDetails - ", response)
-    return response.data.data;
+    return response.data;
   }
 
   async searchProperties(query: string): Promise<PropertyResponseDTO[]> {

@@ -19,10 +19,22 @@ import UserSettings from '../Dashboard/UserSettings';
 import WifiIcon from '@mui/icons-material/Wifi';
 import ShowerIcon from '@mui/icons-material/Shower';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
+import FireplaceIcon from '@mui/icons-material/Fireplace';
+import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import ImageIcon from '@mui/icons-material/Image';
 import CloseIcon from '@mui/icons-material/Close';
 import PropertyService from '../../services/property/propertyService';
 import { useNavigate } from 'react-router-dom';
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
+import OpacityIcon from '@mui/icons-material/Opacity';
+import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
+import PetsIcon from '@mui/icons-material/Pets';
+import PowerIcon from '@mui/icons-material/Power';
+
+
+
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -396,6 +408,15 @@ const AddProperty: React.FC = () => {
                   }
                 />
               </IconButton>
+              <IconButton onClick={() => handleAmenityClick('fireplace')}>
+                <FireplaceIcon
+                  color={
+                    propertyFormData.amenities.includes('fireplace')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
               <IconButton onClick={() => handleAmenityClick('food')}>
                 <FastfoodIcon
                   color={
@@ -405,7 +426,83 @@ const AddProperty: React.FC = () => {
                   }
                 />
               </IconButton>
-            </AmenitiesContainer>
+              <IconButton onClick={() => handleAmenityClick('grill')}>
+                <OutdoorGrillIcon
+                  color={
+                    propertyFormData.amenities.includes('grill')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('laundry')}>
+                <LocalLaundryServiceIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('Electricity')}>
+                <ElectricalServicesIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                <OpacityIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                <TableRestaurantIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                <LocalGasStationIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              
+              </AmenitiesContainer>
+              <SectionTitle variant="h5">Allowed</SectionTitle>
+              <AmenitiesContainer>
+              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                <PetsIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                <PowerIcon
+                  color={
+                    propertyFormData.amenities.includes('laundry')
+                      ? 'primary'
+                      : 'inherit'
+                  }
+                />
+              </IconButton>
+              </AmenitiesContainer>
             <Typography variant="body2" color="error">
               {errors.amenities}
             </Typography>
