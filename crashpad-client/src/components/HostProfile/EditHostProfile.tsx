@@ -48,6 +48,7 @@ const EditHostProfile: React.FC = () => {
     aboutMe: userData.aboutMe || "",
     profileImage: userData.profileImage || "",
     id: userData.id || 0,
+  
   });
 
   const [errors, setErrors] = useState<any>();
@@ -94,42 +95,82 @@ const EditHostProfile: React.FC = () => {
 
     return Object.keys(newErrors).length === 0;
   };
-  // useEffect(() => {
-  //   console.log("Preview URL:", preview);
-  //   console.log("Profile Image URL from state:", profileFormData.profileImage);
-  // }, [preview, profileFormData.profileImage]);
-  
-  const profileSubmitData = async (e: any) => {
-    e.preventDefault();
-    setShowUserProfile(false);
-    const isValid = validateForm();
-    const id = localStorage.getItem("id");
 
-    const profileData = {
-      firstName: profileFormData.firstName,
-      lastName: profileFormData.lastName,
-      gender: profileFormData.gender,
-      age: profileFormData.age,
-      description: profileFormData.aboutMe,
-      userId: id,
-    }
 
-    if (isValid) {
-      try {
-        const response = await UserService.updateUserProfile(profileData);
-        if (file) {
-          const formData = new FormData();
-          formData.append('file', file);
-          await UserService.uploadProfileImage(id, formData);
-        }
-        navigate('/host/profile');
-      } catch (error) {
-        console.error("Error updating profile:", error);
-      }
-    } else {
-      setShowUserProfile(true);
+
+
+
+//   const profileSubmitData = async (e: any) => {
+//     e.preventDefault();
+//     setShowUserProfile(false);
+//     const isValid = validateForm();
+//     const id = localStorage.getItem("id");
+
+//     const profileData = {
+//       firstName: profileFormData.firstName,
+//       lastName: profileFormData.lastName,
+//       gender: profileFormData.gender,
+//       age: profileFormData.age,
+//       description: profileFormData.aboutMe,
+//       userId: id,
+//     }
+//     if (isValid) {
+//     try {
+//       const updateResponse = await UserService.updateUserProfile(profileFormData.id, profileData);
+//       if (file) {
+//         const formData = new FormData();
+//         formData.append('file', file);
+//         const imageUploadResponse = await UserService.updateUserProfile(profileFormData.id, formData);
+//       }
+//       navigate('/host/profile');
+//     } catch (error) {
+//       console.error("Error updating profile:", error);
+//       setShowUserProfile(true); 
+//     }
+//   } else {
+//     setShowUserProfile(true); 
+//   }
+// };
+
+
+
+const profileSubmitData = async (e: any) => {
+  e.preventDefault();
+  setShowUserProfile(false);
+  const isValid = validateForm();
+  const id = localStorage.getItem("id");
+
+  const profileData = {
+    firstName: profileFormData.firstName,
+    lastName: profileFormData.lastName,
+    gender: profileFormData.gender,
+    age: profileFormData.age.toString(),
+    description: profileFormData.aboutMe,
+    userId : id,
+  }
+
+  if (isValid) {
+
+    try{
+      const response = await UserService.updateUserProfile(id, profileData, file);
+      // if(file){
+      //   const formData = new FormData();
+      //   formData.append('file', file);
+      //   // await UserService.updateUserProfile(id,formData);
+      // }
+      //Add if Condition
+      console.log("Response of Edit profile data", response);
+      navigate('/host/profile');
+    } catch (error){
+      console.error("Error updating profile: ", error);
     }
-  };
+  }
+  else {
+    setShowUserProfile(true);
+  }
+};
+
+
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -138,6 +179,7 @@ const EditHostProfile: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      //set fIe
       setFile(e.target.files[0]);
     }
   };

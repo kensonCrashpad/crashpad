@@ -9,11 +9,33 @@ class User {
         return axios.post(API_URL + 'profile/get', { userId }, { headers: authHeader() });
     }
 
-    updateUserProfile(profileFormData: Record<string, any>) {
-        return axios.post(API_URL + 'profile/update', profileFormData, { headers: authHeader() });
-    }
-    
+    // updateUserProfile(profileFormData: Record<string, any>) {
+    //     return axios.post(API_URL + 'profile/update', profileFormData, { headers: authHeader() });
+    // }
 
+      // uploadProfileImage(userId: string | null, formData: FormData) {
+      //   return axios.post(`${API_URL}${userId}/uploadProfileImage`, formData, {
+      //       headers: {
+      //           'Content-Type': 'multipart/form-data',
+      //           ...authHeader()
+      //       }
+      //   });
+      // }
+      updateUserProfile(userId:string | null , profileData:any, file: File | null) {
+        const formData = new FormData();
+        formData.append('userProfile', new Blob([JSON.stringify(profileData)], { type: 'application/json' }));
+        if (file) {
+          formData.append('profileImage', file);
+        }
+
+        return axios.post(API_URL + `${userId}/updateProfile`, formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                ...authHeader()
+            }
+        });
+    }
+        
     saveTravelerAndRvDetails(userId: number, travelerFormData: any, rvFormData: any) {
         const formData = new FormData();
         formData.append('travelerFormData', new Blob([JSON.stringify(travelerFormData)], { type: 'application/json' }));
@@ -48,15 +70,7 @@ class User {
   }
 
 
-  uploadProfileImage(userId: string | null, formData: FormData) {
-    return axios.post(`${API_URL}${userId}/uploadProfileImage`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            ...authHeader()
-        }
-    });
-  }
-    
+  
   // Add more user-related methods as needed
 }
 
