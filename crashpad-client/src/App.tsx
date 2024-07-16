@@ -40,8 +40,8 @@ function App() {
             <Route path="/property3info" element={<Property3 />} />
             <Route path="/map" element={<PadMap />} />
             <Route path="/propertyinfo" element={<Property1 />} />
-            <Route path="/propertyreservation" element={<PropertReservation />} />
-            <Route path="/payment" element={<Payment />} />
+            <Route path="/propertyreservation" element={<PropertReservation/>} />
+            <Route path="/payment" element={<Payment />} /> 
             <Route path="/travelerprofile" element={<TravelerProfile />} />
             <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/editaccommodation" element={<EditAccommodation />} />

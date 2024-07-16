@@ -55,9 +55,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     const fetchProperties = async () => {
       try {
         const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
-        console.log("Property Details are", propertiesData);
+
         setProperties(propertiesData);
-        // console.log("Property Details are", propertiesData);
+        
       } catch (error) {
         console.error("Error fetching properties", error);
       }
@@ -65,25 +65,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
     fetchProperties();
   }, []);
-  // const handleNavigateToProperty = async () => {
-  //   try {
-  //     console.log("Fetching property details for ID:", property.id);
-  //     const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
-  //       property.id
-  //     );
-  //     console.log("Property Details are", propertiesData);
-  //     navigate("/propertyreservation", { state: { propertiesData } });
-  //   } catch (error) {
-  //     console.error("Error fetching properties", error);
-  //   }
-    
-  // };
-
-
- 
-
-
-  
 
   const handleNavigateToProperty = () => {
     navigate("/propertyreservation", { state: { property } });

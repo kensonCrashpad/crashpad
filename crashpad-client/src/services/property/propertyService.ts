@@ -128,7 +128,7 @@ class PropertyService {
     const response = await axios.get(API_URL + `${propertyId}/details`, {
         headers: authHeader()
       });
-    console.log("fetchPropertyDetailsAndHostDetails - ", response)
+    // console.log("fetchPropertyDetailsAndHostDetails - ", response)
     return response.data;
   }
 

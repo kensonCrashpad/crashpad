@@ -31,7 +31,11 @@ interface UserFormState {
   about: string;
 }
 
-const Property2: React.FC = () => {
+interface Property2Props {
+  properties?: any; 
+}
+
+const Property2: React.FC<Property2Props> = ({properties}) => {
   const [propertyFormData, setPropertyFormData] = useState<UserFormState>({
     location: "Hidden Escape",
     address: "123 Main St",
@@ -121,6 +125,7 @@ const Property2: React.FC = () => {
           </Grid>
           {ShowProperty ? (
             <PropertyForm
+            properties ={properties}
               profileFormData={propertyFormData}
               onClickEdit={handleShowProperty}
             ></PropertyForm>

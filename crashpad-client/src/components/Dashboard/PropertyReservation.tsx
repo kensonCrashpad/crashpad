@@ -53,6 +53,20 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+  
+}
+interface Property {
+  id: number;
+  title: string;
+  imageUrl: string;
+  isNew: boolean;
+  rating: string;
+  distance: string;
+  dateRange: string;
+  price: string;
+}
+interface PropertyReseravtionProps {
+  property: Property;
 }
 
 const PropertyReseravtion: React.FC = () => {
@@ -70,16 +84,15 @@ const PropertyReseravtion: React.FC = () => {
   const [ShowProperty, setShowProperty] = useState(true);
 
   const location = useLocation();
-  const propertyData = location.state;
   const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
+  const { property } = location.state || {};
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(1);
+        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
         console.log("Property Details are", propertiesData);
         setProperties(propertiesData);
-        // console.log("Property Details are", propertiesData);
       } catch (error) {
         console.error("Error fetching properties", error);
       }
@@ -182,13 +195,14 @@ const PropertyReseravtion: React.FC = () => {
             </Carousel>
           </Grid>
           <Grid item xs={5} marginTop={"30px"}>
-            <ReservationCard />
+            <ReservationCard properties ={properties}/>
           </Grid>
           <Grid item xs={12}>
           <Grid item xs={12}>
             {ShowProperty ? (
               <Box sx={{ flexGrow: 1, ml: 2 }}>
                 <PropertyForm
+                  properties ={properties}
                   profileFormData={propertyFormData}
                   onClickEdit={handleShowProperty}
                 />
