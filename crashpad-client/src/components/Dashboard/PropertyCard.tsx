@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardMedia, CardContent, Typography, IconButton, Box } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -23,38 +23,74 @@ interface PropertyCardProps {
   property: Property;
 }
 
+interface PropertyResponseDTO {
+  propertyId: number;
+  propertyType: string;
+  title: string;
+  name: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  capacity: number;
+  padMaxLength: string;
+  padMaxWidth: string;
+  description: string;
+  availability: string;
+  originalPrice: string;
+  discountedPrice: string;
+  amenities: string[];
+  imageUrls: string[];
+  userCreationDate: string;
+  userModifyDate: string;
+}
+
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
 
 
-  const handleNavigateToProperty = async () => {
-    try {
-      console.log("Fetching property details for ID:", property.id);
-      const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
-        property.id
-      );
-      console.log("Property Details are", propertiesData);
-      navigate("/propertyreservation", { state: { propertiesData } });
-    } catch (error) {
-      console.error("Error fetching properties", error);
-    }
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
+        console.log("Property Details are", propertiesData);
+        setProperties(propertiesData);
+        // console.log("Property Details are", propertiesData);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+  // const handleNavigateToProperty = async () => {
+  //   try {
+  //     console.log("Fetching property details for ID:", property.id);
+  //     const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(
+  //       property.id
+  //     );
+  //     console.log("Property Details are", propertiesData);
+  //     navigate("/propertyreservation", { state: { propertiesData } });
+  //   } catch (error) {
+  //     console.error("Error fetching properties", error);
+  //   }
     
+  // };
+
+
+ 
+
+
+  
+
+  const handleNavigateToProperty = () => {
+    navigate("/propertyreservation", { state: { property } });
   };
 
-  // const handleNavigateToProperty = () => {
-  //   navigate("/propertyreservation", { state: { property } });
-  // };
-
-  // const toggleFavorite = () => {
-  //   setIsFavorite((prev) => !prev);
-  //   if(isFavorite == true){
-  //     handleAddFavorite
-  //   }
-  // };
-
-
   const toggleFavorite = async () => {
+
     setIsFavorite((prev) => !prev);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const userId = user.id;
@@ -101,7 +137,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         maxWidth: 345,
         position: "relative",
         cursor: "pointer",
-        padding: "10px",
         margin: "0px",
         borderRadius: "15px"
       }}

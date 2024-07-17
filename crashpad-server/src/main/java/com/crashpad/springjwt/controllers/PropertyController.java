@@ -72,13 +72,10 @@ public class PropertyController {
         //save property images
         List<PropertyImage> savedImages = new ArrayList<>();
         for (MultipartFile image : propertyImages) {
-//            String imageUrl = fileStorageService.store(image);
-//            imageUrl = "https://images3.alphacoders.com/190/thumb-1920-190787.jpg";
-
-            String fileUrl = s3FileUploadService.uploadFile(image);
-
+            String imageUrl = fileStorageService.store(image);
+            imageUrl = "https://images3.alphacoders.com/190/thumb-1920-190787.jpg";
             PropertyImage propertyImage = new PropertyImage();
-            propertyImage.setImageUrl(fileUrl);
+            propertyImage.setImageUrl(imageUrl);
             propertyImage.setProperty(savedProperty);
             savedImages.add(propertyImageService.savePropertyImage(propertyImage));
         }

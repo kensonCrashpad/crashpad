@@ -52,21 +52,23 @@ public class S3FileUploadService {
         }
     }
 
-//
-//    public String uploadFile(MultipartFile file) {
-//        try {
-//            String folderName="Property"; // The folder in which you want to upload the file
-//            String fileName= file.getOriginalFilename();
-//            String fileKey= folderName + "/" + fileName; // Construct the full key with the folder name
-//            InputStream inputStream= file.getInputStream();
-//            ObjectMetadata metadata=new ObjectMetadata();
-//            metadata.setContentLength(file.getSize());
-//            metadata.setContentDisposition("inline");
-//            metadata.setContentType(file.getContentType());
-//            s3Client.putObject(new PutObjectRequest(bucketName, fileKey, inputStream, metadata));
-//            return s3Client.getUrl(bucketName, fileKey).toString();
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to upload file to S3", e);
-//        }
-//    }
+
+
+    public String uploadPropertyImages(MultipartFile file) {
+        try {
+            String folderName="Property"; // The folder in which you want to upload the file
+            String fileName= file.getOriginalFilename();
+            String fileKey= folderName + "/" + fileName; // Construct the full key with the folder name
+            InputStream inputStream= file.getInputStream();
+            ObjectMetadata metadata=new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            metadata.setContentDisposition("inline");
+            metadata.setContentType(file.getContentType());
+            s3Client.putObject(new PutObjectRequest(bucketName, fileKey, inputStream, metadata));
+            return s3Client.getUrl(bucketName, fileKey).toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload file to S3", e);
+        }
+    }
+
 }
