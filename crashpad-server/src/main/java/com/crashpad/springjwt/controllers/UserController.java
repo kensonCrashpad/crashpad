@@ -170,6 +170,8 @@ public class UserController {
     public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
         Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
 
+//        String fileUrl = s3FileUploadService.uploadFile(userProfileDTO.getProfileImage());
+
         UserProfile userProfile = userProfileOptional.get();
         userProfile.setFirstName(userProfileDTO.getFirstName());
         //userProfile.setMiddleName(userProfileDTO.getMiddleName());
