@@ -11,6 +11,7 @@ import com.crashpad.springjwt.models.VehicleImage;
 import com.crashpad.springjwt.payload.request.UserIdRequest;
 import com.crashpad.springjwt.security.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -48,23 +49,23 @@ public class UserController {
     private S3FileUploadService s3FileUploadService;
 
 
-    @PostMapping("/{userId}/uploadProfileImage")
-    public ResponseEntity<String> uploadProfileImage(
-            @PathVariable Long userId,
-            @RequestParam("file") MultipartFile file) {
-
-        Optional<User> userOptional = userService.findUserById(userId);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        String fileUrl = s3FileUploadService.uploadFile(file);
-        UserProfile userProfile = userOptional.get().getUserProfile();
-        userProfile.setProfileImage(fileUrl);
-        userProfileService.saveUserProfile(userProfile);
-
-        return ResponseEntity.ok(fileUrl);
-    }
+//    @PostMapping("/{userId}/uploadProfileImage")
+//    public ResponseEntity<String> uploadProfileImage(
+//            @PathVariable Long userId,
+//            @RequestParam("file") MultipartFile file) {
+//
+//        Optional<User> userOptional = userService.findUserById(userId);
+//        if (!userOptional.isPresent()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        String fileUrl = s3FileUploadService.uploadFile(file);
+//        UserProfile userProfile = userOptional.get().getUserProfile();
+//        userProfile.setProfileImage(fileUrl);
+//        userProfileService.saveUserProfile(userProfile);
+//
+//        return ResponseEntity.ok(fileUrl);
+//    }
 
 
 
@@ -166,30 +167,55 @@ public class UserController {
         return ResponseEntity.ok(convertToDTO(userProfile));
     }
 
-    @PostMapping("/profile/update")
-    public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
-        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
+//    @PostMapping("/profile/update")
+//    public ResponseEntity<UserProfileDTO> updateUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
+//        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userProfileDTO.getUserId());
+//
+//        UserProfile userProfile = userProfileOptional.get();
+//        userProfile.setFirstName(userProfileDTO.getFirstName());
+//        userProfile.setLastName(userProfileDTO.getLastName());
+//        userProfile.setGender(userProfileDTO.getGender());
+//        userProfile.setAge(userProfileDTO.getAge());
+//        userProfile.setDescription(userProfileDTO.getDescription());
+//        UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
+//
+//        return ResponseEntity.ok(convertToDTO(updatedUserProfile));
+//    }
 
-//        String fileUrl = s3FileUploadService.uploadFile(userProfileDTO.getProfileImage());
 
-        UserProfile userProfile = userProfileOptional.get();
+    @PostMapping("/{userId}/updateProfile")
+    public ResponseEntity<?> updateProfile(
+            @PathVariable Long userId,
+            @RequestPart("userProfile") UserProfileDTO userProfileDTO,
+            @RequestPart(value = "profileImage", required = false) MultipartFile file) {
+
+        Optional<User> userOptional = userService.findUserById(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userOptional.get();
+        UserProfile userProfile = user.getUserProfile();
+        if (userProfile == null) {
+            userProfile = new UserProfile();
+            userProfile.setUser(user);
+        }
+
         userProfile.setFirstName(userProfileDTO.getFirstName());
-        //userProfile.setMiddleName(userProfileDTO.getMiddleName());
         userProfile.setLastName(userProfileDTO.getLastName());
-        // userProfile.setPhone(userProfileDTO.getPhone());
         userProfile.setGender(userProfileDTO.getGender());
         userProfile.setAge(userProfileDTO.getAge());
         userProfile.setDescription(userProfileDTO.getDescription());
-        userProfile.setProfileImage(userProfileDTO.getProfileImage());
-        // userProfile.setPaymentType(userProfileDTO.getPaymentType());
-        UserProfile updatedUserProfile = userProfileService.saveUserProfile(userProfile);
 
-        return ResponseEntity.ok(convertToDTO(updatedUserProfile));
+        if (file != null && !file.isEmpty()) {
+            String fileUrl = s3FileUploadService.uploadFile(file);
+            userProfile.setProfileImage(fileUrl);
+        }
+
+        userProfileService.saveUserProfile(userProfile);
+
+        return ResponseEntity.ok("Profile updated successfully");
     }
-
-
-
-
 
     private UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();

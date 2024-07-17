@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { styled, Box, ToggleButton, ToggleButtonGroup, IconButton } from "@mui/material";
+import { styled, Box, ToggleButton, ToggleButtonGroup, IconButton, Toolbar, Paper, InputBase } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import WifiIcon from "@mui/icons-material/Wifi";
 import PetsIcon from "@mui/icons-material/Pets";
 import ElectricCarIcon from "@mui/icons-material/ElectricCar";
+import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
+import PropertyService from "../../services/property/propertyService";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {
@@ -24,10 +26,12 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 interface SearchAndToggleBarProps {
   selectedAmenities: string[];
   setSelectedAmenities: React.Dispatch<React.SetStateAction<string[]>>;
+  handleSearchResults: (results: any[]) => void; // Function to handle search results
 }
 
-const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmenities, setSelectedAmenities }) => {
+const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmenities, setSelectedAmenities, handleSearchResults }) => {
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [search, setSearch] = useState("");
 
   const handleViewModeChange = (event: React.MouseEvent<HTMLElement>, newValue: "list" | "map") => {
     setViewMode(newValue);
@@ -37,20 +41,57 @@ const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmeniti
     setSelectedAmenities(typeof newToggle === "string" ? [newToggle] : newToggle);
   };
 
+  const handleSearchProperties = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const results = await PropertyService.searchProperties(search);
+      handleSearchResults(results); // Update search results in parent component
+      console.log('Properties found:', results);
+    } catch (error) {
+      console.error('Error searching properties:', error);
+    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        paddingLeft: "110px",
-        gap: "8px",
-        backgroundColor: "white",
-      }}
-    >
-      <IconButton aria-label="filter list">
-        <FilterListIcon />
-      </IconButton>
-      <StyledToggleButtonGroup size="small" value={selectedAmenities} onChange={handleToggle}>
+    <Toolbar>
+      <Paper
+        component="form"
+        onSubmit={handleSearchProperties}
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "20px",
+          backgroundColor: "rgba(0, 0, 0, 0.05)",
+          marginLeft : "82px",
+          marginTop : "-125px"
+        }}
+      >
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Start your Search"
+          value={search}
+          onChange={handleSearch}
+        />
+        <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+      <Box
+        sx={{
+          position: "absolute",
+          alignItems: "center",
+          paddingLeft: "93px",
+          gap: "8px",
+          backgroundColor: "white",
+        }}
+      >
+
+        <StyledToggleButtonGroup size="small" value={selectedAmenities} onChange={handleToggle}>
         <ToggleButton
           value="wifi"
           aria-label="wifi"
@@ -111,15 +152,17 @@ const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmeniti
         >
           <ElectricCarIcon />
         </ToggleButton>
-      </StyledToggleButtonGroup>
-      <Box
-        sx={{
-          marginLeft: "auto",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
+        </StyledToggleButtonGroup>
+        </Box>
+        <Box
+          sx={{
+            marginLeft: "auto",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+
+          }}
+        >
         <ToggleButtonGroup value={viewMode} exclusive onChange={handleViewModeChange}>
           <Link to="../dashboard">
             <ToggleButton value="list" sx={{ height: "30px", padding: "0px 10px" }}>
@@ -132,8 +175,8 @@ const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmeniti
             </ToggleButton>
           </Link>
         </ToggleButtonGroup>
-      </Box>
-    </Box>
+        </Box>
+    </Toolbar>
   );
 };
 
