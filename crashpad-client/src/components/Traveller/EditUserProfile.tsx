@@ -125,8 +125,8 @@ const UserProfile: React.FC = () => {
     if (isValid) {
       //console.log("Form validation", profileData);
       try {
-        const response = await UserService.updateUserProfile(profileData);
-        console.log("Profile updated successfully:", response.data);
+       // const response = await UserService.updateUserProfile(profileData);
+       // console.log("Profile updated successfully:", response.data);
       } catch (error) {
         console.error("Error updating profile:", error);
       }
