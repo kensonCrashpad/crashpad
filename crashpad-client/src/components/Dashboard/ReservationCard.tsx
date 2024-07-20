@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -11,10 +10,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { log } from "console";
+
 
 const CustomCard = styled(Card)({
-  maxWidth: 400,
+  maxWidth: 420,
   margin: "auto",
   marginTop: "0px",
   height: "500px",
@@ -61,12 +60,13 @@ const ReservationCard = ({properties}:any) => {
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
   const NumberOfBookingDays = (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 3600 * 24);
-  const taxRate = 0.3;
+  const taxRate = 0.1;
 
     
-  const TotalPriceBeforeTax = orginalPrice * NumberOfBookingDays + serviceFee - discountPrice;
-  const TotalIncludingTax = TotalPriceBeforeTax * taxRate
-  const TotalPriceAfterTax = Math.round((TotalPriceBeforeTax) *taxRate);
+  const TotalPrice = orginalPrice * NumberOfBookingDays;
+  const TotalPriceBeforeTax = TotalPrice + serviceFee - discountPrice
+  const TotalIncludingTax = (TotalPriceBeforeTax * taxRate) + TotalPriceBeforeTax;
+  const TotalPriceAfterTax = Math.round(TotalIncludingTax);
  
  return (
     <CustomCard>
@@ -111,8 +111,8 @@ const ReservationCard = ({properties}:any) => {
           value={cancellation}
           exclusive
           onChange={handleCancellationChange}
-          fullWidth
-        >
+          style={{width:"400px",height:"50px"}}
+          >
           <CustomToggleButton value="non-refundable">
             Non-refundable Total • ${orginalPrice}
           </CustomToggleButton>
@@ -120,14 +120,32 @@ const ReservationCard = ({properties}:any) => {
             Refundable Total • ${orginalPrice + 15} 
           </CustomToggleButton>
         </ToggleButtonGroup>
-        <Typography variant="body1" sx={{ marginTop: "10px" }}>
-          {`${orginalPrice} $/night x ${NumberOfBookingDays} Days  = $ ${TotalPriceBeforeTax} `} <br/>
-          {`Discount Price ${discountPrice}`}<br/>
-          {`Service fee ${serviceFee}`}<br/>
-          {`Tax ${taxRate}`}<br/>
-          {`Total after taxes ${TotalPriceAfterTax}`}<br/>
-        </Typography> 
-        <Button
+        <div style={{ margin: "15px", }}>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{`${orginalPrice} $/night x ${NumberOfBookingDays} Days`}</span>
+            <span>{`$ ${TotalPrice}`}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
+            <span>Discount Price</span>
+            <span>{`$ ${discountPrice}`}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
+            <span>Service fee</span>
+            <span>{`$ ${serviceFee}`}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
+            <span>Total before taxes</span>
+            <span>{`$ ${TotalPriceBeforeTax}`}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
+            <span>Tax</span>
+            <span>{`${taxRate * 100}%`}</span>
+          </Typography>
+          <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
+            <span>Total after taxes</span>
+            <span>{`$ ${TotalPriceAfterTax}`}</span>
+          </Typography>
+          <Button
           size="small"
           variant="contained"
           style={{ backgroundColor: "#FDA117", marginTop: "20px" }}
@@ -136,6 +154,7 @@ const ReservationCard = ({properties}:any) => {
         >
           Reserve
         </Button>
+        </div>
       </CardContent>
     </CustomCard>
   );

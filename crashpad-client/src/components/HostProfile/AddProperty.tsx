@@ -12,6 +12,7 @@ import {
   IconButton,
   Paper,
   Box,
+  Tooltip,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Nav from '../NavBar/SideNav';
@@ -189,7 +190,7 @@ const AddProperty: React.FC = () => {
       const userId = user.id;
       try {
         await PropertyService.savePropertyDetails(userId, propertyFormData);
-        navigate('/hostprofile'); // Navigate to profile page after successful form submission
+        navigate('/hostprofile'); 
       } catch (error) {
         console.error('Failed to save property', error);
       }
@@ -199,7 +200,7 @@ const AddProperty: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate('/hostprofile'); // Navigate back to profile page
+    navigate('/hostprofile'); 
   };
 
   return (
@@ -390,123 +391,144 @@ const AddProperty: React.FC = () => {
 
             <SectionTitle variant="h5">Amenities</SectionTitle>
             <AmenitiesContainer>
-              <IconButton onClick={() => handleAmenityClick('wifi')}>
+              <Tooltip title ="Wifi">
+              <IconButton onClick={() => handleAmenityClick('Wifi')}>
                 <WifiIcon
                   color={
-                    propertyFormData.amenities.includes('wifi')
+                    propertyFormData.amenities.includes('Wifi')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('shower')}>
+              </Tooltip>
+              <Tooltip title= "Shower">
+              <IconButton onClick={() => handleAmenityClick('Shower')}>
                 <ShowerIcon
                   color={
-                    propertyFormData.amenities.includes('shower')
+                    propertyFormData.amenities.includes('Shower')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('fireplace')}>
+              </Tooltip>
+              <Tooltip title ="Fireplace">
+              <IconButton onClick={() => handleAmenityClick('Fireplace')}>
                 <FireplaceIcon
                   color={
-                    propertyFormData.amenities.includes('fireplace')
+                    propertyFormData.amenities.includes('Fireplace')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('food')}>
+              </Tooltip>
+              <Tooltip title = "Food">
+              <IconButton onClick={() => handleAmenityClick('Food')}>
                 <FastfoodIcon
                   color={
-                    propertyFormData.amenities.includes('food')
+                    propertyFormData.amenities.includes('Food')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('grill')}>
+              </Tooltip>
+              <Tooltip title ="Grill">
+              <IconButton onClick={() => handleAmenityClick('Grill')}>
                 <OutdoorGrillIcon
                   color={
-                    propertyFormData.amenities.includes('grill')
+                    propertyFormData.amenities.includes('Grill')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('laundry')}>
+              </Tooltip>
+              <Tooltip title = "Laundry">
+              <IconButton onClick={() => handleAmenityClick('Laundry')}>
                 <LocalLaundryServiceIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Laundry')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
+              </Tooltip>
+              <Tooltip title = "Electricity">
               <IconButton onClick={() => handleAmenityClick('Electricity')}>
                 <ElectricalServicesIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Electricity')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+              </Tooltip>
+              <Tooltip title = "WaterHooks">
+              <IconButton onClick={() => handleAmenityClick('Waterhooks')}>
                 <OpacityIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Waterhooks')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+              </Tooltip>
+              <Tooltip title = "Picknic Table">
+              <IconButton onClick={() => handleAmenityClick('Picknic Table')}>
                 <TableRestaurantIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Picknic Table')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+              </Tooltip>
+              <Tooltip title = "Propane Gas">
+              <IconButton onClick={() => handleAmenityClick('Propane Gas')}>
                 <LocalGasStationIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Propane Gas')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              
-              </AmenitiesContainer>
-              <SectionTitle variant="h5">Allowed</SectionTitle>
-              <AmenitiesContainer>
-              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+              </Tooltip>
+              <Tooltip title="Pets" >
+                <IconButton onClick={() => handleAmenityClick('Pets')}>
                 <PetsIcon
-                  color={
-                    propertyFormData.amenities.includes('laundry')
-                      ? 'primary'
-                      : 'inherit'
-                  }
-                />
-              </IconButton>
-              <IconButton onClick={() => handleAmenityClick('waterhooks')}>
+                    color={
+                      propertyFormData.amenities.includes('Pets')
+                        ? 'primary'
+                        : 'inherit'
+                    }
+                  />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Generator" >
+              <IconButton onClick={() => handleAmenityClick('Generators')}>
                 <PowerIcon
                   color={
-                    propertyFormData.amenities.includes('laundry')
+                    propertyFormData.amenities.includes('Generators')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
+              </Tooltip>
+              </AmenitiesContainer>
+              <AmenitiesContainer>
               </AmenitiesContainer>
             <Typography variant="body2" color="error">
               {errors.amenities}
             </Typography>
-
             <div>
               <Typography variant="h5" gutterBottom>
                 Images
@@ -529,7 +551,6 @@ const AddProperty: React.FC = () => {
                 {errors.imageUrls}
               </Typography>
             </div>
-
             <Grid container justifyContent="center" spacing={2}>
               <Grid item>
                 <SubmitButton

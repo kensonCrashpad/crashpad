@@ -4,59 +4,6 @@ import GradeIcon from '@mui/icons-material/Grade';
 import img from "./Myprofile.png"
 import styled from "@emotion/styled";
 
-
-
-
-const nearBy = ["Sewage Dump Station","Walking Trail","Shuttle Services","RV Maintenance Services","Recreational Facilities"];
-
-const NearByList = () => {
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {nearBy.map((near, index) => (
-          <Grid item xs={6} key={index}>
-            <span>{near}</span>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-};
-
-const allowed = ["Pets","Kids","Genarators","BBQ"];
-
-
-
-const AllowedList = () => {
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {allowed.map((allow, index) => (
-          <Grid item xs={6} key={index}>
-            <span>{allow}</span>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-};
-
-const securityAndSafety = ["Exterior security cameras on property","24/7 Security","Good Lighting","First Aid Station"];
-
-const SecurityAndSafetlyList = () => {
-  return (
-    <Box>
-      <Grid container spacing={2}>
-        {securityAndSafety.map((safety, index) => (
-          <Grid item xs={6} key={index}>
-            <span>{safety}</span>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-};
-
 const CustomCard = styled(Card)({
   maxWidth: 450,
   height: "250px",
@@ -75,7 +22,7 @@ const ShowProperty: React.FC<childProps> = ({properties,
   onClickEdit,
 }) => {
 
-const amenities = properties?.amenities || [];;
+const amenities = properties?.amenities || [];
 const AmenitiesList = () => {
   return (
     <Box>
@@ -122,26 +69,14 @@ const AmenitiesList = () => {
         <Typography variant="body1" marginTop={"10px"}>
           <span style={{ fontWeight: "700" }}>About Property  <hr /></span> {properties.description}
         </Typography><br />
-        <hr />
+        
         <Typography variant="body1" fontWeight="700">
           What this place provides
+          <hr />
         </Typography>
         <br />
         <AmenitiesList />
         <br />
-        <Typography variant="body1" fontWeight="700">
-          Allowed
-        </Typography><br />
-        <AllowedList/><br />
-        <Typography variant="body1" fontWeight="700">
-          Near By
-        </Typography><br />
-        <NearByList /><br />
-        <Typography variant="body1" fontWeight="700">
-          Security and Safety
-        </Typography><br />
-        <SecurityAndSafetlyList/><br />
-        
         <Typography variant="body1" fontWeight="700" style={{marginTop:"20px"}}>
           Host Details
         </Typography><hr />

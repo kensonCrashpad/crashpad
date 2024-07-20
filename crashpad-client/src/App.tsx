@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./components/registration/signUp";
 import Login from "./components/registration/login";
 import Dashboard from "./components/Dashboard/Dashboard";
-import PropertReservation from "./components/Dashboard/PropertyReservation";
+import PropertyReservation from "./components/Dashboard/PropertyReservation";
 import HUserProfile from "./components/HostProfile/hprofile";
 import Property1 from "./components/HostProfile/Property1";
 import Property2 from "./components/HostProfile/Property2";
@@ -40,7 +40,7 @@ function App() {
             <Route path="/property3info" element={<Property3 />} />
             <Route path="/map" element={<PadMap />} />
             <Route path="/propertyinfo" element={<Property1 />} />
-            <Route path="/propertyreservation" element={<PropertReservation/>} />
+            <Route path="/propertyreservation" element={<PropertyReservation/>} />
             <Route path="/payment" element={<Payment />} /> 
             <Route path="/travelerprofile" element={<TravelerProfile />} />
             <Route path="/editprofile" element={<EditProfile />} />
