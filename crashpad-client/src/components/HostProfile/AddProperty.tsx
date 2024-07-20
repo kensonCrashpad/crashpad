@@ -34,9 +34,6 @@ import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import PetsIcon from '@mui/icons-material/Pets';
 import PowerIcon from '@mui/icons-material/Power';
 
-
-
-
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   margin: theme.spacing(3, 0),
@@ -89,12 +86,12 @@ interface PropertyFormState {
   originalPrice: number;
   discountedPrice: number;
   amenities: string[];
-  imageUrls: File[]; // This should be File[]
+  imageUrls: File[];
+  imagePreviews: string[];
 }
 
 const AddProperty: React.FC = () => {
   const navigate = useNavigate();
-
   const [propertyFormData, setPropertyFormData] = useState<PropertyFormState>({
     propertyType: '',
     title: '',
@@ -111,67 +108,76 @@ const AddProperty: React.FC = () => {
     originalPrice: 0,
     discountedPrice: 0,
     amenities: [],
-    imageUrls: [], // Initialize as File[]
+    imageUrls: [],
+    imagePreviews: [],
   });
 
   const [errors, setErrors] = useState<any>({});
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const filesArray = Array.from(event.target.files);
+      const fileURLs = filesArray.map(file => URL.createObjectURL(file));
+
+      setPropertyFormData(prev => ({
+        ...prev,
+        imageUrls: [...prev.imageUrls, ...filesArray],
+        imagePreviews: [...prev.imagePreviews, ...fileURLs],
+      }));
+    }
+  };
+  const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => {
+        const { name, value } = event.target;
+        setPropertyFormData((prevState) => ({
+          ...prevState,
+          [name]: ['capacity', 'padMaxLength', 'padMaxWidth', 'availability', 'originalPrice', 'discountedPrice'].includes(name) ? parseInt(value) : value,
+        }));
+      };
+
+  const handleRemoveImage = (index: number) => {
+    setPropertyFormData(prev => ({
+      ...prev,
+      imageUrls: prev.imageUrls.filter((_, idx) => idx !== index),
+      imagePreviews: prev.imagePreviews.filter((_, idx) => idx !== index),
+    }));
+  };
+
   const validateForm = () => {
     let newErrors: any = {};
-
     if (!propertyFormData.propertyType)
-      newErrors.propertyType = 'Property type is required.';
-    if (!propertyFormData.title) newErrors.title = 'Title is required.';
-    if (!propertyFormData.name) newErrors.name = 'Name is required.';
-    if (!propertyFormData.street) newErrors.street = 'Street is required.';
-    if (!propertyFormData.city) newErrors.city = 'City is required.';
-    if (!propertyFormData.state) newErrors.state = 'State is required.';
-    if (!propertyFormData.zip) newErrors.zip = 'ZIP code is required.';
-    if (!propertyFormData.capacity) newErrors.capacity = 'Capacity is required.';
-    if (!propertyFormData.padMaxLength) newErrors.padMaxLength = 'Length is required.';
-    if (!propertyFormData.padMaxWidth) newErrors.padMaxWidth = 'Width is required.';
-    if (!propertyFormData.description) newErrors.description = 'Description is required.';
-    if (!propertyFormData.availability) newErrors.availability = 'Availability is required.';
-    if (!propertyFormData.originalPrice) newErrors.originalPrice = 'Original Price is required.';
-    if (!propertyFormData.discountedPrice) newErrors.discountedPrice = 'Discounted Price is required.';
-    if (propertyFormData.amenities.length === 0)
-      newErrors.amenities = 'At least one amenity is required.';
-    if (propertyFormData.imageUrls.length === 0)
-      newErrors.imageUrls = 'At least one image is required.';
-
+            newErrors.propertyType = 'Property type is required.';
+          if (!propertyFormData.title) newErrors.title = 'Title is required.';
+          if (!propertyFormData.name) newErrors.name = 'Name is required.';
+          if (!propertyFormData.street) newErrors.street = 'Street is required.';
+          if (!propertyFormData.city) newErrors.city = 'City is required.';
+          if (!propertyFormData.state) newErrors.state = 'State is required.';
+          if (!propertyFormData.zip) newErrors.zip = 'ZIP code is required.';
+          if (!propertyFormData.capacity) newErrors.capacity = 'Capacity is required.';
+          if (!propertyFormData.padMaxLength) newErrors.padMaxLength = 'Length is required.';
+          if (!propertyFormData.padMaxWidth) newErrors.padMaxWidth = 'Width is required.';
+          if (!propertyFormData.description) newErrors.description = 'Description is required.';
+          if (!propertyFormData.availability) newErrors.availability = 'Availability is required.';
+          if (!propertyFormData.originalPrice) newErrors.originalPrice = 'Original Price is required.';
+          if (!propertyFormData.discountedPrice) newErrors.discountedPrice = 'Discounted Price is required.';
+          if (propertyFormData.amenities.length === 0)
+            newErrors.amenities = 'At least one amenity is required.';
+          if (propertyFormData.imageUrls.length === 0)
+            newErrors.imageUrls = 'At least one image is required.';
+      
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-    setPropertyFormData((prevState) => ({
-      ...prevState,
-      [name]: ['capacity', 'padMaxLength', 'padMaxWidth', 'availability', 'originalPrice', 'discountedPrice'].includes(name) ? parseInt(value) : value,
-    }));
-  };
-
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const { name, value } = event.target;
-    setPropertyFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setPropertyFormData((prevState) => ({
-        ...prevState,
-        imageUrls: files,
-      }));
-    }
-  };
-
-  const handleAmenityClick = (amenity: string) => {
+        const { name, value } = event.target;
+        setPropertyFormData((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      };
+    const handleAmenityClick = (amenity: string) => {
     setPropertyFormData((prevState) => {
       const amenities = prevState.amenities.includes(amenity)
         ? prevState.amenities.filter((a) => a !== amenity)
@@ -185,7 +191,6 @@ const AddProperty: React.FC = () => {
     const isValid = validateForm();
     if (isValid) {
       console.log('Form validation passed', propertyFormData);
-      // Assuming you have userId available from context or props
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const userId = user.id;
       try {
@@ -208,186 +213,186 @@ const AddProperty: React.FC = () => {
       <UserSettings />
       <Nav />
       <FormContainer>
-        <StyledPaper elevation={3}>
-          <IconButton
-            aria-label="close"
-            onClick={handleCancel}
-            style={{ position: 'absolute', top: 10, right: 10 }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-            <SectionTitle variant="h5">Property Information</SectionTitle>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Property Type</InputLabel>
-                  <Select
-                    name="propertyType"
-                    value={propertyFormData.propertyType}
-                    onChange={handleSelectChange}
-                  >
-                    <MenuItem value="nature">Nature</MenuItem>
-                    <MenuItem value="parking lot">Parking Lot</MenuItem>
-                    <MenuItem value="barn">Barn</MenuItem>
-                  </Select>
-                  <Typography variant="body2" color="error">
-                    {errors.propertyType}
-                  </Typography>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="title"
-                  value={propertyFormData.title}
-                  label="Title"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.title}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="name"
-                  value={propertyFormData.name}
-                  label="Name"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.name}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="street"
-                  value={propertyFormData.street}
-                  label="Street"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.street}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="city"
-                  value={propertyFormData.city}
-                  label="City"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.city}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="state"
-                  value={propertyFormData.state}
-                  label="State"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.state}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="zip"
-                  value={propertyFormData.zip}
-                  label="ZIP Code"
-                  variant="outlined"
-                  onChange={handleInputChange}
-                  helperText={errors.zip}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  name="capacity"
-                  value={propertyFormData.capacity}
-                  label="Capacity"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.capacity}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  name="padMaxLength"
-                  value={propertyFormData.padMaxLength}
-                  label="Length (ft)"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.padMaxLength}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  name="padMaxWidth"
-                  value={propertyFormData.padMaxWidth}
-                  label="Width (ft)"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.padMaxWidth}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  name="description"
-                  value={propertyFormData.description}
-                  label="Description"
-                  variant="outlined"
-                  multiline
-                  rows={3}
-                  onChange={handleInputChange}
-                  helperText={errors.description}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="availability"
-                  value={propertyFormData.availability}
-                  label="Availability"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.availability}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="originalPrice"
-                  value={propertyFormData.originalPrice}
-                  label="Original Price"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.originalPrice}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  name="discountedPrice"
-                  value={propertyFormData.discountedPrice}
-                  label="Discounted Price"
-                  variant="outlined"
-                  type="number"
-                  onChange={handleInputChange}
-                  helperText={errors.discountedPrice}
-                />
-              </Grid>
-            </Grid>
+  <StyledPaper>
+    <IconButton
+      aria-label="close"
+      onClick={handleCancel}
+      style={{ position: 'absolute', top: '10px', right: '10px' }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <SectionTitle variant="h5">Property Information</SectionTitle>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel>Property Type</InputLabel>
+            <Select
+              name="propertyType"
+              value={propertyFormData.propertyType}
+              onChange={handleSelectChange}
+            >
+              <MenuItem value="nature">Nature</MenuItem>
+              <MenuItem value="parking lot">Parking Lot</MenuItem>
+              <MenuItem value="barn">Barn</MenuItem>
+            </Select>
+            <Typography variant="body2" color="error">
+              {errors.propertyType}
+            </Typography>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="title"
+            value={propertyFormData.title}
+            label="Title"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.title}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="name"
+            value={propertyFormData.name}
+            label="Name"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.name}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="street"
+            value={propertyFormData.street}
+            label="Street"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.street}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="city"
+            value={propertyFormData.city}
+            label="City"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.city}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="state"
+            value={propertyFormData.state}
+            label="State"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.state}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="zip"
+            value={propertyFormData.zip}
+            label="ZIP Code"
+            variant="outlined"
+            onChange={handleInputChange}
+            helperText={errors.zip}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            name="capacity"
+            value={propertyFormData.capacity}
+            label="Capacity"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.capacity}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            name="padMaxLength"
+            value={propertyFormData.padMaxLength}
+            label="Length (ft)"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.padMaxLength}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            fullWidth
+            name="padMaxWidth"
+            value={propertyFormData.padMaxWidth}
+            label="Width (ft)"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.padMaxWidth}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            name="description"
+            value={propertyFormData.description}
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={3}
+            onChange={handleInputChange}
+            helperText={errors.description}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="availability"
+            value={propertyFormData.availability}
+            label="Availability"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.availability}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="originalPrice"
+            value={propertyFormData.originalPrice}
+            label="Original Price"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.originalPrice}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="discountedPrice"
+            value={propertyFormData.discountedPrice}
+            label="Discounted Price"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+            helperText={errors.discountedPrice}
+          />
+        </Grid>
+      </Grid>
 
             <SectionTitle variant="h5">Amenities</SectionTitle>
             <AmenitiesContainer>
@@ -526,56 +531,40 @@ const AddProperty: React.FC = () => {
               </AmenitiesContainer>
               <AmenitiesContainer>
               </AmenitiesContainer>
-            <Typography variant="body2" color="error">
-              {errors.amenities}
-            </Typography>
-            <div>
-              <Typography variant="h5" gutterBottom>
-                Images
-              </Typography>
-              <Button
-                variant="contained"
-                component="label"
-                startIcon={<ImageIcon />}
-                sx={{ mb: 3 }}
-              >
-                Upload Images
-                <input
-                  type="file"
-                  hidden
-                  multiple
-                  onChange={handleFileChange}
-                />
-              </Button>
-              <Typography variant="body2" color="error">
-                {errors.imageUrls}
-              </Typography>
-            </div>
-            <Grid container justifyContent="center" spacing={2}>
-              <Grid item>
-                <SubmitButton
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  size="large"
-                >
-                  Add Property
-                </SubmitButton>
-              </Grid>
-              <Grid item>
-                <CancelButton
-                  variant="outlined"
-                  color="secondary"
-                  size="large"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </CancelButton>
-              </Grid>
-            </Grid>
-          </form>
-        </StyledPaper>
-      </FormContainer>
+      
+      <Typography variant="body2" color="error">{errors.amenities}</Typography>
+
+      <SectionTitle variant="h6">Upload Images</SectionTitle>
+      <Button variant="contained" component="label">
+        Upload Images
+        <input type="file" hidden multiple onChange={handleFileChange} />
+      </Button>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2 }}>
+        {propertyFormData.imagePreviews.map((image, index) => (
+          <Box key={index} sx={{ position: 'relative', width: 100, height: 100 }}>
+            <img src={image} alt={`Property Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <IconButton
+              onClick={() => handleRemoveImage(index)}
+              sx={{ position: 'absolute', top: 0, right: 0, color: 'error.main' }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        ))}
+      </Box>
+
+      <Grid container justifyContent="center" spacing={2}>
+        <Grid item>
+          <SubmitButton type="submit" variant="contained">Add Property</SubmitButton>
+        </Grid>
+        <Grid item>
+          <CancelButton onClick={handleCancel} variant="outlined">Cancel</CancelButton>
+        </Grid>
+      </Grid>
+    </form>
+  </StyledPaper>
+</FormContainer>
+
     </>
   );
 };

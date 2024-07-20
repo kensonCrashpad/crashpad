@@ -21,6 +21,8 @@ import Settings from "./components/NavBar/Settings";
 import AddProperty from "./components/HostProfile/AddProperty";
 import EditHostProfile from "./components/HostProfile/EditHostProfile";
 import ShowProfile from './components/Traveller/ShowProfile';
+import ImageCarousel from './components/HostProfile/ImageCarousel';
+
 
 import './App.css';
 
@@ -53,6 +55,7 @@ function App() {
             <Route path="/showProfile" element={<ShowProfile />} />
             <Route path="/host/edit" element={<EditHostProfile />} />
             <Route path="/host/profile" element={<HUserProfile />} />
+            <Route path="/carousel" element={<ImageCarousel images={[]} />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -101,7 +101,6 @@ const PropertyReseravtion: React.FC = () => {
   }, [property]);
   
   const images = properties?.imageUrls || [];
-  console.log(images)
     
   const validateForm = () => {
     let newErrors: any = {};
@@ -168,7 +167,6 @@ const PropertyReseravtion: React.FC = () => {
     window.location.href = "/hprofile";
   };
 
-  console.log("Set PROPERTY data : ", properties)
   return (
     <>
       <UserSettings />

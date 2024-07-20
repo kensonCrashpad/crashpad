@@ -114,6 +114,19 @@ const UserProfile: React.FC = () => {
     e.preventDefault();
     setShowUserProfile(false);
     const isValid = validateForm();
+    // const updatedProfileFormData = { ...profileFormData};
+    if (isValid) {
+      //console.log("Form validation", profileData);
+      try {
+       // const response = await UserService.updateUserProfile(profileData);
+       // console.log("Profile updated successfully:", response.data);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    } else {
+      setShowUserProfile(true);
+      console.log("Form validation failed");
+    }
   };
 
   const handleChange = (e: any) => {
