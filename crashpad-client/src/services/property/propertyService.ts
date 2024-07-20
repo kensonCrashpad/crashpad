@@ -124,7 +124,7 @@ class PropertyService {
     return response.data.data;
   }
 
-  async fetchPropertyDetailsAndHostDetails(propertyId: number): Promise<PropertyDetailsResponseDTO[]> {
+  async fetchPropertyDetailsAndHostDetails(propertyId: number): Promise<PropertyDetailsResponseDTO> {
     const response = await axios.get(API_URL + `${propertyId}/details`, {
         headers: authHeader()
       });

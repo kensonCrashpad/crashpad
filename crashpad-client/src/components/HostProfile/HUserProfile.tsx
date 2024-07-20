@@ -36,7 +36,7 @@ const ButtonContainer = styled('div')({
   display: 'flex',
   justifyContent: 'left',
   marginTop: '2em',
-  gap: '80px' // Add gap between buttons
+  gap: '80px' 
 });
 
 const EditButton = styled(Button)({
@@ -59,9 +59,6 @@ const AddPropertyButton = styled(Button)({
   height: '50px'
 });
 
-
-
-
 const LoadMoreButton = styled(Button)({
   marginTop: '1em',
   backgroundColor: '#FDA117',
@@ -76,24 +73,24 @@ const UserProfileContainer = styled(Box)({
   flexDirection: 'column',
   alignItems: 'center',
   padding: '2em',
-  marginTop: '-50px' // Move content closer to the top
+  marginTop: '-50px' 
 });
 
 const ProfileImage = styled('img')({
-  width: '250px', // Adjust size as needed
-  height: '300px', // Adjust size as needed
+  width: '250px', 
+  height: '300px', 
   borderRadius: '50%',
   padding: '10px',
   objectFit: 'cover',
-  marginTop: '-30px' // Move image closer to the top
+  marginTop: '-30px'
 });
 
 const CalendarIframe = styled('iframe')({
   border: 0,
   width: '150%',
   height: '350px',
-  marginTop: '0px', // Move calendar closer to the top
-  marginLeft: '-200px' // Adjust position as needed
+  marginTop: '0px', 
+  marginLeft: '-200px' 
 });
 
 const PropertyGrid = styled(Grid)({
@@ -103,14 +100,14 @@ const PropertyGrid = styled(Grid)({
 });
 
 const EditPropertyButton = styled(Button)({
-  backgroundColor: '#FDA117', // Green color for the button
+  backgroundColor: '#FDA117', 
   width: '50%',
   color: 'white',
   '&:hover': {
-    backgroundColor: '#E59400' // Darker green on hover
+    backgroundColor: '#E59400' 
   },
-  margin: '10px 0', // Add some margin around the button
-  //marginLeft: '2em'
+  margin: '10px 0', 
+ 
   
 });
 

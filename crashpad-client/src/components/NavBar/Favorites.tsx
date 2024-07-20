@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box,Typography,  Button } from "@mui/material";
-import PropertyCard from '../Dashboard/PropertyCard';
+import { Grid, Box,Typography,  Button, Card, CardMedia, IconButton, CardContent } from "@mui/material";
+import PropertyCardFavorite from '../Dashboard/PropertyCardFavorite';
 import PropertyService from '../../services/property/propertyService';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from "@mui/icons-material/Star";
+import SideNav from './SideNav';
+import UserSettings from '../Dashboard/UserSettings';
+import SearchAndToggleBar from '../Dashboard/SearchAndToggleBar';
 
 
 interface Property {
   id: number;
   title: string;
-  imageUrl: string;
+  imageUrl: string[];
   isNew: boolean;
   rating: string;
   distance: string;
@@ -37,23 +42,19 @@ interface PropertyResponseDTO {
   userModifyDate: string;
 }
 
-interface PropertyGridProps {
-  selectedAmenities: string[];
-}
-
-
-
-// const Favorites = () => {
-const Favorites = () => {
+const Favorites: React.FC = () => {
   const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // Explicitly define the type for the error state
+  const [error, setError] = useState<string | null>(null);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         const userId = user.id;
+        
         if (userId) {
           const response = await PropertyService.getUserFavorites(userId);
           setProperties(response);
@@ -71,59 +72,120 @@ const Favorites = () => {
     fetchFavorites();
   }, []);
 
-  const mapToProperty = (dto: PropertyResponseDTO): Property => ({
-    id: dto.propertyId,
-    title: dto.title,
-    imageUrl: dto.imageUrls[0],
-    isNew: new Date(dto.userCreationDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-    rating: "4.5",
-    distance: "2 km",
-    dateRange: "Jan 1 - Jan 10",
-    price: dto.discountedPrice || dto.originalPrice,
-  });
+  const removeFromFavorite = async(propertyId:number)=>{
+    try {
 
-  if (loading) {
-    return <Typography>Loading...</Typography>;
+      console.log("Property ID to be removed from FAV: ", propertyId)
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const userId = user.id;
+        const propertyID = propertyId; // pass property id from clicked card 
+
+      if(userId && propertyID){
+        
+      const response = await PropertyService.removeFavorite(userId, propertyID);
+      console.log(response); 
+      alert("Property removed from favorites successfully!");
+    }
+    } catch (error) {
+      console.error("Error removing favorite", error);
+      alert("Failed to remove property from favorites.");
+    }
   }
 
-  if (error) {
-    return <Typography>{error}</Typography>;
-  }
+  // const handleNavigateToProperty = (property: PropertyResponseDTO) => {
+  //   Navigate("/propertyreservation");
+  // };
 
-  // const filteredProperties = properties.filter((property) =>
-  //   selectedAmenities.every((amenity) => property.amenities.includes(amenity))
-  // );
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
   
+
+  const handleSearchResults = (results: any[]) => {
+    setSearchResults(results);
+  };
+
   return (
+    <>
     <div>
-       <Typography variant="h4" gutterBottom>
-        Your Favorite Properties
-      </Typography>
-      {/* <Grid container spacing={2} sx={{ paddingTop: "16px", paddingLeft: "100px" }}>
-        {filteredProperties.map((dto) => {
-          const property = mapToProperty(dto);
-          return (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={property.id}>
-              <PropertyCard property={property} />
-            </Grid>
-          );
-        })}
-      </Grid> */}
-      
-    
-      {/* <Grid container spacing={2}>
-        {properties.length > 0 ? (
-          properties.map((property) => (
-            <Grid item key={property.propertyId} xs={12} sm={6} md={4}>
-              <PropertyCard property={property} />
-            </Grid>
-          ))
-        ) : (
-          <Typography>No favorite properties found</Typography>
-        )}
-      </Grid> */}
+    <SideNav />
+    <UserSettings />
+    <SearchAndToggleBar
+        selectedAmenities={selectedAmenities}
+        setSelectedAmenities={setSelectedAmenities}
+        handleSearchResults={handleSearchResults}
+      />
     </div>
+    <div style={{marginLeft:"80px"}}>
+    <Grid container >
+      {properties.map((property) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} key={property.propertyId}>
+          <Card
+            sx={{
+              maxWidth: 345,
+              position: "relative",
+              cursor: "pointer",
+              borderRadius: "15px",
+              marginTop:"25px",
+              margin: "27px",
+              marginRight:"0"
+            }}
+          >
+            <CardMedia
+              component="img"
+              height="270"
+              image={property.imageUrls[0]}
+              alt={property.title}
+              sx={{ borderRadius: "18px" }}
+            />
+            <IconButton
+              aria-label="add to favorites" onClick={(e) => {
+                removeFromFavorite(property.propertyId);
+              }}
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                color: "red",
+                "&:hover": {
+                  color: "orange",
+                  transform: "scale(1.2)",
+                },
+              }}
+            >
+              <FavoriteIcon />
+            </IconButton>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Typography gutterBottom variant="subtitle1" component="div" fontWeight="bold">
+                  {property.title}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <StarIcon sx={{ fontSize: 16 }} />
+                </Box>
+              </Box>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                <Typography variant="body2" color="text.secondary">
+                  {property.city}, {property.state}
+                </Typography>
+                <Typography variant="subtitle1" color="black">
+                  ${property.originalPrice} per night
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+    </div>
+    </>
   );
-};
+
+}
 
 export default Favorites;
