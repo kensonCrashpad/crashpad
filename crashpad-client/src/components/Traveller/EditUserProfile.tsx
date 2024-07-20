@@ -61,13 +61,6 @@ const UserProfile: React.FC = () => {
     gender: userData.gender || "Male",
     aboutMe: userData.description || "Description" ,
     id: userData.id || 0 ,
-    // userName: userData.username || '',
-    // firstName:userData.firstName || '',
-    // lastName: userData.lastName || '', 
-    // age: userData.age || 0,
-    // gender: userData.gender || '',
-    // aboutMe: userData.description || '',
-    // id:userData.id || 0,
   });
 
  

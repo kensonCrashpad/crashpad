@@ -80,7 +80,7 @@ public class FavoritesController {
 
     @GetMapping("/user/{userId}")
     public ApiResponse<PropertyResponseDTO> getUserFavorites(@PathVariable Long userId) {
-        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileById(userId);
+        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userId);
         if (userProfileOptional.isEmpty()) {
             return new ApiResponse<>("fail", "User Not Found", null);
         }

@@ -18,7 +18,7 @@ interface Property {
   price: string;
 }
 
-// PropertyCard component
+// PropertyCardFavorite component
 interface PropertyCardProps {
   property: Property;
 }
@@ -45,28 +45,28 @@ interface PropertyResponseDTO {
   userModifyDate: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
+const PropertyCardFavorite: React.FC<PropertyCardProps> = ({ property }) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
-  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
+  const [properties, setProperties] = useState<PropertyResponseDTO | null>(null);
+  
 
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
+        console.log("Property Details are", propertiesData);
+        setProperties(propertiesData);
+        // console.log("Property Details are", propertiesData);
+      } catch (error) {
+        console.error("Error fetching properties", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchProperties = async () => {
-  //     try {
-  //       // const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
-  //       // console.log("Property Details are", propertiesData);
-  //       // setProperties(propertiesData);
-  //       // console.log("Property Details are", propertiesData);
-  //     } catch (error) {
-  //       console.error("Error fetching properties", error);
-  //     }
-  //   };
+    fetchProperties();
+  }, []);
 
-  //   fetchProperties();
-  // }, []);
-
-    const handleNavigateToProperty = () => {
+  const handleNavigateToProperty = () => {
     navigate("/propertyreservation", { state: { property } });
   };
 
@@ -79,7 +79,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     if (!isFavorite) {
       try {
         const response = await PropertyService.addFavorite(userId, property.id);
-        console.log(response); 
+        console.log(response); // Handle success response
         alert("Property marked as favorite successfully!");
       } catch (error) {
         console.error("Error adding favorite", error);
@@ -88,7 +88,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     } else {
       try {
         const response = await PropertyService.removeFavorite(userId, property.id);
-        console.log(response); 
+        console.log(response); // Handle success response
         alert("Property removed from favorites successfully!");
       } catch (error) {
         console.error("Error removing favorite", error);
@@ -185,4 +185,4 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   );
 };
 
-export default PropertyCard;
+export default PropertyCardFavorite;

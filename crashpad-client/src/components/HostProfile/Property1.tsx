@@ -32,7 +32,11 @@ interface UserFormState {
   about: string;
 }
 
-const Property1: React.FC = () => {
+interface Property1Props {
+  properties?: any; 
+}
+
+const Property1: React.FC<Property1Props> = ({properties}) => {
   const [propertyFormData, setPropertyFormData] = useState<UserFormState>({
     location: "Property 1",
     address: "123 Main St",
@@ -124,6 +128,7 @@ const Property1: React.FC = () => {
           {ShowProperty ? (
             <Box sx={{ flexGrow: 1, m: 4, paddingLeft: "6em" }}>
               <PropertyForm
+              properties ={properties}
                 profileFormData={propertyFormData}
                 onClickEdit={handleShowProperty}
               />

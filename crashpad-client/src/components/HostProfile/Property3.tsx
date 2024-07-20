@@ -38,9 +38,12 @@ interface UserFormState {
     zip: number;
     about: string;
 }
-  
 
-const Property3: React.FC = () => {
+interface Property3Props {
+    properties?: any; 
+  }
+
+const Property3: React.FC<Property3Props> = ({properties}) => {
     const [propertyFormData, setPropertyFormData] = useState<UserFormState>({
         location: 'City',
         address: '123 Main St',
@@ -130,7 +133,7 @@ const Property3: React.FC = () => {
                 </Grid>
                 {
                 ShowProperty ? 
-                (<PropertyForm profileFormData={propertyFormData}  onClickEdit={handleShowProperty}></PropertyForm>) : 
+                (<PropertyForm  properties ={properties} profileFormData={propertyFormData}  onClickEdit={handleShowProperty}></PropertyForm>) : 
                 (<Grid sx={{ mr:2,ml:2 }} >
                     <form noValidate autoComplete="off" onSubmit={propertySubmitData}>
                         <TextField
