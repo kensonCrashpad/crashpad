@@ -45,7 +45,7 @@ const EditButton = styled(Button)({
   '&:hover': {
     backgroundColor: '#E59400'
   },
-  width: '100px',
+  width: '150px',
   height: '50px'
 });
 
@@ -266,6 +266,10 @@ const HUserProfile: React.FC = () => {
   const handleAddProperty = () => {
     navigate('/createproperty');
   };
+  const handleEditProperty = (propertyId: number) => {
+    navigate('/host/editproperty', { state: { propertyId: propertyId } });
+  };
+  
 
   return (
     <>
@@ -362,7 +366,7 @@ const HUserProfile: React.FC = () => {
                 variant="contained"
                 onClick={handleShowProfile}
               >
-                Edit
+                Edit Profile
               </EditButton>
               <AddPropertyButton
                 fullWidth
@@ -405,7 +409,7 @@ const HUserProfile: React.FC = () => {
                   <EditPropertyButton
                     fullWidth
                     variant="contained"
-                    onClick={() => navigate(`/editproperty/${property.propertyId}`)}
+                    onClick={() => handleEditProperty(property.propertyId)}
                    >
                     Edit Property
                   </EditPropertyButton>

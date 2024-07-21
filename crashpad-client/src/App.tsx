@@ -22,6 +22,7 @@ import AddProperty from "./components/HostProfile/AddProperty";
 import EditHostProfile from "./components/HostProfile/EditHostProfile";
 import ShowProfile from './components/Traveller/ShowProfile';
 import ImageCarousel from './components/HostProfile/ImageCarousel';
+import EditProperty  from './components/HostProfile/EditProperty';
 
 
 import './App.css';
@@ -56,6 +57,7 @@ function App() {
             <Route path="/host/edit" element={<EditHostProfile />} />
             <Route path="/host/profile" element={<HUserProfile />} />
             <Route path="/carousel" element={<ImageCarousel images={[]} />} />
+            <Route path="/host/editproperty" element={<EditProperty/>} />
           </Routes>
         </div>
       </BrowserRouter>
