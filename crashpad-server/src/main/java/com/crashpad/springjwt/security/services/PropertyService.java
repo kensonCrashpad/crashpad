@@ -135,6 +135,7 @@ public class PropertyService {
         propertyResponseDTO.setUserModifyDate(property.getUserModifyDate().toString());
         propertyResponseDTO.setLongitude(propertyResponseDTO.getLongitude());
         propertyResponseDTO.setLatitude(propertyResponseDTO.getLatitude());
+        propertyResponseDTO.setHostId(property.getUser().getId());
 
         List<Amenity> amenities = amenityService.findAmenitiesByPropertyId(property.getPropertyId());
         List<String> amenityNames = amenities.stream().map(Amenity::getAmenityName).collect(Collectors.toList());

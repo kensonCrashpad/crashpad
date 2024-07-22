@@ -31,7 +31,6 @@ public class FavoritesController {
     @Autowired
     private AmenityService amenityService;
 
-
     @PostMapping("/add")
     public ResponseEntity<?> addFavorite(@RequestParam Long userId, @RequestParam Long propertyId) {
         Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userId);

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { TextField, Button, Typography, Grid, Box, Card, CardMedia } from "@mui/material";
@@ -46,8 +47,8 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
-  
 }
+
 interface Property {
   id: number;
   title: string;

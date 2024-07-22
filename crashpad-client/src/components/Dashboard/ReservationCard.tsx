@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-
+import BookingService from "../../services/booking/BookingService"
 
 const CustomCard = styled(Card)({
   maxWidth: 420,
@@ -49,8 +49,36 @@ const ReservationCard = ({properties}:any) => {
   };
 
   const navigate = useNavigate();
-  const handleReserveCrashpad = () => {
-    navigate("/payment");
+  
+  //We are bypassing the code and not navigating to the Payment, instead reservation is made without payment for testing purposes. 
+  // const handleReserveCrashpad = () => {
+  //   navigate("/payment");
+  // };
+
+  const handleReserveCrashpad = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const userId = user.id;
+      const bookingData = {
+        propertyId: properties.propertyId,
+        travelerId: userId,
+        startDate: checkIn,
+        endDate: checkOut, 
+        statusOfBooking: "Booked",
+        totalCost: TotalPriceAfterTax,
+        specialRequests: "",
+        hostId:properties.userId,
+        
+      };
+
+      const response = await BookingService.createBooking(bookingData);
+      console.log("Booking response:", response.data);
+      alert("Booking successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Failed to create booking.");
+    }
   };
 
   const orginalPrice = parseInt(properties.originalPrice)

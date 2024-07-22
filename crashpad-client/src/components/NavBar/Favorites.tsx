@@ -40,6 +40,7 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+  hostId : number;
 }
 
 const Favorites: React.FC = () => {

@@ -43,6 +43,7 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+
 }
 
 const PropertyCardFavorite: React.FC<PropertyCardProps> = ({ property }) => {

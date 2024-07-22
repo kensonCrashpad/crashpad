@@ -30,4 +30,12 @@ public class BookingService {
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
     }
+
+    public List<Booking> findBookingsByHostId(Long hostId) {
+        return bookingRepository.findByHostId(hostId);
+    }
+
+    public List<Booking> findBookingsByTravelerId(Long travelerId) {
+        return bookingRepository.findByTravelerId(travelerId);
+    }
 }

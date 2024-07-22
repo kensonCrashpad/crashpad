@@ -51,9 +51,6 @@ public class Property {
     private User user;
 
     @OneToMany(mappedBy = "property")
-    private Set<Booking> bookings;
-
-    @OneToMany(mappedBy = "property")
     private Set<PropertyImage> propertyImages;
 
     @OneToMany(mappedBy = "property")
