@@ -34,4 +34,5 @@ public class PropertyImageService {
     public void deletePropertyImage(Long id) {
         propertyImageRepository.deleteById(id);
     }
+
 }
