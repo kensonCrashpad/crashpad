@@ -565,6 +565,7 @@ const AddProperty: React.FC = () => {
   </StyledPaper>
 </FormContainer>
 
+
     </>
   );
 };

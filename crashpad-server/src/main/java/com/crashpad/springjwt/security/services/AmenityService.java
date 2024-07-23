@@ -34,4 +34,5 @@ public class AmenityService {
     public List<Amenity> findAmenitiesByPropertyId(Long propertyId) {
         return amenityRepository.findByProperty_PropertyId(propertyId);
     }
+
 }

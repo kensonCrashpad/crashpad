@@ -97,43 +97,6 @@ const EditHostProfile: React.FC = () => {
   };
 
 
-
-
-
-//   const profileSubmitData = async (e: any) => {
-//     e.preventDefault();
-//     setShowUserProfile(false);
-//     const isValid = validateForm();
-//     const id = localStorage.getItem("id");
-
-//     const profileData = {
-//       firstName: profileFormData.firstName,
-//       lastName: profileFormData.lastName,
-//       gender: profileFormData.gender,
-//       age: profileFormData.age,
-//       description: profileFormData.aboutMe,
-//       userId: id,
-//     }
-//     if (isValid) {
-//     try {
-//       const updateResponse = await UserService.updateUserProfile(profileFormData.id, profileData);
-//       if (file) {
-//         const formData = new FormData();
-//         formData.append('file', file);
-//         const imageUploadResponse = await UserService.updateUserProfile(profileFormData.id, formData);
-//       }
-//       navigate('/host/profile');
-//     } catch (error) {
-//       console.error("Error updating profile:", error);
-//       setShowUserProfile(true); 
-//     }
-//   } else {
-//     setShowUserProfile(true); 
-//   }
-// };
-
-
-
 const profileSubmitData = async (e: any) => {
   e.preventDefault();
   setShowUserProfile(false);
@@ -153,12 +116,6 @@ const profileSubmitData = async (e: any) => {
 
     try{
       const response = await UserService.updateUserProfile(id, profileData, file);
-      // if(file){
-      //   const formData = new FormData();
-      //   formData.append('file', file);
-      //   // await UserService.updateUserProfile(id,formData);
-      // }
-      //Add if Condition
       console.log("Response of Edit profile data", response);
       navigate('/host/profile');
     } catch (error){
@@ -179,7 +136,7 @@ const profileSubmitData = async (e: any) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      //set fIe
+      
       setFile(e.target.files[0]);
     }
   };
@@ -204,11 +161,7 @@ const profileSubmitData = async (e: any) => {
                 style={{ width: "100%", borderRadius: "20px", height: "350px" }}
               />
             ) : (
-            //   <img
-            //   src={profileFormData.profileImage}
-            //   alt="Profile"
-            //   style={{ width: "100%", borderRadius: "20px", height: "350px" }}
-            // />
+          
             <img
             src={`${profileFormData.profileImage}?${new Date().getTime()}`}
             alt="Profile"

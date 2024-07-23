@@ -60,7 +60,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       </ArrowButton>
       {images.map((image, index) => (
         <ImageSlide key={index} isActive={index === current}>
-          <CardMedia component="img" height="320" image={image} alt={`Property image ${index + 1}`} sx={{ objectFit: 'fill', width: '100%' }}/>
+          <CardMedia component="img" height="260" image={image} alt={`Property image ${index + 1}`} sx={{ objectFit: 'fill', width: '100%' }}/>
         </ImageSlide>
       ))}
       <ArrowButton onClick={nextSlide}>
