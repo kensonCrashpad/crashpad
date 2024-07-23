@@ -195,6 +195,7 @@ const CreateProfile: React.FC = () => {
                       variant="outlined"
                       name="age"
                       type="number"
+                      InputProps={{ inputProps: { min: 1 } }}
                       value={travelerFormData.age}
                       onChange={handleTravelerChange}
                       helperText={errors.age}
