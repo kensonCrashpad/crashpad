@@ -11,7 +11,6 @@ import Property3 from "./components/HostProfile/Property3";
 import PadMap from "./components/Dashboard/Map";
 import Payment from "./components/Payment/Payment";
 import TravelerProfile from "./components/Traveller/TravelerProfile";
-import EditProfile from "./components/Traveller/EditUserProfile";
 import EditAccommodation from "./components/Traveller/EditAccommodation";
 import { Favorite, Message, Settings as MuiSettings } from "@mui/icons-material";
 import Trips from "./components/NavBar/Trips";
@@ -46,7 +45,6 @@ function App() {
             <Route path="/propertyreservation" element={<PropertyReservation/>} />
             <Route path="/payment" element={<Payment />} /> 
             <Route path="/travelerprofile" element={<TravelerProfile />} />
-            <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/editaccommodation" element={<EditAccommodation />} />
             <Route path="/createproperty" element={<AddProperty />} />
             <Route path="/favorites" element={<Favorites />} />

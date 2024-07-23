@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Nav from "../NavBar/SideNav";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -6,51 +6,121 @@ import BasicTabs from "./CustomTabs";
 import ShowAccomodation from "./ShowAccomodation";
 import ShowUserProfile from "./ShowUserProfile";
 import UserSettings from "../Dashboard/UserSettings";
-import UserService from "../../services/user/user";
-import { UserProfile } from "./UserProfile";
-import { AccommodationInterface } from "./ShowAccomodation";
+import { useLocation } from 'react-router-dom';
+import { Avatar, Paper } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-const Booking: React.FC = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [userAccomodation, setUserAccomodation] = useState<AccommodationInterface | null>(null);
+const Sidebar = styled(Paper)({
+  padding: "1em",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  marginRight: "1em",
+  width: "250px",
+});
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const userId = user.id;
-        
-        const profileResponse = await UserService.getUserProfile(userId);
-        setUserProfile(profileResponse.data);
+const MainContent = styled(Box)({
+  flexGrow: 1,
+  flexDirection: "column"
+});
 
-        const accommodationResponse = await UserService.getUserAccommodation(userId);
-        setUserAccomodation(accommodationResponse.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+const ShowProfile: React.FC = () => {
+  const location = useLocation();
+  const { state } = location;
 
-    fetchUserData();
-  }, []);
+  // Extract state or set defaults
+  const {
+    userName,
+    firstName,
+    lastName,
+    age,
+    gender,
+    email,
+    phone,
+    description,
+    travelerImage,
+    type,
+    length,
+    width,
+    height,
+    year,
+    make,
+    model,
+    vehicleDescription
+  } = state || {};
+
+  // Check if the RV data exists
+  const hasRVData = type || length || width || height || year || make || model || vehicleDescription;
+  const hasUserData = userName || firstName || lastName || age || gender || email || phone || description;
 
   return (
     <>
       <UserSettings />
       <Nav />
       <Box sx={{ flexGrow: 1, m: 5, marginLeft: "8em" }}>
-        <Grid container spacing={1} sx={{ height: "90vh", marginLeft: "15em"}}>
-          <Grid item xs={12} md={6} sx={{ minWidth: "40%" }}>
-            <ShowUserProfile userProfile={userProfile} />
-            <ShowAccomodation userAccomodation={userAccomodation} />
+        <Grid container spacing={1}>
+          <Grid item>
+            <Sidebar elevation={3}>
+              <Avatar 
+                variant="square"
+                src={travelerImage || undefined} 
+                sx={{ width: 'auto', height: 'auto', mb: 2, borderRadius: 3 }}
+              />
+            </Sidebar>
           </Grid>
-          {/* <Grid item xs={12} md={6} sx={{ minWidth: "40%" }}>
-            
-          </Grid> */}
+          <Grid item xs>
+            <MainContent>
+              <Grid container spacing={2}>
+                {/* Render ShowUserProfile only if user data is available */}
+                {hasUserData && (
+                  <Grid item>
+                    <ShowUserProfile 
+                      userName={userName} 
+                      firstName={firstName} 
+                      lastName={lastName} 
+                      age={age} 
+                      gender={gender} 
+                      email={email}
+                      phone={phone} 
+                      description={description}
+                      userProfileData={{
+                        userName,
+                        firstName,
+                        lastName,
+                        age,
+                        gender,
+                        email,
+                        phone,
+                        description,
+                        travelerImage
+                      }} 
+                    />
+                  </Grid>
+                )}
+                {/* Render ShowAccomodation only if RV data is available */}
+                {hasRVData && (
+                  <Grid item>
+                    <ShowAccomodation 
+                      type={type} 
+                      length={length} 
+                      width={width} 
+                      height={height} 
+                      year={year} 
+                      make={make} 
+                      model={model} 
+                      vehicleDescription={vehicleDescription} 
+                      rvFormData={{type, length, width, height, year, make, model, vehicleDescription,travelerImage}} 
+                    />
+                  </Grid>
+                )}
+              </Grid>
+            </MainContent>
+          </Grid>
+          <BasicTabs />
         </Grid>
-        <BasicTabs />
       </Box>
     </>
   );
 };
 
-export default Booking;
+export default ShowProfile;

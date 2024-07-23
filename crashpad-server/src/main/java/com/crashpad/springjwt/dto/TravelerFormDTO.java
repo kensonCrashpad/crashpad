@@ -9,5 +9,6 @@ public class TravelerFormDTO {
     private int age;
     private String gender;
     private String phone;
-    private String aboutMe;
+    private String email;
+    private String description;
 }

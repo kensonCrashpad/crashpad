@@ -1,191 +1,85 @@
-// import React, { useState, useEffect } from "react";
-// import { Button, Grid, Typography, Box } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-// import Myprofile from "./Myprofile.png";
-// import { useNavigate, useLocation } from "react-router-dom";
-// import { UserProfile } from './UserProfile';
-
-// const EditButton = styled(Button)({
-//   backgroundColor: "#FDA117",
-//   padding: "10px 20px",
-//   height: "30px",
-//   minWidth: "fit-content",
-//   marginTop: "1em",
-// });
-
-// interface UserFormState {
-//   userName: string;
-//   firstName: string;
-//   lastName: string;
-//   age: number;
-//   gender: string;
-//   phone: number;
-//   aboutMe: string;
-// }
-
-// interface ShowUserProfileProps {
-//   userProfile: UserProfile | null;
-// }
-
-// const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
-//   const location = useLocation();
-//   const updatedProfileData = location.state;
-
-//   const [profileFormData, setProfileFormData] = useState<UserFormState>({
-//     userName: updatedProfileData?.username || '',
-//     firstName: updatedProfileData?.firstName || '',
-//     lastName: updatedProfileData?.lastName || '',
-//     age: updatedProfileData?.age || 0,
-//     gender: updatedProfileData?.gender || '',
-//     phone: Number(updatedProfileData?.phone) || 0, // Convert to number here
-//     aboutMe: updatedProfileData?.aboutMe || "",
-//   });
-
-//   const navigate = useNavigate();
-
-//   const handleEdit = () => {
-//     navigate("/editprofile", { state: updatedProfileData });
-//   };
-
-//   useEffect(() => {
-//     if (updatedProfileData) {
-//       // console.log("UserProfile details printed from SHOW USER PROFILE FILE: ", updatedProfileData);
-//       setProfileFormData({
-//         userName: updatedProfileData.username,
-//         firstName: updatedProfileData.firstName,
-//         lastName: updatedProfileData.lastName,
-//         age: updatedProfileData.age,
-//         gender: updatedProfileData.gender,
-//         phone: Number(updatedProfileData.phone) || 0, 
-//         aboutMe: updatedProfileData.aboutMe || "I love traveling different places!",
-//       });
-//     }
-//   }, [updatedProfileData]);
-
-//   return (
-//     <Box sx={{ padding: 2, backgroundColor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-//       <Typography variant="h4" gutterBottom>Traveller Details</Typography>
-//       <Grid container spacing={2}>
-//         <Grid item xs={12} sm={6}>
-//           <img
-//             src={Myprofile}
-//             style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-//             alt="Profile"
-//           />
-//         </Grid>
-//         <Grid item xs={12} sm={5}>
-//           <Typography variant="body1"><strong>User Name:</strong> {profileFormData.userName}</Typography>
-//           <Typography variant="body1"><strong>Name:</strong> {profileFormData.firstName} {profileFormData.lastName}</Typography>
-//           <Typography variant="body1"><strong>Gender:</strong> {profileFormData.gender}</Typography>
-//           <Typography variant="body1"><strong>Age:</strong> {profileFormData.age} years</Typography>
-//           <Typography variant="body1"><strong>Phone:</strong> {profileFormData.phone}</Typography>
-//           <Typography variant="body1"><strong>About:</strong> {profileFormData.aboutMe}</Typography>
-//           <EditButton variant="contained" onClick={handleEdit}>Edit</EditButton>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// };
-
-// export default ShowUserProfile;
-import React, { useState, useEffect } from "react";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import React from 'react';
+import { Typography, Box, Avatar, Button, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Myprofile from "./Myprofile.png";
-import Myprofile1 from "./Myprofile.jpg";
-import { useNavigate, useLocation } from "react-router-dom";
-import { UserProfile } from './UserProfile';
+import { useNavigate } from 'react-router-dom';
 
-const EditButton = styled(Button)({
-  backgroundColor: "#FDA117",
-  padding: "10px 20px",
-  height: "30px",
-  minWidth: "fit-content",
-  marginTop: "1em",
-});
-
-interface UserFormState {
+interface ShowUserProfileProps {
   userName: string;
   firstName: string;
   lastName: string;
   age: number;
   gender: string;
-  phone: number;
-  aboutMe: string;
+  email: string;
+  phone: string;
+  description: string;
+  userProfileData: any; 
 }
 
-interface ShowUserProfileProps {
-  userProfile: UserProfile | null;
-}
+const ProfileContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  backgroundColor: theme.palette.background.paper,
+  textAlign: 'center',
+}));
 
-const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userProfile }) => {
-  const location = useLocation();
-  const updatedProfileData = location.state;
+const ProfileDetails = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  '& > *': {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
-  const [profileFormData, setProfileFormData] = useState<UserFormState>({
-    userName: updatedProfileData?.username || '',
-    firstName: updatedProfileData?.firstName || '',
-    lastName: updatedProfileData?.lastName || '',
-    age: updatedProfileData?.age || 0,
-    gender: updatedProfileData?.gender || '',
-    phone: Number(updatedProfileData?.phone) || 0, // Convert to number here
-    aboutMe: updatedProfileData?.aboutMe || "",
-  });
-
+const ShowUserProfile: React.FC<ShowUserProfileProps> = ({ userName, firstName, lastName, age, gender, email, phone, description, userProfileData }) => {
   const navigate = useNavigate();
 
-  const handleEdit = () => {
-    navigate("/editprofile", { state: updatedProfileData });
+  const handleEditProfile = () => {
+    navigate('/travelerprofile', { state: userProfileData });
   };
 
-  useEffect(() => {
-    if (updatedProfileData) {
-      // console.log("UserProfile details printed from SHOW USER PROFILE FILE: ", updatedProfileData);
-      setProfileFormData({
-        userName: updatedProfileData.username,
-        firstName: updatedProfileData.firstName,
-        lastName: updatedProfileData.lastName,
-        age: updatedProfileData.age,
-        gender: updatedProfileData.gender,
-        phone: Number(updatedProfileData.phone) || 0, 
-        aboutMe: updatedProfileData.aboutMe || "I love traveling different places!",
-      });
-    }
-  }, [updatedProfileData]);
-
   return (
-    <Box sx={{ padding: 1, backgroundColor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
-      <Typography variant="h4" gutterBottom>Traveller</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          {profileFormData.gender == "Male" ? (<img
-            src={Myprofile}
-            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-            alt="Profile"
-          />) :(<img
-            src={Myprofile1}
-            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-            alt="Profile"
-          />)}
-          {/* <img
-            src={Myprofile1}
-            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-            alt="Profile"
-          /> */}
+    <ProfileContainer>
+      <ProfileDetails>
+        <Typography variant="h5" component="div" gutterBottom sx={{ mt: 4 }}>
+          Hey, {userName}! Check your details below
+        </Typography>
+        <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+          {firstName && lastName && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>NAME :</strong> {firstName} {lastName}</Typography>
+            </Grid>
+          )}
+          {age && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>AGE :</strong> {age}</Typography>
+            </Grid>
+          )}
+          {gender && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>GENDER :</strong> {gender}</Typography>
+            </Grid>
+          )}
+          {phone && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>MOBILE NUMBER :</strong> {phone}</Typography>
+            </Grid>
+          )}
+          {email && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>EMAIL ID :</strong> {email}</Typography>
+            </Grid>
+          )}
+          {description && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>About Me:</strong> {description}</Typography>
+            </Grid>
+          )}
         </Grid>
-        <Grid item xs={12} sm={6} style= {{paddingRight: 100, paddingTop : 25}}>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Username:</strong> {profileFormData.userName}</Typography>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Name:</strong> {profileFormData.firstName} {profileFormData.lastName}</Typography>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Gender:</strong> {profileFormData.gender}</Typography>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Age:</strong> {profileFormData.age} years</Typography>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>Phone:</strong> {profileFormData.phone}</Typography>
-          <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'space-between' }}><strong>About:</strong> {profileFormData.aboutMe}</Typography>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <EditButton variant="contained" onClick={handleEdit}>Edit</EditButton>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+        <Button variant="contained" component="span" style={{ backgroundColor: "#FDA117" }} onClick={handleEditProfile} sx={{ mt: 2 }}>
+          Edit Profile
+        </Button>
+      </ProfileDetails>
+    </ProfileContainer>
   );
 };
 
