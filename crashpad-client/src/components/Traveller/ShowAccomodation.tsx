@@ -1,200 +1,95 @@
-// import React, { useState, useEffect } from "react";
-// import { Button, Grid, Typography, Box } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-// import RVimage from "../../images/vehicle.jpg"; // Adjust the import path as necessary
-// import { useNavigate, useLocation } from "react-router-dom";
-
-// const EditButton = styled(Button)({
-//   backgroundColor: "#FDA117",
-//   padding: "10px 20px",
-//   height: "30px",
-//   minWidth: "fit-content",
-//   marginTop: "1em",
-// });
-
-// export interface AccommodationInterface {
-//   type: string;
-//   length: number;
-//   width: number;
-//   height: number;
-//   year: number;
-//   model: string;
-//   make: string;
-//   aboutAcco: string;
-// }
-
-// interface ShowAccomodationProps {
-//   userAccomodation: AccommodationInterface | null;
-// }
-
-// const ShowAccommodation: React.FC<ShowAccomodationProps> = (userAccomodation) => {
-//   const location = useLocation();
-//   const updatedProfileData = location.state as AccommodationInterface;
-
-//   const [accommodationFormData, setAccommodationFormData] = useState<AccommodationInterface>({
-//     type: updatedProfileData?.type || '',
-//     length: updatedProfileData?.length || 0,
-//     width: updatedProfileData?.width || 0,
-//     height: updatedProfileData?.height || 0,
-//     year: updatedProfileData?.year || 0,
-//     model: updatedProfileData?.model || '',
-//     make: updatedProfileData?.make || '',
-//     aboutAcco: updatedProfileData?.aboutAcco || '',
-//   });
-
-//   const navigate = useNavigate();
-
-//   const handleEdit = () => {
-//     navigate("/editaccommodation", { state: updatedProfileData });
-//   };
-
-//   useEffect(() => {
-//     if (updatedProfileData) {
-//       setAccommodationFormData({
-//         type: updatedProfileData.type,
-//         length: updatedProfileData.length,
-//         width: updatedProfileData.width,
-//         height: updatedProfileData.height,
-//         year: updatedProfileData.year,
-//         model: updatedProfileData.model,
-//         make: updatedProfileData.make,
-//         aboutAcco: updatedProfileData.aboutAcco,
-//       });
-//     }
-//   }, [updatedProfileData]);
-
-//   return (
-//     <Box sx={{ padding: 2, backgroundColor: 'background.paper', borderRadius: 2, boxShadow: 1, marginTop: 4 }}>
-//       <Typography variant="h4" gutterBottom>Accommodation Details</Typography>
-//       <Grid container spacing={2}>
-//         <Grid item xs={12} sm={6}>
-//           <img
-//             src={RVimage}
-//             style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-//             alt="Accommodation"
-//           />
-//         </Grid>
-//         <Grid item xs={12} sm={5}>
-//           <Typography variant="body1"><strong>Type:</strong> {accommodationFormData.type}</Typography>
-//           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//             <Typography variant="body1"><strong>Length:</strong> {accommodationFormData.length} ft</Typography>
-//             <Typography variant="body1"><strong>Width:</strong> {accommodationFormData.width} ft</Typography>
-//           </Box>
-//           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//             <Typography variant="body1"><strong>Height:</strong> {accommodationFormData.height} ft</Typography>
-//             <Typography variant="body1"><strong>Year:</strong> {accommodationFormData.year}</Typography>
-//           </Box>
-//           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//             <Typography variant="body1"><strong>Model:</strong> {accommodationFormData.model}</Typography>
-//             <Typography variant="body1"><strong>Make:</strong> {accommodationFormData.make}</Typography>
-//           </Box>
-//           <Typography variant="body1"><strong>About:</strong> {accommodationFormData.aboutAcco}</Typography>
-//           <EditButton variant="contained" onClick={handleEdit}>Edit</EditButton>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// };
-
-// export default ShowAccommodation;
-
-
-import React, { useState, useEffect } from "react";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import React from 'react';
+import { Typography, Box, Button, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import RVimage from "../../images/vehicle.jpg"; // Adjust the import path as necessary
-import { useNavigate, useLocation } from "react-router-dom";
-
-const EditButton = styled(Button)({
-  backgroundColor: "#FDA117",
-  padding: "10px 20px",
-  height: "30px",
-  minWidth: "fit-content",
-  marginTop: "1em",
-});
-
-export interface AccommodationInterface {
-  type: string;
-  length: number;
-  width: number;
-  height: number;
-  year: number;
-  model: string;
-  make: string;
-  aboutAcco: string;
-}
+import { useNavigate } from 'react-router-dom';
 
 interface ShowAccomodationProps {
-  userAccomodation: AccommodationInterface | null;
+  type: string;
+  length: string;
+  width: string;
+  height: string;
+  year: string;
+  make: string;
+  model: string;
+  vehicleDescription: string;
+  rvFormData: any;
 }
 
-const ShowAccommodation: React.FC<ShowAccomodationProps> = ({ userAccomodation }) => {
-  const location = useLocation();
-  const updatedProfileData = location.state as AccommodationInterface;
+const RVContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
+  backgroundColor: theme.palette.background.paper,
+  textAlign: 'center',
+}));
 
-  const [accommodationFormData, setAccommodationFormData] = useState<AccommodationInterface>({
-    type: updatedProfileData?.type || '',
-    length: updatedProfileData?.length || 0,
-    width: updatedProfileData?.width || 0,
-    height: updatedProfileData?.height || 0,
-    year: updatedProfileData?.year || 0,
-    model: updatedProfileData?.model || '',
-    make: updatedProfileData?.make || '',
-    aboutAcco: updatedProfileData?.aboutAcco || '',
-  });
+const RVeDetails = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  '& > *': {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
+const ShowAccomodation: React.FC<ShowAccomodationProps> = ({ type, length, width, height, year, make, model, vehicleDescription, rvFormData }) => {
   const navigate = useNavigate();
-
-  const handleEdit = () => {
-    navigate("/editaccommodation", { state: updatedProfileData });
+  const handleEditRV = () => {
+    navigate('/travelerprofile', { state: rvFormData });
   };
 
-  useEffect(() => {
-    if (updatedProfileData) {
-      setAccommodationFormData({
-        type: updatedProfileData.type,
-        length: updatedProfileData.length,
-        width: updatedProfileData.width,
-        height: updatedProfileData.height,
-        year: updatedProfileData.year,
-        model: updatedProfileData.model,
-        make: updatedProfileData.make,
-        aboutAcco: updatedProfileData.aboutAcco,
-      });
-    }
-  }, [updatedProfileData]);
-
   return (
-    <Box sx={{ padding: 2, backgroundColor: 'background.paper', borderRadius: 2, boxShadow: 1, marginTop: 4 }}>
-      <Typography variant="h4" gutterBottom>Accommodation</Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <img
-            src={RVimage}
-            style={{ width: "100%", borderRadius: "20px", height: "230px" }}
-            alt="Accommodation"
-          />
+    <RVContainer>
+      <RVeDetails>
+        <Typography variant="h5" component="div" gutterBottom sx={{ mt: 4 }}>
+           Check your RV Details below
+        </Typography>
+        <Grid container justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
+          {type && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>Type :</strong> {type}</Typography>
+            </Grid>
+          )}
+          {length && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>Length :</strong> {length}</Typography>
+            </Grid>
+          )}
+          {width && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>Width :</strong> {width}</Typography>
+            </Grid>
+          )}
+          {height && (
+            <Grid item xs={8} sm={6}>
+              <Typography variant="body1" align="left"><strong>Height :</strong> {height}</Typography>
+            </Grid>
+          )}
+          {year && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>Year :</strong> {year}</Typography>
+            </Grid>
+          )}
+          {make && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>Make:</strong> {make}</Typography>
+            </Grid>
+          )}
+          {model && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>Model:</strong> {model}</Typography>
+            </Grid>
+          )}
+          {vehicleDescription && (
+            <Grid item xs={12}>
+              <Typography variant="body1" align="left"><strong>Vehicle Description:</strong> {vehicleDescription}</Typography>
+            </Grid>
+          )}
         </Grid>
-        <Grid item xs={12} sm={6} style= {{paddingRight: 100, paddingTop : 25}}>
-          <Typography variant="body1"><strong>Type:</strong> {accommodationFormData.type}</Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="body1"><strong>Length:</strong> {accommodationFormData.length} ft</Typography>
-            <Typography variant="body1"><strong>Width:</strong> {accommodationFormData.width} ft</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="body1"><strong>Height:</strong> {accommodationFormData.height} ft</Typography>
-            <Typography variant="body1"><strong>Year:</strong> {accommodationFormData.year}</Typography>
-          </Box>
-          <Typography variant="body1"><strong>Model:</strong> {accommodationFormData.model}</Typography>
-          <Typography variant="body1"><strong>Make:</strong> {accommodationFormData.make}</Typography>
-          <Typography variant="body1"><strong>About:</strong> {accommodationFormData.aboutAcco}</Typography>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <EditButton variant="contained" onClick={handleEdit}>Edit</EditButton>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+        <Button variant="contained" component="span" style={{ backgroundColor: "#FDA117" }} onClick={handleEditRV} sx={{ mt: 2 }}>
+          Edit RV Details
+        </Button>
+      </RVeDetails>
+    </RVContainer>
   );
 };
 
-export default ShowAccommodation;
+export default ShowAccomodation;
