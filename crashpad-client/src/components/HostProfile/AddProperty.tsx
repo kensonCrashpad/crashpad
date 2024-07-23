@@ -33,6 +33,7 @@ import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import PetsIcon from '@mui/icons-material/Pets';
 import PowerIcon from '@mui/icons-material/Power';
+import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -315,6 +316,7 @@ const AddProperty: React.FC = () => {
             label="Capacity"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.capacity}
           />
@@ -327,6 +329,7 @@ const AddProperty: React.FC = () => {
             label="Length (ft)"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.padMaxLength}
           />
@@ -339,6 +342,7 @@ const AddProperty: React.FC = () => {
             label="Width (ft)"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.padMaxWidth}
           />
@@ -364,6 +368,7 @@ const AddProperty: React.FC = () => {
             label="Availability"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.availability}
           />
@@ -376,6 +381,7 @@ const AddProperty: React.FC = () => {
             label="Original Price"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.originalPrice}
           />
@@ -388,6 +394,7 @@ const AddProperty: React.FC = () => {
             label="Discounted Price"
             variant="outlined"
             type="number"
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={handleInputChange}
             helperText={errors.discountedPrice}
           />
@@ -475,7 +482,7 @@ const AddProperty: React.FC = () => {
               </Tooltip>
               <Tooltip title = "WaterHooks">
               <IconButton onClick={() => handleAmenityClick('Waterhooks')}>
-                <OpacityIcon
+                <WaterDropOutlinedIcon 
                   color={
                     propertyFormData.amenities.includes('Waterhooks')
                       ? 'primary'
