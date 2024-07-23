@@ -22,7 +22,6 @@ import HostForm from "./HostForm";
 import ImageCarousel from './ImageCarousel';
 
 
-
 const LoginButton = styled(Button)({
   marginTop: '1em',
   backgroundColor: '#FDA117',
@@ -45,7 +44,7 @@ const EditButton = styled(Button)({
   '&:hover': {
     backgroundColor: '#E59400'
   },
-  width: '100px',
+  width: '150px',
   height: '50px'
 });
 
@@ -79,10 +78,10 @@ const UserProfileContainer = styled(Box)({
 const ProfileImage = styled('img')({
   width: '250px', 
   height: '300px', 
-  borderRadius: '50%',
+  borderRadius: '25px',
   padding: '10px',
   objectFit: 'cover',
-  marginTop: '-30px'
+  marginTop: '-20px'
 });
 
 const CalendarIframe = styled('iframe')({
@@ -101,14 +100,12 @@ const PropertyGrid = styled(Grid)({
 
 const EditPropertyButton = styled(Button)({
   backgroundColor: '#FDA117', 
-  width: '50%',
+  width: '10%',
   color: 'white',
   '&:hover': {
     backgroundColor: '#E59400' 
   },
-  margin: '10px 0', 
- 
-  
+  margin: '10px 0',  
 });
 
 interface UserFormState {
@@ -186,10 +183,18 @@ const HUserProfile: React.FC = () => {
             profileImage: userData.profileImage,
           });
 
+          // const propertiesResponse = await PropertyService.getUserProperties(userId);
+          // setUserProperties(propertiesResponse);
+          // console.log("Get propertiesResponse properties - ", propertiesResponse)
+          // setDisplayedProperties(propertiesResponse.slice(0, propertiesPerPage));
+
           const propertiesResponse = await PropertyService.getUserProperties(userId);
-          setUserProperties(propertiesResponse);
-          console.log("Get propertiesResponse properties - ", propertiesResponse)
-          setDisplayedProperties(propertiesResponse.slice(0, propertiesPerPage));
+          const sortedProperties = propertiesResponse.sort((a: Property, b: Property) =>
+            new Date(b.userCreationDate).getTime() - new Date(a.userCreationDate).getTime()
+          );
+          setUserProperties(sortedProperties);
+          setDisplayedProperties(sortedProperties.slice(0, propertiesPerPage));
+
         }
       } catch (error) {
         console.error('Error fetching profile', error);
@@ -266,6 +271,10 @@ const HUserProfile: React.FC = () => {
   const handleAddProperty = () => {
     navigate('/createproperty');
   };
+  const handleEditProperty = (propertyId: number) => {
+    navigate('/host/editproperty', { state: { propertyId: propertyId } });
+  };
+  
 
   return (
     <>
@@ -362,7 +371,7 @@ const HUserProfile: React.FC = () => {
                 variant="contained"
                 onClick={handleShowProfile}
               >
-                Edit
+                Edit Profile
               </EditButton>
               <AddPropertyButton
                 fullWidth
@@ -384,12 +393,35 @@ const HUserProfile: React.FC = () => {
         <PropertyGrid container spacing={2}>
           {displayedProperties.map((property) => (
             <Grid item xs={12} sm={6} md={4} key={property.propertyId}>
-              <Card>
+              <Card
+              sx={{
+                maxWidth: 345,
+                position: "relative",
+                cursor: "pointer",
+                margin: "0px",
+                borderRadius: "15px"
+              }}>
+
                 <ImageCarousel images={property.imageUrls} />
                 <CardContent>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
                   <Typography gutterBottom variant="h5" component="div">
                     {property.title}
                   </Typography>
+                  <EditPropertyButton
+                    variant="contained"
+                    onClick={() => handleEditProperty(property.propertyId)}
+                  >
+                    Edit
+                  </EditPropertyButton>
+                </Box>
                   <Typography variant="body2" color="text.secondary">
                     {property.description}
                   </Typography>
@@ -402,13 +434,6 @@ const HUserProfile: React.FC = () => {
                   <Typography variant="body2" color="text.secondary">
                     Price: ${property.discountedPrice}
                   </Typography>
-                  <EditPropertyButton
-                    fullWidth
-                    variant="contained"
-                    onClick={() => navigate(`/editproperty/${property.propertyId}`)}
-                   >
-                    Edit Property
-                  </EditPropertyButton>
                 </CardContent>
               </Card>
             </Grid>
@@ -428,3 +453,5 @@ const HUserProfile: React.FC = () => {
 }
 
 export default HUserProfile;
+
+

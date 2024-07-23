@@ -21,7 +21,7 @@ interface PropertyFormState {
     originalPrice: number;
     discountedPrice: number;
     amenities: string[];
-    imageUrls: File[]; // This should be File[]
+  imageUrls: File[]; // This should be File[]
   }
 
 interface PropertyResponseDTO {
@@ -44,6 +44,7 @@ interface PropertyResponseDTO {
     imageUrls: string[];
     userCreationDate: string;
     userModifyDate: string;
+    hostId: number;
   }
   
 
@@ -104,6 +105,29 @@ class PropertyService {
       return response.data;
     } catch (error) {
       console.error('Error saving property', error);
+      throw error;
+    }
+  }
+
+  async editPropertyDetails(propertyId: number, propertyFormData: PropertyFormState): Promise<void> {
+    const formData = new FormData();
+    formData.append('property', new Blob([JSON.stringify(propertyFormData)], { type: 'application/json' }));
+    formData.append('amenities', new Blob([JSON.stringify(propertyFormData.amenities)], { type: 'application/json' }));
+    propertyFormData.imageUrls.forEach((image: File, index: number) => {
+      formData.append('propertyImages', image);
+    });
+
+    try {
+      const response = await axios.post(API_URL + `${propertyId}/edit`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...authHeader()
+        },
+      });
+      console.log('Property edited successfully', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error editing property', error);
       throw error;
     }
   }
@@ -189,6 +213,7 @@ class PropertyService {
     console.log("Get User FAVORITE properties - ", response)
     return response.data.data;
   }
+  
 
 
 }

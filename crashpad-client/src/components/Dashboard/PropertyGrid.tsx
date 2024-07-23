@@ -35,6 +35,7 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+  hostId:number;
 }
 
 interface PropertyGridProps {
@@ -100,7 +101,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities, properti
 
   return (
     <>
-      <Grid container spacing={2} sx={{ paddingTop: "16px", paddingLeft: "111px" }}>
+     <Grid container spacing={2} sx={{ paddingTop: "16px", paddingLeft: "111px" }}>
         {currentProperties.map((dto) => {
           const property = mapToProperty(dto);
           return (
@@ -114,23 +115,20 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities, properti
         sx={{
           display: "flex",
           justifyContent: "center",
-          mt: 4,
+          mt: "13px",
         }}
       >
         <Pagination
           count={Math.ceil(filteredProperties.length / propertiesPerPage)}
           page={currentPage}
           onChange={handlePageChange}
-          color="primary"
           sx={{
-            "&.Mui-selected": {
-              backgroundColor: "#e7874c",
-              color: "white",
-              "&. MuiPaginationItem-root": {
-                backgroundColor: "#e7874c",
+            "& .MuiPaginationItem-root": {
+              "&.Mui-selected": {
+                backgroundColor: '#f37218db',
                 color: "white",
                 "&:hover": {
-                  backgroundColor: "#e7874c",
+                  backgroundColor: '#e5762952',
                 },
               },
             },

@@ -90,12 +90,15 @@ public class UserController {
         }
 
         // Save traveler details to user profile
+        userProfile.setUsername(user.getUsername());
+        userProfile.setRole(user.getRole());
         userProfile.setFirstName(travelerFormData.getFirstName());
         userProfile.setLastName(travelerFormData.getLastName());
         userProfile.setAge(travelerFormData.getAge());
         userProfile.setGender(travelerFormData.getGender());
+        userProfile.setEmail(travelerFormData.getEmail());
         userProfile.setPhone(travelerFormData.getPhone());
-        userProfile.setDescription(travelerFormData.getAboutMe());
+        userProfile.setDescription(travelerFormData.getDescription());
 
         if (travelerImage != null && !travelerImage.isEmpty()) {
             String travelerImageUrl = fileStorageService.store(travelerImage);
@@ -200,17 +203,21 @@ public class UserController {
             userProfile = new UserProfile();
             userProfile.setUser(user);
         }
-
+        userProfile.setUsername(user.getUsername());
+        userProfile.setRole(user.getRole());
         userProfile.setFirstName(userProfileDTO.getFirstName());
         userProfile.setLastName(userProfileDTO.getLastName());
         userProfile.setGender(userProfileDTO.getGender());
         userProfile.setAge(userProfileDTO.getAge());
+        userProfile.setEmail(userProfileDTO.getEmail());
+        userProfile.setPhone(userProfileDTO.getPhone());
         userProfile.setDescription(userProfileDTO.getDescription());
 
         if (file != null && !file.isEmpty()) {
             String fileUrl = s3FileUploadService.uploadFile(file);
             userProfile.setProfileImage(fileUrl);
         }
+        System.out.println(userProfile);
 
         userProfileService.saveUserProfile(userProfile);
 

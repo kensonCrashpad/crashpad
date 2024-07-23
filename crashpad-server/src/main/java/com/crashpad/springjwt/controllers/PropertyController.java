@@ -3,6 +3,7 @@ package com.crashpad.springjwt.controllers;
 import com.crashpad.springjwt.dto.*;
 import com.crashpad.springjwt.models.*;
 import com.crashpad.springjwt.models.PropertyImage;
+import com.crashpad.springjwt.repository.PropertyAmenityRepository;
 import com.crashpad.springjwt.security.services.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ public class PropertyController {
     @Autowired
     private S3FileUploadService s3FileUploadService;
 
+    @Autowired
+    private PropertyAmenityRepository propertyAmenityRepository;
+
+    @Autowired
+    private PropertyAmenityService propertyamenityService;
+
 
     @GetMapping("/all-properties")
     public ApiResponse<PropertyResponseDTO> getAllProperties() {
@@ -47,7 +54,6 @@ public class PropertyController {
         List<PropertyResponseDTO> propertyResponseDTOs = properties.stream()
                 .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
-
         return new ApiResponse<>("success", "All properties fetched successfully", propertyResponseDTOs);
     }
 
@@ -89,12 +95,95 @@ public class PropertyController {
 
 
         PropertyDTO savedPropertyDTO = convertToDTO(savedProperty);
-//        savedPropertyDTO.setImageUrls(savedImages.stream()
-//                .map(this::convertToDTO)
-//                .collect(Collectors.toList()));
-
         return ResponseEntity.ok(savedPropertyDTO);
     }
+
+
+    @PostMapping("/{propertyId}/edit")
+    public ResponseEntity<PropertyDTO> editProperty(
+            @PathVariable Long propertyId,
+            @RequestPart("property") PropertyDTO propertyDTO,
+            @RequestPart(value = "propertyImages", required = false) List<MultipartFile> propertyImages,
+            @RequestPart("amenities") List<String> incomingAmenities) {
+
+        Optional<Property> propertyOptional = propertyService.findPropertyById(propertyId);
+        if (!propertyOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Property property = propertyOptional.get();
+
+        // Update property details
+        property.setAvailability(propertyDTO.getAvailability());
+        property.setCapacity(propertyDTO.getCapacity());
+        property.setPropertyType(propertyDTO.getPropertyType());
+        property.setUserModifyDate(LocalDateTime.now());
+        property.setPadMaxWidth(propertyDTO.getPadMaxWidth());
+        property.setPadMaxLength(propertyDTO.getPadMaxLength());
+        property.setDescription(propertyDTO.getDescription());
+        property.setStreet(propertyDTO.getStreet());
+        property.setCity(propertyDTO.getCity());
+        property.setState(propertyDTO.getState());
+        property.setZip(propertyDTO.getZip());
+        property.setOriginalPrice(propertyDTO.getOriginalPrice());
+        property.setDiscountedPrice(propertyDTO.getDiscountedPrice());
+        property.setTitle(propertyDTO.getTitle());
+        property.setName(propertyDTO.getName());
+
+        Property updatedProperty = propertyService.saveProperty(property);
+
+
+
+
+        // Update property images if provided
+        if (propertyImages != null && !propertyImages.isEmpty()) {
+            // First delete existing images
+            propertyImageService.deletePropertyImage(propertyId);
+            // Then save new images
+            List<PropertyImage> savedImages = new ArrayList<>();
+            for (MultipartFile image : propertyImages) {
+                String propertyImagesS3url = s3FileUploadService.uploadPropertyImages(image);
+                PropertyImage propertyImage = new PropertyImage();
+                propertyImage.setImageUrl(propertyImagesS3url);
+                propertyImage.setProperty(updatedProperty);
+                savedImages.add(propertyImageService.savePropertyImage(propertyImage));
+            }
+        }
+
+
+        if (incomingAmenities != null) {
+            // Update amenities
+            List<Amenity> currentAmenities = amenityService.findAmenitiesByPropertyId(propertyId);
+            List<String> currentAmenityNames = currentAmenities.stream()
+                    .map(Amenity::getAmenityName)
+                    .collect(Collectors.toList());
+
+            // Remove amenities that are not in the incoming list
+            for (Amenity currentAmenity : currentAmenities) {
+                if (!incomingAmenities.contains(currentAmenity.getAmenityName())) {
+                    amenityService.deleteAmenity(currentAmenity.getAmenityId());
+                }
+            }
+
+            // Add new amenities that are not currently in the database
+            for (String incomingAmenity : incomingAmenities) {
+                if (!currentAmenityNames.contains(incomingAmenity)) {
+                    Amenity newAmenity = new Amenity();
+                    newAmenity.setAmenityName(incomingAmenity);
+                    newAmenity.setProperty(updatedProperty);
+                    amenityService.saveAmenity(newAmenity);
+                }
+            }
+        } else {
+            // If no amenities came from front end, remove all current amenities
+            propertyamenityService.deletePropertyAmenity(propertyId);
+        }
+
+
+        PropertyDTO updatedPropertyDTO = convertToDTO(updatedProperty);
+        return ResponseEntity.ok(updatedPropertyDTO);
+    }
+
 
 
     @GetMapping("/{userId}/properties")
@@ -138,6 +227,7 @@ public class PropertyController {
         propertyResponseDTO.setUserModifyDate(property.getUserModifyDate().toString());
         propertyResponseDTO.setLongitude(propertyResponseDTO.getLongitude());
         propertyResponseDTO.setLatitude(propertyResponseDTO.getLatitude());
+        propertyResponseDTO.setHostId(property.getUser().getId());
 
         List<Amenity> amenities = amenityService.findAmenitiesByPropertyId(property.getPropertyId());
         List<String> amenityNames = amenities.stream().map(Amenity::getAmenityName).collect(Collectors.toList());
@@ -150,6 +240,12 @@ public class PropertyController {
                 .map(PropertyImage::getImageUrl)
                 .collect(Collectors.toList());
         propertyResponseDTO.setImageUrls(imageUrls);
+
+        // Setting new fields
+        propertyResponseDTO.setDistance("7 miles");
+        propertyResponseDTO.setRating("4.5");
+        propertyResponseDTO.setStartDate(LocalDateTime.now());
+        propertyResponseDTO.setEndDate(LocalDateTime.now().plusDays(3));
 
 //        List<String> imageUrls = images.stream().map(PropertyImage::getImageUrl).collect(Collectors.toList());
 //        propertyResponseDTO.setImageUrls(imageUrls);

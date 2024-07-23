@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { styled, Box, ToggleButton, ToggleButtonGroup, IconButton, Toolbar, Paper, InputBase } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import BathtubIcon from "@mui/icons-material/Bathtub";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import WifiIcon from "@mui/icons-material/Wifi";
-import PetsIcon from "@mui/icons-material/Pets";
-import ElectricCarIcon from "@mui/icons-material/ElectricCar";
+import { styled, Box, ToggleButton, ToggleButtonGroup, IconButton, Toolbar, Paper, InputBase, Tooltip } from "@mui/material";
+import WifiIcon from '@mui/icons-material/Wifi';
+import ShowerIcon from '@mui/icons-material/Shower';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import FireplaceIcon from '@mui/icons-material/Fireplace';
+import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
+import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
+import PetsIcon from '@mui/icons-material/Pets';
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import PropertyService from "../../services/property/propertyService";
@@ -90,79 +94,157 @@ const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmeniti
           backgroundColor: "white",
         }}
       >
-
         <StyledToggleButtonGroup size="small" value={selectedAmenities} onChange={handleToggle}>
-        <ToggleButton
-          value="wifi"
-          aria-label="wifi"
-          sx={{
-            "&.Mui-selected, &.Mui-selected:hover": {
-              backgroundColor: "darkorange",
-              color: "white",
-            },
-          }}
-        >
-          <WifiIcon />
-        </ToggleButton>
-        <ToggleButton
-          value="baths"
-          aria-label="baths"
-          sx={{
-            "&.Mui-selected, &.Mui-selected:hover": {
-              backgroundColor: "darkorange",
-              color: "white",
-            },
-          }}
-        >
-          <BathtubIcon />
-        </ToggleButton>
-        <ToggleButton
-          value="restaurant"
-          aria-label="restaurant"
-          sx={{
-            "&.Mui-selected, &.Mui-selected:hover": {
-              backgroundColor: "darkorange",
-              color: "white",
-            },
-          }}
-        >
-          <RestaurantIcon />
-        </ToggleButton>
-        <ToggleButton
-          value="pets"
-          aria-label="pets"
-          sx={{
-            "&.Mui-selected, &.Mui-selected:hover": {
-              backgroundColor: "darkorange",
-              color: "white",
-            },
-          }}
-        >
-          <PetsIcon />
-        </ToggleButton>
-        <ToggleButton
-          value="electric"
-          aria-label="electric"
-          sx={{
-            "&.Mui-selected, &.Mui-selected:hover": {
-              backgroundColor: "darkorange",
-              color: "white",
-            },
-          }}
-        >
-          <ElectricCarIcon />
-        </ToggleButton>
+          <Tooltip title="WiFi" arrow>
+            <ToggleButton
+              value="wifi"
+              aria-label="wifi"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <WifiIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Baths" arrow>
+            <ToggleButton
+              value="baths"
+              aria-label="baths"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <ShowerIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Restaurant" arrow>
+            <ToggleButton
+              value="restaurant"
+              aria-label="restaurant"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <TableRestaurantIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Pets" arrow>
+            <ToggleButton
+              value="pets"
+              aria-label="pets"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <PetsIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Fast Food" arrow>
+            <ToggleButton
+              value="fastFood"
+              aria-label="fastFood"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <FastfoodIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Fireplace" arrow>
+            <ToggleButton
+              value="fireplace"
+              aria-label="fireplace"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <FireplaceIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Outdoor Grill" arrow>
+            <ToggleButton
+              value="outdoorGrill"
+              aria-label="outdoorGrill"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <OutdoorGrillIcon />  
+            </ToggleButton>
+          </Tooltip>  
+          <Tooltip title="Local Laundry" arrow>
+            <ToggleButton
+              value="localLaundry"
+              aria-label="localLaundry"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <LocalLaundryServiceIcon />   
+            </ToggleButton>
+          </Tooltip>  
+          <Tooltip title="Electrical Services" arrow>
+            <ToggleButton
+              value="electricalServices"
+              aria-label="electricalServices"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <ElectricalServicesIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Local Gas Station" arrow>
+            <ToggleButton
+              value="localGasStation"
+              aria-label="localGasStation"
+              sx={{
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  backgroundColor: "darkorange",
+                  color: "white",
+                },
+              }}
+            >
+              <LocalGasStationIcon />    
+            </ToggleButton>
+          </Tooltip>
         </StyledToggleButtonGroup>
-        </Box>
-        <Box
-          sx={{
-            marginLeft: "auto",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-
-          }}
-        >
+      </Box>
+      <Box
+        sx={{
+          marginLeft: "auto",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
         <ToggleButtonGroup value={viewMode} exclusive onChange={handleViewModeChange}>
           <Link to="../dashboard">
             <ToggleButton value="list" sx={{ height: "30px", padding: "0px 10px" }}>
@@ -175,7 +257,7 @@ const SearchAndToggleBar: React.FC<SearchAndToggleBarProps> = ({ selectedAmeniti
             </ToggleButton>
           </Link>
         </ToggleButtonGroup>
-        </Box>
+      </Box>
     </Toolbar>
   );
 };

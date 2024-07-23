@@ -8,20 +8,7 @@ class User {
     getUserProfile(userId : number) {
         return axios.post(API_URL + 'profile/get', { userId }, { headers: authHeader() });
     }
-
-    // updateUserProfile(profileFormData: Record<string, any>) {
-    //     return axios.post(API_URL + 'profile/update', profileFormData, { headers: authHeader() });
-    // }
-
-      // uploadProfileImage(userId: string | null, formData: FormData) {
-      //   return axios.post(`${API_URL}${userId}/uploadProfileImage`, formData, {
-      //       headers: {
-      //           'Content-Type': 'multipart/form-data',
-      //           ...authHeader()
-      //       }
-      //   });
-      // }
-      updateUserProfile(userId:string | null , profileData:any, file: File | null) {
+    updateUserProfile(userId:string | null , profileData:any, file: File | null) {
         const formData = new FormData();
         formData.append('userProfile', new Blob([JSON.stringify(profileData)], { type: 'application/json' }));
         if (file) {

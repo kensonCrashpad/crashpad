@@ -4,10 +4,7 @@ import lombok.Data;
 
 @Data
 public class BookingDTO {
-	
     private Long bookingId;
-    private String pastBooking;
-    private String currentBooking;
     private String startDate;
     private String endDate;
     private String userCreationDate;
@@ -15,5 +12,7 @@ public class BookingDTO {
     private String statusOfBooking;
     private Double totalCost;
     private String specialRequests;
-
+    private Long hostId;
+    private Long travelerId;
+    private Long propertyId;
 }

@@ -43,6 +43,7 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+  hostId: number;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
@@ -79,7 +80,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     if (!isFavorite) {
       try {
         const response = await PropertyService.addFavorite(userId, property.id);
-        console.log(response); 
+        console.log(response); // Handle success responsex
         alert("Property marked as favorite successfully!");
       } catch (error) {
         console.error("Error adding favorite", error);
