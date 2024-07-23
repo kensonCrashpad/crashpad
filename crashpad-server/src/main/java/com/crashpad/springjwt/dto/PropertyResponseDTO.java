@@ -2,6 +2,7 @@ package com.crashpad.springjwt.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -29,6 +30,10 @@ public class PropertyResponseDTO {
     private Double longitude;
     private Long hostId;
 
+    private String distance;
+    private String rating;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     // Getters and Setters
     // You can use Lombok annotations here if preferred
 }
