@@ -152,6 +152,12 @@ public class PropertyController {
                 .collect(Collectors.toList());
         propertyResponseDTO.setImageUrls(imageUrls);
 
+        // Setting new fields
+        propertyResponseDTO.setDistance("7 miles");
+        propertyResponseDTO.setRating("4.5");
+        propertyResponseDTO.setStartDate(LocalDateTime.now());
+        propertyResponseDTO.setEndDate(LocalDateTime.now().plusDays(3));
+
 //        List<String> imageUrls = images.stream().map(PropertyImage::getImageUrl).collect(Collectors.toList());
 //        propertyResponseDTO.setImageUrls(imageUrls);
 
