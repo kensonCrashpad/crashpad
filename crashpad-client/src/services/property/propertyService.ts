@@ -44,6 +44,7 @@ interface PropertyResponseDTO {
     imageUrls: string[];
     userCreationDate: string;
     userModifyDate: string;
+    hostId: number;
   }
   
 
@@ -212,6 +213,7 @@ class PropertyService {
     console.log("Get User FAVORITE properties - ", response)
     return response.data.data;
   }
+  
 
 
 }
