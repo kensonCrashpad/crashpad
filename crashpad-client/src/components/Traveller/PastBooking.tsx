@@ -1,10 +1,8 @@
-import React from "react";
 import { Typography } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import crashPadImg from '../../images/Pad1.jpg';
+import React from "react";
 import rvpark1 from '../../images/rvpark1.jpg';
 import rvpark2 from '../../images/rvpark2.jpg';
 import rvpark3 from '../../images/rvpark3.jpg';

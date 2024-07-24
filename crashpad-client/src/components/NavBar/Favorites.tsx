@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Box,Typography,  Button, Card, CardMedia, IconButton, CardContent } from "@mui/material";
-import PropertyCardFavorite from '../Dashboard/PropertyCardFavorite';
-import PropertyService from '../../services/property/propertyService';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
-import SideNav from './SideNav';
-import UserSettings from '../Dashboard/UserSettings';
+import { Box, Card, CardContent, CardMedia, Grid, IconButton, Typography } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import PropertyService from '../../services/property/propertyService';
 import SearchAndToggleBar from '../Dashboard/SearchAndToggleBar';
+import UserSettings from '../Dashboard/UserSettings';
+import SideNav from './SideNav';
 
 
-interface Property {
-  id: number;
-  title: string;
-  imageUrl: string[];
-  isNew: boolean;
-  rating: string;
-  distance: string;
-  dateRange: string;
-  price: string;
-}
 
 interface PropertyResponseDTO {
   propertyId: number;
@@ -103,6 +92,7 @@ const Favorites: React.FC = () => {
 
   const handleSearchResults = (results: any[]) => {
     setSearchResults(results);
+    console.debug(searchResults);
   };
 
   return (

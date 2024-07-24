@@ -209,7 +209,6 @@ public class UserController {
         userProfile.setLastName(userProfileDTO.getLastName());
         userProfile.setGender(userProfileDTO.getGender());
         userProfile.setAge(userProfileDTO.getAge());
-        userProfile.setEmail(userProfileDTO.getEmail());
         userProfile.setPhone(userProfileDTO.getPhone());
         userProfile.setDescription(userProfileDTO.getDescription());
 

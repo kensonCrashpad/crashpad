@@ -1,9 +1,9 @@
 import axios from "axios";
 import authHeader from "../user/auth-header";
 
-const API_URL = window.location.origin+"/api/property/";
+const API_URL = "http://localhost:80"+"/api/property/";
 
-const Favorite_URL  =  window.location.origin+"/api/favorites/";
+const Favorite_URL  =  "http://localhost:80"+"/api/favorites/";
 
 interface PropertyFormState {
     propertyType: string;

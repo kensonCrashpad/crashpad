@@ -1,20 +1,12 @@
-import React from "react";
 import { Typography } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import StarRating from "../Traveller/Rating";
-import rvpark1 from "../../images/rvpark1.jpg";
-import rvpark2 from "../../images/rvpark2.jpg";
-import rvpark3 from "../../images/rvpark3.jpg";
-import rvpark4 from "../../images/rvpark4.jpeg";
-import rvpark5 from "../../images/rvpark5.jpg";
-import crashPadImg1 from "../../images/rvpark4.jpeg";
+import React from "react";
 import crashPadImg2 from "../../images/Lot2.jpg";
 import crashPadImg3 from "../../images/Lot3.jpg";
-import crashPadImg4 from "../../images/Lot4.jpg";
-import crashPadImg5 from "../../images/Lot5.jpg";
+import crashPadImg1 from "../../images/rvpark4.jpeg";
+import StarRating from "../Traveller/Rating";
 
 const CurrentBooking: React.FC = () => {
   return (

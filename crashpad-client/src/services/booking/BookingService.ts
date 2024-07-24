@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = window.location.origin+"/api/bookings";
+const API_URL = "http://localhost:80"+"/api/bookings";
 
 class BookingService {
   createBooking(bookingData: any) {

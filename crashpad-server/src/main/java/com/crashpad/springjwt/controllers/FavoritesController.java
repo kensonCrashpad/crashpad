@@ -54,7 +54,7 @@ public class FavoritesController {
 
     @PostMapping("/remove")
     public ResponseEntity<?> removeFavorite(@RequestParam Long userId, @RequestParam Long propertyId) {
-        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileById(userId);
+        Optional<UserProfile> userProfileOptional = userProfileService.findUserProfileByUserId(userId);
         if (userProfileOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

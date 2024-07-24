@@ -1,11 +1,9 @@
-import React from "react";
-import Nav from '../NavBar/SideNav';
-import UserSettings from "../Dashboard/UserSettings";
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import React from "react";
+import UserSettings from "../Dashboard/UserSettings";
+import Nav from '../NavBar/SideNav';
 import HUserProfile from "./HUserProfile";
-import BasicTabs from "./Tabs"
 
 const hprofile: React.FC = () => {
 

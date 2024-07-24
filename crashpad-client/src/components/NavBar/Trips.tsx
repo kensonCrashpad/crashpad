@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BookingResponseDTO } from "../../interfaces/BookingResponseDTO"; 
-const API_URL = window.location.origin+"/api/bookings"; 
+const API_URL = "http://localhost:80"+"/api/bookings"; 
 
 
 const Trips: React.FC = () => {
@@ -33,6 +33,7 @@ const Trips: React.FC = () => {
                 if (response) {
                     setBookings(response.data);
                     console.log(`${role} Bookings:`, response.data);
+                    console.debug("bookings",bookings)
                 }
             } catch (error) {
                 console.error("Error fetching bookings", error);

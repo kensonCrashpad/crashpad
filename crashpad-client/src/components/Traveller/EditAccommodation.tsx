@@ -454,13 +454,13 @@
 // export default AccommodationEdit;
 
 
-import React, { useState } from "react";
-import { TextField, Button, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
+import RVimage from "../../images/vehicle.jpg";
 import UserSettings from "../Dashboard/UserSettings";
 import Nav from "../NavBar/SideNav";
-import RVimage from "../../images/vehicle.jpg";
 
 const LoginButton = styled(Button)({
   marginTop: "1em",

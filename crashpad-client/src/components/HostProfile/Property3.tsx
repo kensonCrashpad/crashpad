@@ -1,29 +1,21 @@
-import React, {useState} from 'react';
+import { TextField, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
-import { TextField, Button, Typography  } from '@mui/material';
-import UserSettings from '../Dashboard/UserSettings';
-import Lot9 from '../../images/Lot9.jpg';
+import React, { useState } from 'react';
+import CityScape from '../../images/CityScape.jpg';
 import Lot10 from '../../images/Lot10.jpg';
 import Lot11 from '../../images/Lot11.jpg';
-import CityScape from '../../images/CityScape.jpg'
-import Grid from '@mui/material/Grid';
+import Lot9 from '../../images/Lot9.jpg';
+import UserSettings from '../Dashboard/UserSettings';
 import PropertyForm from './PropertyForm';
 // import Calendar from './Calendar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Link } from 'react-router-dom';
-import Nav from '../NavBar/SideNav'
+import Nav from '../NavBar/SideNav';
 
-const RootContainer = styled('div')({
-    height: '100vh',
-    width: '100vw',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'left'
-      
-});
+
 const SideBySide = styled('div')({
     display: 'flex',
     gap:'5px',
