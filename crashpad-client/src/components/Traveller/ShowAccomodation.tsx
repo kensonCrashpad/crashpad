@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Box, Button, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from 'react-router-dom';
+import ImageCarousel from '../HostProfile/ImageCarousel';
 
 interface ShowAccomodationProps {
   type: string;
@@ -12,6 +13,8 @@ interface ShowAccomodationProps {
   make: string;
   model: string;
   vehicleDescription: string;
+  rvImage: [];
+  imagePreviews: [];
   rvFormData: any;
 }
 
@@ -30,7 +33,7 @@ const RVeDetails = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ShowAccomodation: React.FC<ShowAccomodationProps> = ({ type, length, width, height, year, make, model, vehicleDescription, rvFormData }) => {
+const ShowAccomodation: React.FC<ShowAccomodationProps> = ({ type, length, width, height, year, make, model, rvImage, imagePreviews, vehicleDescription, rvFormData }) => {
   const navigate = useNavigate();
   const handleEditRV = () => {
     navigate('/travelerprofile', { state: rvFormData });
@@ -83,6 +86,7 @@ const ShowAccomodation: React.FC<ShowAccomodationProps> = ({ type, length, width
               <Typography variant="body1" align="left"><strong>Vehicle Description:</strong> {vehicleDescription}</Typography>
             </Grid>
           )}
+          <ImageCarousel images={imagePreviews} />
         </Grid>
         <Button variant="contained" component="span" style={{ backgroundColor: "#FDA117" }} onClick={handleEditRV} sx={{ mt: 2 }}>
           Edit RV Details
