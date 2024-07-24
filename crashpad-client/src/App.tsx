@@ -22,7 +22,7 @@ import EditHostProfile from "./components/HostProfile/EditHostProfile";
 import ShowProfile from './components/Traveller/ShowProfile';
 import ImageCarousel from './components/HostProfile/ImageCarousel';
 import EditProperty  from './components/HostProfile/EditProperty';
-
+import './services/axiosInterceptor'
 
 import './App.css';
 

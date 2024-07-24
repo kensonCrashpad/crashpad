@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
-public class WebSecurityConfig implements WebMvcConfigurer{
+public class WebSecurityConfig implements WebMvcConfigurer {
 
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -44,6 +44,7 @@ public class WebSecurityConfig implements WebMvcConfigurer{
     return authProvider;
   }
 
+  @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry.addResourceHandler("/images/**")
             .addResourceLocations("file:/Users/u1449207/Documents/Crashpad/KensonCrashpad/crashpad/crashpad-server/propertyImage/");
@@ -59,19 +60,17 @@ public class WebSecurityConfig implements WebMvcConfigurer{
     return new BCryptPasswordEncoder();
   }
 
-
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers("/api/auth/**", "/api/test/**", "/reset/password/**", "/api/users/**", "/api/property/**", "/api/favorites/**", "/api/bookings/**").permitAll()
+                    auth.requestMatchers("/api/auth/**", "/api/test/**", "/reset/password/**", "/api/users/**", "/api/property/**", "/api/favorites/**", "/api/bookings/**",
+                                    "/", "/index.html", "/static/**", "/images/**", "/login").permitAll()
                             .anyRequest().authenticated()
-
             )
-            .httpBasic();;
+            .httpBasic();
 
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
