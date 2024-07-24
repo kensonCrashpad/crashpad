@@ -85,10 +85,13 @@ const CreateProfile: React.FC = () => {
   const { state } = location;
   
   const [travelerImage, setTravelerImage] = useState<string | null>(state?.travelerImage || null);
+  const [travelerImageFile, setTravelerImageFile] = useState<File | null>(null);
+  const [rvImageFiles, setRVImageFiles] = useState<File[]>([]);
 
   const handleTravelerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setTravelerImageFile(e.target.files[0]);
       const reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result) {
@@ -106,6 +109,7 @@ const CreateProfile: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+
 
   const initialTravelerFormData: UserFormState = {
     userName: state?.userName || "",
@@ -180,7 +184,7 @@ const CreateProfile: React.FC = () => {
         try {
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             const userId = user.id;
-            await UserService.saveTravelerAndRvDetails(userId, travelerFormData, rvFormData);
+            await UserService.saveTravelerAndRvDetails(userId, travelerFormData, rvFormData, travelerImageFile, rvImageFiles);
             console.log("Profile updated successfully:", updatedProfileData);
             navigate('/showProfile', { state: updatedProfileData });
         } catch (error) {
@@ -190,6 +194,7 @@ const CreateProfile: React.FC = () => {
         console.log("Form validation failed");
     }
 };
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -239,7 +244,7 @@ const CreateProfile: React.FC = () => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
       const fileURLs = filesArray.map((file) => URL.createObjectURL(file));
-      
+      setRVImageFiles(Array.from(e.target.files));
       setRvFormData((prevState) => ({
         ...prevState,
         rvImage: [...prevState.rvImage, ...filesArray],
