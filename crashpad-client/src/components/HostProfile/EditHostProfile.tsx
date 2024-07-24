@@ -264,7 +264,7 @@ const profileSubmitData = async (e: any) => {
               maxRows={4}
               helperText={errors ? errors.aboutMe : ""}
             />
-            <input type="file" onChange={handleFileChange} />
+              <input type="file" onChange={handleFileChange} />
             <LoginButton
               fullWidth
               variant="contained"

@@ -15,7 +15,7 @@ import EditAccommodation from "./components/Traveller/EditAccommodation";
 import { Favorite, Message, Settings as MuiSettings } from "@mui/icons-material";
 import Trips from "./components/NavBar/Trips";
 import Favorites from "./components/NavBar/Favorites";
-import Messages from "./components/NavBar/Messages";
+// import Messages from "./components/NavBar/Messages";
 import Settings from "./components/NavBar/Settings";
 import AddProperty from "./components/HostProfile/AddProperty";
 import EditHostProfile from "./components/HostProfile/EditHostProfile";
@@ -48,7 +48,7 @@ function App() {
             <Route path="/editaccommodation" element={<EditAccommodation />} />
             <Route path="/createproperty" element={<AddProperty />} />
             <Route path="/favorites" element={<Favorites />} />
-            <Route path="/messages" element={<Messages />} />
+            {/* <Route path="/messages" element={<Messages />} /> */}
             <Route path="/trips" element={<Trips />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/showProfile" element={<ShowProfile />} />
