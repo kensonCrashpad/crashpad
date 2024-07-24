@@ -3,11 +3,12 @@ import { Grid, Box, Button, Pagination } from "@mui/material";
 import PropertyCard from "./PropertyCard";
 import DetailedModal from "./DetailedModal";
 import PropertyService from "../../services/property/propertyService";
+import { format } from 'date-fns';
 
 interface Property {
   id: number;
   title: string;
-  imageUrl: string;
+  imageUrls: string[];
   isNew: boolean;
   rating: string;
   distance: string;
@@ -24,6 +25,10 @@ interface PropertyResponseDTO {
   city: string;
   state: string;
   zip: string;
+  rating: string;
+  startDate: string;
+  endDate: string;
+  distance: string;
   capacity: number;
   padMaxLength: string;
   padMaxWidth: string;
@@ -82,16 +87,25 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({ selectedAmenities, properti
     setCurrentPage(value);
   };
 
-  const mapToProperty = (dto: PropertyResponseDTO): Property => ({
-    id: dto.propertyId,
-    title: dto.title,
-    imageUrl: dto.imageUrls[0],
-    isNew: new Date(dto.userCreationDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-    rating: "4.5",
-    distance: "2 km",
-    dateRange: "Jan 1 - Jan 10",
-    price: dto.discountedPrice || dto.originalPrice,
-  });
+  const mapToProperty = (dto: PropertyResponseDTO): Property => {
+    const startDate = new Date(dto.startDate);
+    const endDate = new Date(dto.endDate);
+  
+    // Format dates
+    const formattedStartDate = format(startDate, 'MMM d');
+    const formattedEndDate = format(endDate, 'MMM d');
+  
+    return {
+      id: dto.propertyId,
+      title: dto.title,
+      imageUrls: dto.imageUrls, // Use imageUrls here
+      isNew: new Date(dto.userCreationDate) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      rating: dto.rating,
+      distance: dto.distance,
+      dateRange: `${formattedStartDate} - ${formattedEndDate}`,
+      price: dto.discountedPrice || dto.originalPrice,
+    };
+  };
 
   const filteredProperties = allProperties.filter((property) =>
     selectedAmenities.every((amenity) => property.amenities.includes(amenity))

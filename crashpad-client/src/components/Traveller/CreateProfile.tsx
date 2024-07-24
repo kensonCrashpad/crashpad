@@ -67,6 +67,16 @@ const UploadButton = styled(Button)({
   height: '54px',
   marginTop: '1em',
   marginLeft: '3em',
+  position: 'relative',
+  overflow: 'hidden',
+});
+
+const HiddenFileInput = styled('input')({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  opacity: 0,
+  cursor: 'pointer',
 });
 
 const CreateProfile: React.FC = () => {
@@ -75,10 +85,13 @@ const CreateProfile: React.FC = () => {
   const { state } = location;
   
   const [travelerImage, setTravelerImage] = useState<string | null>(state?.travelerImage || null);
+  const [travelerImageFile, setTravelerImageFile] = useState<File | null>(null);
+  const [rvImageFiles, setRVImageFiles] = useState<File[]>([]);
 
   const handleTravelerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setTravelerImageFile(e.target.files[0]);
       const reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result) {
@@ -96,6 +109,7 @@ const CreateProfile: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+
 
   const initialTravelerFormData: UserFormState = {
     userName: state?.userName || "",
@@ -119,7 +133,8 @@ const CreateProfile: React.FC = () => {
     make: state?.make || '',
     model: state?.model || '',
     vehicleDescription: state?.vehicleDescription || '',
-    rvImage: state?.rvImage || null as File | null,
+    rvImage: state?.rvImage || [], 
+    imagePreviews: state?.imagePreviews || [], 
     travelerImage: state?.travelerImage || ""
   };
 
@@ -169,7 +184,7 @@ const CreateProfile: React.FC = () => {
         try {
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             const userId = user.id;
-            await UserService.saveTravelerAndRvDetails(userId, travelerFormData, rvFormData);
+            await UserService.saveTravelerAndRvDetails(userId, travelerFormData, rvFormData, travelerImageFile, rvImageFiles);
             console.log("Profile updated successfully:", updatedProfileData);
             navigate('/showProfile', { state: updatedProfileData });
         } catch (error) {
@@ -179,6 +194,7 @@ const CreateProfile: React.FC = () => {
         console.log("Form validation failed");
     }
 };
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -225,8 +241,15 @@ const CreateProfile: React.FC = () => {
   };
 
   const handleRVImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setRvFormData({ ...rvFormData, rvImage: e.target.files[0] });
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      const fileURLs = filesArray.map((file) => URL.createObjectURL(file));
+      setRVImageFiles(Array.from(e.target.files));
+      setRvFormData((prevState) => ({
+        ...prevState,
+        rvImage: [...prevState.rvImage, ...filesArray],
+        imagePreviews: [...prevState.imagePreviews, ...fileURLs],
+      }));
     }
   };
 
@@ -484,18 +507,20 @@ const CreateProfile: React.FC = () => {
                                   />
                                 </Grid>
                                 <Grid item xs={4}>
-                                  <input
-                                    accept="image/*"
-                                    style={{ display: 'none' }}
-                                    id="rv-image-upload"
-                                    type="file"
-                                    onChange={handleRVImageChange}
-                                  />
-                                  <label htmlFor="rv-image-upload">
-                                    <UploadButton variant="contained" >
-                                      Upload RV Image
-                                    </UploadButton>
-                                  </label>
+                                <UploadButton variant="contained">
+                                    Upload RV Images
+                                    <HiddenFileInput type="file" multiple onChange={handleRVImageChange} />
+                                  </UploadButton>
+                                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '1em' }}>
+                                    {rvFormData.imagePreviews.map((preview: string, index: number) => (
+                                      <img
+                                        key={index}
+                                        src={preview}
+                                        alt={`Preview ${index}`}
+                                        style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                      />
+                                    ))}
+                                  </Box>
                                 </Grid>
                             </Grid>
 
