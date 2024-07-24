@@ -101,7 +101,7 @@ public class UserController {
         userProfile.setDescription(travelerFormData.getDescription());
 
         if (travelerImage != null && !travelerImage.isEmpty()) {
-            String travelerImageUrl = fileStorageService.store(travelerImage);
+            String travelerImageUrl = s3FileUploadService.uploadFile(travelerImage);
             userProfile.setProfileImage(travelerImageUrl);
         }
 
@@ -125,7 +125,7 @@ public class UserController {
         if (rvImages != null && !rvImages.isEmpty()) {
             List<VehicleImage> savedImages = new ArrayList<>();
             for (MultipartFile image : rvImages) {
-                String imageUrl = fileStorageService.store(image);
+                String imageUrl = s3FileUploadService.uploadPropertyImages(image);
                 VehicleImage vehicleImage = new VehicleImage();
                 vehicleImage.setImageUrl(imageUrl);
                 vehicleImage.setVehicle(savedVehicle);
