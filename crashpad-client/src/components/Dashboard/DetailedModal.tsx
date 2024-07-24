@@ -5,7 +5,7 @@ import { Modal, Box, Typography } from "@mui/material";
 interface Property {
   id: number;
   title: string;
-  imageUrl: string;
+  imageUrls: string[];
   isNew: boolean;
   rating: string;
   distance: string;

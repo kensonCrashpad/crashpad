@@ -37,6 +37,10 @@ interface PropertyResponseDTO {
     zip: string;
     capacity: number;
     padMaxLength: string;
+    rating: string;
+    startDate: string;
+    endDate: string;
+    distance: string;
     padMaxWidth: string;
     description: string;
     availability: string;
@@ -74,6 +78,10 @@ interface PropertyResponseDTO {
     state: string;
     zip: string;
     capacity: number;
+    rating: string;
+    startDate: string;
+    endDate: string;
+    distance: string;
     padMaxLength: string;
     padMaxWidth: string;
     description: string;

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardMedia, CardContent, Typography, IconButton, Box } from "@mui/material";
+import React, { useState } from "react";
+import { Card, CardContent, Typography, IconButton, Box, CardMedia, Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 import PropertyService from "../../services/property/propertyService";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-// Define the Property interface
 interface Property {
   id: number;
   title: string;
-  imageUrl: string;
+  imageUrls: string[];
   isNew: boolean;
   rating: string;
   distance: string;
@@ -18,63 +19,20 @@ interface Property {
   price: string;
 }
 
-// PropertyCard component
 interface PropertyCardProps {
   property: Property;
-}
-
-interface PropertyResponseDTO {
-  propertyId: number;
-  propertyType: string;
-  title: string;
-  name: string;
-  street: string;
-  city: string;
-  state: string;
-  zip: string;
-  capacity: number;
-  padMaxLength: string;
-  padMaxWidth: string;
-  description: string;
-  availability: string;
-  originalPrice: string;
-  discountedPrice: string;
-  amenities: string[];
-  imageUrls: string[];
-  userCreationDate: string;
-  userModifyDate: string;
-  hostId: number;
-  latitude?: number;
-  longitude?: number;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
-  const [properties, setProperties] = useState<PropertyResponseDTO[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-
-  // useEffect(() => {
-  //   const fetchProperties = async () => {
-  //     try {
-  //       // const propertiesData = await PropertyService.fetchPropertyDetailsAndHostDetails(property.id);
-  //       // console.log("Property Details are", propertiesData);
-  //       // setProperties(propertiesData);
-  //       // console.log("Property Details are", propertiesData);
-  //     } catch (error) {
-  //       console.error("Error fetching properties", error);
-  //     }
-  //   };
-
-  //   fetchProperties();
-  // }, []);
-
-    const handleNavigateToProperty = () => {
+  const handleNavigateToProperty = () => {
     navigate("/propertyreservation", { state: { property } });
   };
 
   const toggleFavorite = async () => {
-
     setIsFavorite((prev) => !prev);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const userId = user.id;
@@ -82,7 +40,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     if (!isFavorite) {
       try {
         const response = await PropertyService.addFavorite(userId, property.id);
-        console.log(response); // Handle success responsex
+        console.log(response);
         alert("Property marked as favorite successfully!");
       } catch (error) {
         console.error("Error adding favorite", error);
@@ -91,13 +49,23 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     } else {
       try {
         const response = await PropertyService.removeFavorite(userId, property.id);
-        console.log(response); 
+        console.log(response);
         alert("Property removed from favorites successfully!");
       } catch (error) {
         console.error("Error removing favorite", error);
         alert("Failed to remove property from favorites.");
       }
     }
+  };
+
+  const handlePrevClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? property.imageUrls.length - 1 : prev - 1));
+  };
+
+  const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === property.imageUrls.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -107,17 +75,73 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         position: "relative",
         cursor: "pointer",
         margin: "0px",
-        borderRadius: "15px"
+        borderRadius: "15px",
       }}
-      onClick={handleNavigateToProperty}
     >
-      <CardMedia
-        component="img"
-        height="270"
-        image={property.imageUrl}
-        alt={property.title}
-        sx={{ borderRadius: "18px" }}
-      />
+      <Box
+        sx={{
+          position: 'relative',
+          width: '100%',
+          height: '200px',
+          overflow: 'hidden',
+        }}
+      >
+        <Box
+          onClick={handleNavigateToProperty}
+          sx={{
+            width: '100%',
+            height: '100%',
+            cursor: 'pointer',
+          }}
+        >
+          <CardMedia
+            component="img"
+            src={property.imageUrls[currentIndex]}
+            alt={`Property Image ${currentIndex + 1}`}
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '15px',
+              transition: 'transform 0.5s ease',
+            }}
+          />
+        </Box>
+        <Button
+          onClick={handlePrevClick}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: 8,
+            transform: 'translateY(-50%)',
+            color: 'white',
+            backgroundColor: 'transparent',
+            border: 'none',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            },
+          }}
+        >
+          <ArrowBackIcon />
+        </Button>
+        <Button
+          onClick={handleNextClick}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            right: 8,
+            transform: 'translateY(-50%)',
+            color: 'white',
+            backgroundColor: 'transparent',
+            border: 'none',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            },
+          }}
+        >
+          <ArrowForwardIcon />
+        </Button>
+      </Box>
       <IconButton
         aria-label="add to favorites"
         onClick={(e) => {
