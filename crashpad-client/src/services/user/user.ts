@@ -23,17 +23,17 @@ class User {
         });
     }
         
-    saveTravelerAndRvDetails(userId: number, travelerFormData: any, rvFormData: any) {
+    saveTravelerAndRvDetails(userId: number, travelerFormData: any, rvFormData: any, file: File | null, files: File[]) {
         const formData = new FormData();
         formData.append('travelerFormData', new Blob([JSON.stringify(travelerFormData)], { type: 'application/json' }));
         formData.append('rvFormData', new Blob([JSON.stringify(rvFormData)], { type: 'application/json' }));
         
-        if (travelerFormData.travelerImage) {
-          formData.append('travelerImage', travelerFormData.travelerImage);
+        if (file) {
+          formData.append('travelerImage', file);
         }
     
-        if (rvFormData.rvImages && rvFormData.rvImages.length > 0) {
-          rvFormData.rvImages.forEach((image: File) => {
+        if (files.length > 0) {
+           files.forEach((image: File) => {
             formData.append(`rvImages`, image);
           });
         }
