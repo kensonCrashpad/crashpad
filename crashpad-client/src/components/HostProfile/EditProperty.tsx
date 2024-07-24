@@ -88,6 +88,8 @@ interface PropertyFormState {
   amenities: string[];
   imageUrls: File[];
   imagePreviews: string[];
+  latitude?: number;
+  longitude?: number;
 }
 
 const EditProperty: React.FC = () => {
@@ -113,6 +115,8 @@ const EditProperty: React.FC = () => {
     amenities: [],
     imageUrls: [],
     imagePreviews: [],
+    latitude: 0,
+    longitude: 0
   });
 
   const [errors, setErrors] = useState<any>({});
@@ -144,6 +148,8 @@ const EditProperty: React.FC = () => {
         amenities: details.amenities,
         imageUrls: [],
         imagePreviews: details.imageUrls,
+        latitude: details.latitude,
+        longitude: details.longitude
       });
     } catch (error) {
       console.error('Failed to fetch property details:', error);

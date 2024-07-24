@@ -15,7 +15,7 @@
 .DS_Store
 .env.local
 .env.test.local
-
+package-lock.json
 
 npm-debug.log*
 
