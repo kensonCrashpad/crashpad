@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BookingResponseDTO } from "../../interfaces/BookingResponseDTO"; 
-const API_URL = "http://localhost:8080/api/bookings"; 
+const API_URL = window.location.origin+"/api/bookings"; 
+
 
 const Trips: React.FC = () => {
     const [bookings, setBookings] = useState<BookingResponseDTO[]>([]);

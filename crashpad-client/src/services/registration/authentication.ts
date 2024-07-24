@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth/";
-const RESET_PASSWORD_URL = "http://localhost:8080/reset/password/";
+const API_URL = window.location.origin+"/api/auth/";
+const RESET_PASSWORD_URL = window.location.origin+"/reset/password/";
 
 
 class Authentication {
