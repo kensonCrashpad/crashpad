@@ -125,6 +125,8 @@ public class PropertyController {
         property.setCity(propertyDTO.getCity());
         property.setState(propertyDTO.getState());
         property.setZip(propertyDTO.getZip());
+        property.setLatitude(propertyDTO.getLatitude());
+        property.setLongitude(propertyDTO.getLongitude());
         property.setOriginalPrice(propertyDTO.getOriginalPrice());
         property.setDiscountedPrice(propertyDTO.getDiscountedPrice());
         property.setTitle(propertyDTO.getTitle());
@@ -216,6 +218,8 @@ public class PropertyController {
         propertyResponseDTO.setCity(property.getCity());
         propertyResponseDTO.setState(property.getState());
         propertyResponseDTO.setZip(property.getZip());
+        propertyResponseDTO.setLatitude(property.getLatitude());
+        propertyResponseDTO.setLongitude(property.getLongitude());
         propertyResponseDTO.setCapacity(property.getCapacity());
         propertyResponseDTO.setPadMaxLength(property.getPadMaxLength());
         propertyResponseDTO.setPadMaxWidth(property.getPadMaxWidth());
@@ -343,6 +347,8 @@ public class PropertyController {
         propertyDTO.setCity(property.getCity());
         propertyDTO.setState(property.getState());
         propertyDTO.setZip(property.getZip());
+        propertyDTO.setLatitude(property.getLatitude());
+        propertyDTO.setLongitude(property.getLongitude());
 
         //Set Price parameters
         propertyDTO.setOriginalPrice(property.getOriginalPrice());
@@ -373,6 +379,8 @@ public class PropertyController {
         property.setCity(propertyDTO.getCity());
         property.setState(propertyDTO.getState());
         property.setZip(propertyDTO.getZip());
+        property.setLatitude(propertyDTO.getLatitude());
+        property.setLongitude(propertyDTO.getLongitude());
 
         //Set Price parameters
         property.setOriginalPrice(propertyDTO.getOriginalPrice());

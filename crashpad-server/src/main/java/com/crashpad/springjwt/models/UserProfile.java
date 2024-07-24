@@ -40,7 +40,7 @@ public class UserProfile {
     private String paymentType;
     private String role;
 
-    @Column(name = "profile_image", length = 1024)
+    @Column(name = "profile_image")
     private String profileImage;
 
     @OneToOne
