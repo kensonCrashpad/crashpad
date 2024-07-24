@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-const API_URL = "http://localhost:80"+"/api/bookings"; 
-
 import { Tabs, Tab, Box, Typography, Button, Grid } from "@mui/material";
 import { BookingResponseDTO } from "../../interfaces/BookingResponseDTO";
 import BookingService from "../../services/booking/BookingService";
 import SideNav from './SideNav';
 import UserSettings from '../Dashboard/UserSettings';
+
 
 const Trips: React.FC = () => {
     const [tabIndex, setTabIndex] = useState(0);
