@@ -73,13 +73,13 @@ const SideNav: React.FC = () => {
     { to: "/dashboard", icon: <DashboardIcon />, label: "Dashboard" },
     { to: "/", icon: <HomeIcon />, label: "Home" },
     { to: "/favorites", icon: <FavoriteIcon />, label: "Favorites" },
-    { to: "/messages", icon: <EmailIcon />, label: "Messages" },
+    // { to: "/messages", icon: <EmailIcon />, label: "Messages" },
     { to: "/trips", icon: <EventIcon />, label: "Trips" },
     { to: "/settings", icon: <SettingsIcon />, label: "Settings" },
   ];
 
   return (
-    <Drawer variant="permanent" anchor="left">
+    <Drawer variant="permanent" anchor="left" sx={{'& .MuiPaper-root': { backgroundColor: '#f5f5f5'},}}>
       <DrawerHeader>
         <img
           src={logoImage}

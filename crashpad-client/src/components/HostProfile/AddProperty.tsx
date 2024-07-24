@@ -35,6 +35,8 @@ import PetsIcon from '@mui/icons-material/Pets';
 import PowerIcon from '@mui/icons-material/Power';
 import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined';
 
+const GOOGLE_API_KEY='AIzaSyBfWjIk1Mx3W8zBIgrwjWJL_syRftWdH5s';
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   margin: theme.spacing(3, 0),
@@ -89,6 +91,8 @@ interface PropertyFormState {
   amenities: string[];
   imageUrls: File[];
   imagePreviews: string[];
+  latitude?: number;
+  longitude?: number;
 }
 
 const AddProperty: React.FC = () => {
@@ -195,9 +199,23 @@ const AddProperty: React.FC = () => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const userId = user.id;
       try {
-        await PropertyService.savePropertyDetails(userId, propertyFormData);
-        navigate('/hostprofile'); 
-      } catch (error) {
+        // Fetch latitude and longitude based on address
+        const address = `${propertyFormData.street}, ${propertyFormData.city}, ${propertyFormData.state} ${propertyFormData.zip}`;
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_API_KEY}`);
+        const data = await response.json();
+        const location = data.results[0]?.geometry.location;
+
+        if (location) {
+          const propertyDataWithCoords = {
+            ...propertyFormData,
+            latitude: location.lat,
+            longitude: location.lng,
+          };
+          console.log('propertyDataWithCoords', propertyDataWithCoords);
+          await PropertyService.savePropertyDetails(userId, propertyDataWithCoords);
+          navigate('/hostprofile'); 
+      }
+     } catch (error) {
         console.error('Failed to save property', error);
       }
     } else {

@@ -44,6 +44,8 @@ interface PropertyResponseDTO {
   userCreationDate: string;
   userModifyDate: string;
   hostId: number;
+  latitude?: number;
+  longitude?: number;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {

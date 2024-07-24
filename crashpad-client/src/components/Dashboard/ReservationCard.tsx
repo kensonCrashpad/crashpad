@@ -58,36 +58,19 @@ const ReservationCard = ({properties}:any) => {
 
   const navigate = useNavigate();
   
-  //We are bypassing the code and not navigating to the Payment, instead reservation is made without payment for testing purposes. 
-  // const handleReserveCrashpad = () => {
-  //   navigate("/payment");
-  // };
-
-  const handleReserveCrashpad = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const userId = user.id;
-      const bookingData = {
-        propertyId: properties.propertyId,
-        travelerId: userId,
-        startDate: checkIn,
-        endDate: checkOut, 
-        statusOfBooking: "Booked",
-        totalCost: TotalPriceAfterTax,
-        specialRequests: "",
-        hostId:properties.userId,
-        
-      };
-
-      const response = await BookingService.createBooking(bookingData);
-      console.log("Booking response:", response.data);
-      alert("Booking successful!");
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      alert("Failed to create booking.");
-    }
+  // We are bypassing the code and not navigating to the Payment, instead reservation is made without payment for testing purposes. 
+  const handleReserveCrashpad = () => {
+    navigate("/payment", {
+      state: {
+        checkIn: checkIn,
+        checkOut: checkOut,
+        totalPriceAfterTax: TotalPriceAfterTax,
+        properties: properties
+      }
+    });
   };
+
+
   
   const orginalPrice = parseInt(properties.originalPrice)
   const discountPrice = parseInt(properties.discountedPrice)

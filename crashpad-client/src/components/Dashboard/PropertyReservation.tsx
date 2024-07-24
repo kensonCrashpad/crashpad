@@ -47,6 +47,8 @@ interface PropertyResponseDTO {
   imageUrls: string[];
   userCreationDate: string;
   userModifyDate: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 interface Property {

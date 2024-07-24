@@ -67,6 +67,8 @@ public class PropertyService {
         propertyDetails.setCity(property.getCity());
         propertyDetails.setState(property.getState());
         propertyDetails.setZip(property.getZip());
+        propertyDetails.setLatitude(property.getLatitude());
+        propertyDetails.setLongitude(property.getLongitude());
         propertyDetails.setCapacity(property.getCapacity());
         propertyDetails.setPadMaxLength(property.getPadMaxLength());
         propertyDetails.setPadMaxWidth(property.getPadMaxWidth());

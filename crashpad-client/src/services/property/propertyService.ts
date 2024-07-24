@@ -21,7 +21,9 @@ interface PropertyFormState {
     originalPrice: number;
     discountedPrice: number;
     amenities: string[];
-  imageUrls: File[]; // This should be File[]
+    imageUrls: File[]; // This should be File[]
+    latitude?: number;
+    longitude?: number;
   }
 
 interface PropertyResponseDTO {
@@ -45,6 +47,8 @@ interface PropertyResponseDTO {
     userCreationDate: string;
     userModifyDate: string;
     hostId: number;
+    latitude?: number;
+    longitude?: number;
   }
   
 
@@ -81,6 +85,8 @@ interface PropertyResponseDTO {
     userCreationDate: string; // Alternatively, use Date if you want to handle date objects
     userModifyDate: string; // Alternatively, use Date if you want to handle date objects
     hostDetails: HostDetailsDTO;
+    latitude?: number;
+    longitude?: number;
   }
   
 

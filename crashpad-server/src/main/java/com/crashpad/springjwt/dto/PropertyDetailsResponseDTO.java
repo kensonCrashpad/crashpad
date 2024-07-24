@@ -26,6 +26,8 @@ public class PropertyDetailsResponseDTO {
     private List<String> imageUrls;
     private LocalDateTime userCreationDate;
     private LocalDateTime userModifyDate;
+    private Double latitude;
+    private Double longitude;
 
     private HostDetailsDTO hostDetails;
 }
