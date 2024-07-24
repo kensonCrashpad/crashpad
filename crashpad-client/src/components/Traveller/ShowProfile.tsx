@@ -46,11 +46,13 @@ const ShowProfile: React.FC = () => {
     year,
     make,
     model,
+    rvImage, 
+    imagePreviews, 
     vehicleDescription
   } = state || {};
 
   // Check if the RV data exists
-  const hasRVData = type || length || width || height || year || make || model || vehicleDescription;
+  const hasRVData = type || length || width || height || year || make || model || rvImage || imagePreviews ||vehicleDescription;
   const hasUserData = userName || firstName || lastName || age || gender || email || phone || description;
 
   return (
@@ -108,8 +110,10 @@ const ShowProfile: React.FC = () => {
                       year={year} 
                       make={make} 
                       model={model} 
+                      rvImage={rvImage}
+                      imagePreviews={imagePreviews}
                       vehicleDescription={vehicleDescription} 
-                      rvFormData={{type, length, width, height, year, make, model, vehicleDescription,travelerImage}} 
+                      rvFormData={{type, length, width, height, year, make, model, vehicleDescription, rvImage, imagePreviews, travelerImage}} 
                     />
                   </Grid>
                 )}
