@@ -165,7 +165,7 @@ const AddProperty: React.FC = () => {
           if (!propertyFormData.description) newErrors.description = 'Description is required.';
           if (!propertyFormData.availability) newErrors.availability = 'Availability is required.';
           if (!propertyFormData.originalPrice) newErrors.originalPrice = 'Original Price is required.';
-          if (!propertyFormData.discountedPrice) newErrors.discountedPrice = 'Discounted Price is required.';
+          if (!propertyFormData.discountedPrice) newErrors.discountedPrice = 'Discount Price is required.';
           if (propertyFormData.amenities.length === 0)
             newErrors.amenities = 'At least one amenity is required.';
           if (propertyFormData.imageUrls.length === 0)
@@ -409,7 +409,7 @@ const AddProperty: React.FC = () => {
             fullWidth
             name="discountedPrice"
             value={propertyFormData.discountedPrice}
-            label="Discounted Price"
+            label="Discount"
             variant="outlined"
             type="number"
             InputProps={{ inputProps: { min: 1 } }}
@@ -421,94 +421,82 @@ const AddProperty: React.FC = () => {
 
             <SectionTitle variant="h5">Amenities</SectionTitle>
             <AmenitiesContainer>
-              <Tooltip title ="Wifi">
-              <IconButton onClick={() => handleAmenityClick('Wifi')}>
+              <Tooltip title ="wifi">
+              <IconButton onClick={() => handleAmenityClick('wifi')}>
                 <WifiIcon
                   color={
-                    propertyFormData.amenities.includes('Wifi')
+                    propertyFormData.amenities.includes('wifi')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title= "Shower">
-              <IconButton onClick={() => handleAmenityClick('Shower')}>
+              <Tooltip title= "baths">
+              <IconButton onClick={() => handleAmenityClick('baths')}>
                 <ShowerIcon
                   color={
-                    propertyFormData.amenities.includes('Shower')
+                    propertyFormData.amenities.includes('baths')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title ="Fireplace">
-              <IconButton onClick={() => handleAmenityClick('Fireplace')}>
+              <Tooltip title ="fireplace">
+              <IconButton onClick={() => handleAmenityClick('fireplace')}>
                 <FireplaceIcon
                   color={
-                    propertyFormData.amenities.includes('Fireplace')
+                    propertyFormData.amenities.includes('fireplace')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title = "Food">
-              <IconButton onClick={() => handleAmenityClick('Food')}>
+              <Tooltip title = "fastFood">
+              <IconButton onClick={() => handleAmenityClick('fastFood')}>
                 <FastfoodIcon
                   color={
-                    propertyFormData.amenities.includes('Food')
+                    propertyFormData.amenities.includes('fastFood')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title ="Grill">
-              <IconButton onClick={() => handleAmenityClick('Grill')}>
+              <Tooltip title ="outdoorGrill">
+              <IconButton onClick={() => handleAmenityClick('outdoorGrill')}>
                 <OutdoorGrillIcon
                   color={
-                    propertyFormData.amenities.includes('Grill')
+                    propertyFormData.amenities.includes('outdoorGrill')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title = "Laundry">
-              <IconButton onClick={() => handleAmenityClick('Laundry')}>
+              <Tooltip title = "localLaundry">
+              <IconButton onClick={() => handleAmenityClick('localLaundry')}>
                 <LocalLaundryServiceIcon
                   color={
-                    propertyFormData.amenities.includes('Laundry')
+                    propertyFormData.amenities.includes('localLaundry')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
               </Tooltip>
-              <Tooltip title = "Electricity">
-              <IconButton onClick={() => handleAmenityClick('Electricity')}>
+              <Tooltip title = "electricalServices">
+              <IconButton onClick={() => handleAmenityClick('electricalServices')}>
                 <ElectricalServicesIcon
                   color={
-                    propertyFormData.amenities.includes('Electricity')
+                    propertyFormData.amenities.includes('electricalServices')
                       ? 'primary'
                       : 'inherit'
                   }
                 />
               </IconButton>
-              </Tooltip>
-              <Tooltip title = "WaterHooks">
-              <IconButton onClick={() => handleAmenityClick('Waterhooks')}>
-                <WaterDropOutlinedIcon 
-                  color={
-                    propertyFormData.amenities.includes('Waterhooks')
-                      ? 'primary'
-                      : 'inherit'
-                  }
-                />
-              </IconButton>
-              </Tooltip>
               <Tooltip title = "Picknic Table">
               <IconButton onClick={() => handleAmenityClick('Picknic Table')}>
                 <TableRestaurantIcon
@@ -519,40 +507,16 @@ const AddProperty: React.FC = () => {
                   }
                 />
               </IconButton>
-              </Tooltip>
-              <Tooltip title = "Propane Gas">
-              <IconButton onClick={() => handleAmenityClick('Propane Gas')}>
-                <LocalGasStationIcon
-                  color={
-                    propertyFormData.amenities.includes('Propane Gas')
-                      ? 'primary'
-                      : 'inherit'
-                  }
-                />
-              </IconButton>
-              </Tooltip>
-              <Tooltip title="Pets" >
-                <IconButton onClick={() => handleAmenityClick('Pets')}>
+              <Tooltip title="pets" >
+                <IconButton onClick={() => handleAmenityClick('pets')}>
                 <PetsIcon
                     color={
-                      propertyFormData.amenities.includes('Pets')
+                      propertyFormData.amenities.includes('pets')
                         ? 'primary'
                         : 'inherit'
                     }
                   />
                 </IconButton>
-              </Tooltip>
-              <Tooltip title="Generator" >
-              <IconButton onClick={() => handleAmenityClick('Generators')}>
-                <PowerIcon
-                  color={
-                    propertyFormData.amenities.includes('Generators')
-                      ? 'primary'
-                      : 'inherit'
-                  }
-                />
-              </IconButton>
-              </Tooltip>
               </AmenitiesContainer>
               <AmenitiesContainer>
               </AmenitiesContainer>
