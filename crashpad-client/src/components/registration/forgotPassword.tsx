@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 import AuthService from "../../services/registration/authentication";
-import "../../styles/ForgotPasswordModal.css";
+import "./ForgotPasswordModal.css";
 
 interface ForgotPasswordProps {
   open: boolean;

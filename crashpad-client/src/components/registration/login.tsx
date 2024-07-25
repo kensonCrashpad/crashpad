@@ -10,8 +10,8 @@ const Login: React.FC = () => {
   const handleLogin = (username: string, email: string, password: string) => {
     AuthService.login(username, password).then(
       (response) => {
-        //navigate("/dashboard");
-        window.location.href = '/dashboard';
+        navigate("/dashboard");
+        // window.location.href = '/dashboard';
       },
       (error) => {
         const resMessage =

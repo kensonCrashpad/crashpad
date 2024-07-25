@@ -4,7 +4,7 @@ import logoImage from "../../images/registration/CPlogo.png";
 import loginBG from "../../images/registration/loginBG5.jpg";
 import ForgotPassword from "./forgotPassword";
 import GoogleLoginButton from "./googleLoginButton"; 
-import "../../styles/AccountForm.css";
+import "./AccountForm.css";
 
 
 interface AccountFormProps {
