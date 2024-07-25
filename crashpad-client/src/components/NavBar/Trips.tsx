@@ -123,7 +123,7 @@ const Trips: React.FC = () => {
                                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Check Out</Typography>
                                     <Typography variant="body2">
                                         {(() => {
-                                            const date = new Date(booking.startDate);
+                                            const date = new Date(booking.endDate);
                                             return `${date.toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'short',
